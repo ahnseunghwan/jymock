@@ -7,15 +7,15 @@ const Root = styled.div`
   justify-content: center;
   align-items: center;
   border: 1px #111 solid;
-  border-radius: 12px;
+  border-radius: 13px;
   cursor: pointer;
 `;
 
 const CheckedRoot = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   background: #111;
-  border-radius: 12px;
+  border-radius: 13px;
   cursor: pointer;
 `;
 

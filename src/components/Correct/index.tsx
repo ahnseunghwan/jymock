@@ -4,7 +4,7 @@ import { CheckedRoot, Root } from "./styled";
 type Props = {
   isChecked: boolean;
   onClick: () => void;
-  value: "A" | "B" | "C" | "D" | "1" | "2" | "3" | "4" | "5";
+  value: string;
 };
 
 const Correct: React.FC<Props> = ({ isChecked, onClick, value }) => {
