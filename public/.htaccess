@@ -1,0 +1,10 @@
+PHP_FLAG register_globals ON
+PHP_VALUE mysql.default_charset UTF8
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ / [NC,L,QSA]
+</IfModule>
