@@ -7,7 +7,7 @@ export interface CommonState {
 }
 
 const initialState: CommonState = {
-  select: 'STUDENT',
+  select: 'STUDENT_1',
 };
 
 export const commonSlice = createSlice({

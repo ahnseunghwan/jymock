@@ -1,11 +1,11 @@
 import React from 'react';
-import Menu from 'systems/Menu';
+import MenuContainer from 'systems/MenuContainer';
 import { Root } from './styled';
 
 const Main = () => {
   return (
     <Root>
-      <Menu />
+      <MenuContainer />
     </Root>
   );
 };

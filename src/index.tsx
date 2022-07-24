@@ -5,10 +5,12 @@ import Main from 'pages/Main';
 import ToeicExam from 'pages/Exam/Toeic';
 import { store } from 'features';
 import { Provider } from 'react-redux';
+import 'antd/dist/antd.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <Provider store={store}>
     <BrowserRouter>
