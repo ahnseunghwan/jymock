@@ -9,6 +9,9 @@ import 'antd/dist/antd.css';
 import MenuContainer from 'systems/MenuContainer';
 import styled from 'styled-components';
 import UserInfoContainer from 'systems/UserInfoContainer';
+import StudentSearch from 'pages/Student/Search';
+import StudentRest from 'pages/Student/Rest';
+import StudentRegister from 'pages/Student/Register';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -33,19 +36,22 @@ const ContentRouterContainer = styled.div`
 
 root.render(
   <Provider store={store}>
-    <Container>
-      <MenuContainer />
-      <ContentContainer>
-        <UserInfoContainer />
-        <ContentRouterContainer>
-          <BrowserRouter>
+    <BrowserRouter>
+      <Container>
+        <MenuContainer />
+        <ContentContainer>
+          <UserInfoContainer />
+          <ContentRouterContainer>
             <Routes>
               <Route path='/' element={<Main />} />
               <Route path='/exam/toeic' element={<ToeicExam />} />
+              <Route path='/student/register' element={<StudentRegister />} />
+              <Route path='/student/rest' element={<StudentRest />} />
+              <Route path='/student/search' element={<StudentSearch />} />
             </Routes>
-          </BrowserRouter>
-        </ContentRouterContainer>
-      </ContentContainer>
-    </Container>
+          </ContentRouterContainer>
+        </ContentContainer>
+      </Container>
+    </BrowserRouter>
   </Provider>
 );

@@ -13,6 +13,7 @@ import { RootState } from 'features';
 import { selectMenu } from 'features/common/slice';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { SelectMenuType } from 'type/common';
 import { Root, TitleContainer, TitleTypo } from './styled';
 
@@ -34,9 +35,9 @@ function getItem(
 
 const items = [
   getItem('원생 관리', 'STUDENT', <UserOutlined />, [
-    getItem('원생 조회', 'STUDENT_1'),
-    getItem('원생 등록', 'STUDENT_2'),
-    getItem('휴/퇴원 관리', 'STUDENT_3'),
+    getItem('원생 조회', '/student/search'),
+    getItem('원생 등록', '/student/rest'),
+    getItem('휴/퇴원 관리', '/student/register'),
   ]),
   getItem('출결 관리', 'ATTENDENCE', <CalendarOutlined />, [
     getItem('출결 조회', 'ATTENDENCE_1'),
@@ -71,6 +72,7 @@ const items = [
 
 const MenuContainer = () => {
   const [select] = useSelector((state: RootState) => [state.common.select]);
+  const navigation = useNavigate();
   const dispatch = useDispatch();
 
   return (
@@ -86,7 +88,7 @@ const MenuContainer = () => {
         mode='inline'
         theme='dark'
         items={items}
-        onClick={(info) => dispatch(selectMenu(info.key as SelectMenuType))}
+        onClick={(info) => navigation(info.key)}
       />
     </Root>
   );
