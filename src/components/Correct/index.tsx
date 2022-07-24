@@ -1,5 +1,5 @@
-import React from "react";
-import { CheckedRoot, Root } from "./styled";
+import React from 'react';
+import { CheckedRoot, Root } from './styled';
 
 type Props = {
   isChecked: boolean;

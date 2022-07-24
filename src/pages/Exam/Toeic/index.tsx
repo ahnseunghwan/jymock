@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Container,
   PdfContainer,
@@ -7,28 +7,28 @@ import {
   ResponseTitleContainer,
   ResponseTitleTypo,
   Root,
-} from "./styled";
-import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
-import sample1 from "assets/pdf/sample5.pdf";
-import Correct from "components/Correct";
-import ToeicCorrect from "systems/ToeicCorrect";
-import ReactAudioPlayer from "react-audio-player";
-import useTimer from "hooks/useTimer";
-import { useEffect } from "react";
-import { convertSecondToToeicTime } from "utils/time";
+} from './styled';
+import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+import sample1 from 'assets/pdf/sample5.pdf';
+import Correct from 'components/Correct';
+import ToeicCorrect from 'systems/ToeicCorrect';
+import ReactAudioPlayer from 'react-audio-player';
+import useTimer from 'hooks/useTimer';
+import { useEffect } from 'react';
+import { convertSecondToToeicTime } from 'utils/time';
 
 const ToeicExam = () => {
-  const [loading, setLoading] = useState<"PDF_LOADING" | "LOADING" | "NONE">(
-    "PDF_LOADING"
+  const [loading, setLoading] = useState<'PDF_LOADING' | 'LOADING' | 'NONE'>(
+    'PDF_LOADING'
   );
 
   const onPdfLoadSuccess = () => {
-    setLoading("NONE");
+    setLoading('NONE');
   };
 
   const [correctList, setCorrectList] = useState([...Array(200).fill(null)]);
-  const onClickCorrect = (id: number) => (value: "A" | "B" | "C" | "D") => () =>
-    setCorrectList(prev =>
+  const onClickCorrect = (id: number) => (value: 'A' | 'B' | 'C' | 'D') => () =>
+    setCorrectList((prev) =>
       prev.map((item, index) => (index === id ? value : item))
     );
   const endTime = 80;
@@ -41,8 +41,8 @@ const ToeicExam = () => {
   }, []);
 
   useEffect(() => {
-    if (timerStatus === "END") {
-      alert("시험 시간이 종료되었습니다.");
+    if (timerStatus === 'END') {
+      alert('시험 시간이 종료되었습니다.');
     }
   }, [timerStatus]);
 

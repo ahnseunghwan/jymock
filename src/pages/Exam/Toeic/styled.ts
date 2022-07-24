@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Root = styled.div`
   width: 100%;
@@ -55,7 +55,7 @@ type ResponseDescriptionTypoProps = {
 };
 
 const ResponseDescriptionTypo = styled.div<ResponseDescriptionTypoProps>`
-  color: ${props => (props.isPoint ? `#f00` : `#111`)};
+  color: ${(props) => (props.isPoint ? `#f00` : `#111`)};
   font-size: 44px;
   font-weight: 700;
   margin-top: 10px;
