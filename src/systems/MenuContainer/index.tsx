@@ -49,24 +49,24 @@ const items = [
     getItem('교재 등록', '/learning_material/register'),
   ]),
   getItem('토익 관리', 'TOEIC_EXAM', <ExclamationCircleOutlined />, [
-    getItem('문제 조회', 'TOEIC_EXAM_1'),
-    getItem('문제 등록', 'TOEIC_EXAM_2'),
+    getItem('문제 조회', '/toeic_exam/search'),
+    getItem('문제 등록', '/toeic_exam/register'),
   ]),
   getItem('시험 관리', 'EXAM', <InboxOutlined />, [
-    getItem('문제 조회', 'EXAM_1'),
-    getItem('문제 등록', 'EXAM_2'),
+    getItem('문제 조회', '/exam/search'),
+    getItem('문제 등록', '/exam/register'),
   ]),
   getItem('성적 관리', 'SCORE', <PieChartOutlined />, [
-    getItem('반별 성적표', 'SCORE_1'),
-    getItem('학생별 성적', 'SCORE_2'),
+    getItem('반별 성적표', '/score/report'),
+    getItem('학생별 성적', '/score/student'),
   ]),
   getItem('숙제 관리', 'ASSIGNMENT', <BookOutlined />, [
-    getItem('숙제 조회', 'ASSIGNMENT_1'),
-    getItem('숙제 등록', 'ASSIGNMENT_2'),
+    getItem('숙제 조회', '/assignment/search'),
+    getItem('숙제 등록', '/assignment/register'),
   ]),
   getItem('상담 관리', 'CONSULT_LOG', <AlignCenterOutlined />, [
-    getItem('상담 조회', 'CONSULT_LOG_1'),
-    getItem('상담 등록', 'CONSULT_LOG_2'),
+    getItem('상담 조회', '/consult_log/search'),
+    getItem('상담 등록', '/consult_log/register'),
   ]),
 ];
 
