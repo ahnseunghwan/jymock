@@ -15,6 +15,8 @@ import StudentRegister from 'pages/Student/Register';
 import AttendenceSearch from 'pages/Attendence/Search';
 import AttendenceRegister from 'pages/Attendence/Register';
 import AttendenceGraph from 'pages/Attendence/Graph';
+import LearningMaterialSearch from 'pages/LearningMaterial/Search';
+import LearningMaterialRegister from 'pages/LearningMaterial/Register';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -57,6 +59,14 @@ root.render(
                 element={<AttendenceRegister />}
               />
               <Route path='/attendence/graph' element={<AttendenceGraph />} />
+              <Route
+                path='/learning_material/search'
+                element={<LearningMaterialSearch />}
+              />
+              <Route
+                path='/learning_material/register'
+                element={<LearningMaterialRegister />}
+              />
             </Routes>
           </ContentRouterContainer>
         </ContentContainer>
