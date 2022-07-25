@@ -4,14 +4,22 @@ import styled from 'styled-components';
 
 export const Root = styled.div`
   width: 256px;
-  height: 100vh;
-  background: #001529;
   display: flex;
   flex-direction: column;
   gap: 15px;
   padding-top: 30px;
   box-sizing: border-box;
-  border-right: 1px solid #000;
+`;
+
+export const Container = styled.div`
+  width: 230px;
+  height: 100vh;
+  background: #001529;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 15px;
+  overflow-y: auto;
 `;
 
 export const TitleContainer = styled.div`

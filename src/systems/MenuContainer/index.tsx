@@ -15,7 +15,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { SelectMenuType } from 'type/common';
-import { Root, TitleContainer, TitleTypo } from './styled';
+import { Container, Root, TitleContainer, TitleTypo } from './styled';
 
 function getItem(
   label: string,
@@ -77,19 +77,21 @@ const MenuContainer = () => {
 
   return (
     <Root>
-      <TitleContainer>
-        <TitleTypo>
-          <strong>관리자</strong>님, 안녕하세요.
-        </TitleTypo>
-      </TitleContainer>
-      <Menu
-        defaultSelectedKeys={['STUDENT_1']}
-        defaultOpenKeys={['STUDENT']}
-        mode='inline'
-        theme='dark'
-        items={items}
-        onClick={(info) => navigation(info.key)}
-      />
+      <Container>
+        <TitleContainer>
+          <TitleTypo>
+            <strong>관리자</strong>님, 안녕하세요.
+          </TitleTypo>
+        </TitleContainer>
+        <Menu
+          defaultSelectedKeys={['STUDENT_1']}
+          defaultOpenKeys={['STUDENT']}
+          mode='inline'
+          theme='dark'
+          items={items}
+          onClick={(info) => navigation(info.key)}
+        />
+      </Container>
     </Root>
   );
 };
