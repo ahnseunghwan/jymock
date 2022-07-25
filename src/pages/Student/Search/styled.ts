@@ -89,7 +89,7 @@ const ContentActionContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 50px;
+  margin-top: 20px;
 `;
 
 const ContentActionButton = styled(Button)``;

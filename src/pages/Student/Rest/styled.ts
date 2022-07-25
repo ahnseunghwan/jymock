@@ -1,4 +1,4 @@
-import { Typography } from 'antd';
+import { Input, Typography } from 'antd';
 import styled from 'styled-components';
 
 const Root = styled.div`
@@ -15,4 +15,8 @@ const TitleTypo = styled(Typography.Title)`
   }
 `;
 
-export { Root, TitleTypo };
+const ContentInput = styled(Input)`
+  width: 200px;
+`;
+
+export { Root, TitleTypo, ContentInput };
