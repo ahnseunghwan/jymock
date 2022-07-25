@@ -361,5 +361,67 @@
       "grade": "학년",
       "edit": ""
     }
+  ],
+  "attendence_table_data": [
+    {
+      "key": "1",
+      "name": "유다연",
+      "id": "udyeon",
+      "date": "2022.07.24",
+      "class_title": ["Phonics"],
+      "attendence_status": "출석",
+      "startTime": "13:00",
+      "endTime": "15:00",
+      "reason": "",
+      "edit": ""
+    },
+    {
+      "key": "2",
+      "name": "고나연",
+      "id": "nayeon",
+      "date": "2022.07.24",
+      "class_title": ["Phonics"],
+      "attendence_status": "결석",
+      "startTime": "13:00",
+      "endTime": "15:00",
+      "reason": "감기 기운이 있음",
+      "edit": ""
+    },
+    {
+      "key": "3",
+      "name": "유다연",
+      "id": "udyeon",
+      "date": "2022.07.24",
+      "class_title": ["Phonics"],
+      "attendence_status": "출석",
+      "startTime": "13:00",
+      "endTime": "15:00",
+      "reason": "",
+      "edit": ""
+    },
+    {
+      "key": "4",
+      "name": "고나연",
+      "id": "udyeon",
+      "date": "2022.07.24",
+      "class_title": ["Phonics"],
+      "attendence_status": "지각",
+      "startTime": "12:00",
+      "endTime": "16:00",
+      "reason": "감기 기운이 있음",
+      "edit": ""
+    },
+    {
+      "key": "5",
+      "name": "유다연",
+      "id": "udyeon",
+      "date": "2022.07.24",
+      "class_title": ["Phonics"],
+      "attendence_status": "출석",
+      "startTime": "13:00",
+      "endTime": "15:00",
+      "reason": "",
+      "edit": ""
+    }
   ]
 }

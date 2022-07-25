@@ -4,6 +4,7 @@ import {
   ContentActionButtonTypo,
   ContentActionContainer,
   ContentContainer,
+  ContentRangePicker,
   ContentTable,
   MenuContainer,
   MenuItemContainer,
@@ -22,6 +23,7 @@ import {
 } from './styled';
 import studentSearchMenu from 'assets/json/student_search_menu.json';
 import { Button, Checkbox, Divider, Tag } from 'antd';
+import locale from 'antd/es/date-picker/locale/ko_KR';
 
 const AttendenceSearch = () => {
   const [teacherList, setTeacherList] = useState<string[]>([
@@ -33,7 +35,7 @@ const AttendenceSearch = () => {
     ...studentSearchMenu.classes,
   ]);
   const [tableData, setTableData] = useState<any[]>(
-    studentSearchMenu.table_data
+    studentSearchMenu.attendence_table_data
   );
 
   const tableColumns = [
@@ -48,14 +50,9 @@ const AttendenceSearch = () => {
       key: 'id',
     },
     {
-      title: '비밀번호',
-      dataIndex: 'password',
-      key: 'password',
-    },
-    {
-      title: '가입일',
-      dataIndex: 'created_at',
-      key: 'created_at',
+      title: '날짜',
+      dataIndex: 'date',
+      key: 'date',
     },
     {
       title: '클래스',
@@ -72,14 +69,24 @@ const AttendenceSearch = () => {
       ),
     },
     {
-      title: '학교',
-      dataIndex: 'school',
-      key: 'school',
+      title: '출결상태',
+      dataIndex: 'attendence_status',
+      key: 'attendence_status',
     },
     {
-      title: '학년',
-      dataIndex: 'grade',
-      key: 'grade',
+      title: '등원시간',
+      dataIndex: 'startTime',
+      key: 'startTime',
+    },
+    {
+      title: '하원시간',
+      dataIndex: 'endTime',
+      key: 'endTime',
+    },
+    {
+      title: '사유',
+      dataIndex: 'reason',
+      key: 'reason',
     },
     {
       title: '수정',
@@ -136,15 +143,30 @@ const AttendenceSearch = () => {
           </MenuItemContentContainer>
         </MenuItemContainer>
         <MenuItemContainer>
+          <MenuItemHeaderTypoWrapper width={40}>
+            <MenuItemHeaderTypo>기간</MenuItemHeaderTypo>
+          </MenuItemHeaderTypoWrapper>
+          <Divider type='vertical' />
+          <MenuItemContentContainer>
+            <ContentRangePicker locale={locale} />
+          </MenuItemContentContainer>
+        </MenuItemContainer>
+        <MenuItemContainer>
           <MenuItemHeaderTypoWrapper width={70}>
-            <MenuItemHeaderTypo>회원 구분</MenuItemHeaderTypo>
+            <MenuItemHeaderTypo>출결 상태</MenuItemHeaderTypo>
           </MenuItemHeaderTypoWrapper>
           <MenuItemContentSelect placeholder='선택'>
             <MenuItemContentSelectOption value={1}>
-              원생
+              출석
             </MenuItemContentSelectOption>
             <MenuItemContentSelectOption value={2}>
-              휴/퇴원
+              결석
+            </MenuItemContentSelectOption>
+            <MenuItemContentSelectOption value={3}>
+              지각
+            </MenuItemContentSelectOption>
+            <MenuItemContentSelectOption value={4}>
+              조퇴
             </MenuItemContentSelectOption>
           </MenuItemContentSelect>
           <MenuItemHeaderTypoWrapper width={50} style={{ marginLeft: '25px' }}>

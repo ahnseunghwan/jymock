@@ -1,4 +1,4 @@
-import { Button, Input, Select, Table, Typography } from 'antd';
+import { Button, DatePicker, Input, Select, Table, Typography } from 'antd';
 import styled from 'styled-components';
 
 const Root = styled.div`
@@ -101,6 +101,8 @@ const ContentTable = styled(Table)`
   margin-top: 10px;
 `;
 
+const ContentRangePicker = styled(DatePicker.RangePicker)``;
+
 export {
   Root,
   TitleTypo,
@@ -121,4 +123,5 @@ export {
   ContentActionButton,
   ContentActionButtonTypo,
   ContentTable,
+  ContentRangePicker,
 };
