@@ -36,8 +36,8 @@ function getItem(
 const items = [
   getItem('원생 관리', 'STUDENT', <UserOutlined />, [
     getItem('원생 조회', '/student/search'),
-    getItem('원생 등록', '/student/rest'),
-    getItem('휴/퇴원 관리', '/student/register'),
+    getItem('원생 등록', '/student/register'),
+    getItem('휴/퇴원 관리', '/student/rest'),
   ]),
   getItem('출결 관리', 'ATTENDENCE', <CalendarOutlined />, [
     getItem('출결 조회', 'ATTENDENCE_1'),
