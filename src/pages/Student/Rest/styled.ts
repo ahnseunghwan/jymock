@@ -62,6 +62,20 @@ const MenuItemContentButtonTypo = styled(Typography)`
   }
 `;
 
+const ContentInputColumnButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+`;
+
+const ContentButton = styled(Button)``;
+
+const ContentButtonTypo = styled(Typography)`
+  &&& {
+  }
+`;
+
 export {
   Root,
   TitleTypo,
@@ -75,4 +89,7 @@ export {
   MenuItemContentTextInput,
   MenuItemContentButton,
   MenuItemContentButtonTypo,
+  ContentInputColumnButtonContainer,
+  ContentButton,
+  ContentButtonTypo,
 };

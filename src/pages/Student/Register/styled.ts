@@ -7,6 +7,7 @@ const Root = styled.div`
   flex-direction: column;
   margin-top: 20px;
   margin-left: 20px;
+  margin-bottom: 50px;
 `;
 
 const TitleTypo = styled(Typography.Title)`

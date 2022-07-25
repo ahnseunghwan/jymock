@@ -10,6 +10,9 @@ import {
   MenuItemContentButton,
   MenuItemContentButtonTypo,
   MenuItemContentSelectContainer,
+  ContentInputColumnButtonContainer,
+  ContentButton,
+  ContentButtonTypo,
 } from './styled';
 import studentSearchMenu from 'assets/json/student_search_menu.json';
 
@@ -63,7 +66,16 @@ const StudentRegister = () => {
             <MenuItemContentButtonTypo>검색</MenuItemContentButtonTypo>
           </MenuItemContentButton>
         </MenuItemContentSelectContainer>
-
+        <ContentInputColumnButtonContainer>
+          <ContentButton>
+            <ContentButtonTypo>SMS발송</ContentButtonTypo>
+          </ContentButton>
+          <ContentButton type='primary'>
+            <ContentButtonTypo style={{ color: 'white' }}>
+              휴/퇴원
+            </ContentButtonTypo>
+          </ContentButton>
+        </ContentInputColumnButtonContainer>
         <ContentTable
           columns={tableColumns}
           rowSelection={{
