@@ -1,8 +1,9 @@
-import React from "react";
-import { Root } from "./styled";
+import React from 'react';
+import MenuContainer from 'systems/MenuContainer';
+import { Root } from './styled';
 
 const Main = () => {
-  return <Root />;
+  return <Root>메인</Root>;
 };
 
 export default Main;

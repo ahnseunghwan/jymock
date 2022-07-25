@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
   duration: number;
@@ -8,26 +8,26 @@ const useTimer = ({ duration }: Props) => {
   const [now, setNow] = useState<number>(0);
   const [isPoint, setIsPoint] = useState<boolean>(false);
   const [timerStatus, setTimerStatus] = useState<
-    "INIT" | "START" | "PAUSE" | "END"
-  >("INIT");
+    'INIT' | 'START' | 'PAUSE' | 'END'
+  >('INIT');
   const timer = useRef<any>();
 
   const onStart = () => {
-    setTimerStatus("START");
+    setTimerStatus('START');
     timer.current = setInterval(() => {
-      setNow(prev => prev + 1);
+      setNow((prev) => prev + 1);
     }, 1000);
   };
 
   const onPause = () => {
     clearInterval(timer.current);
-    setTimerStatus("PAUSE");
+    setTimerStatus('PAUSE');
   };
 
   const onEndReached = () => {
     setNow(0);
     clearInterval(timer.current);
-    setTimerStatus("END");
+    setTimerStatus('END');
   };
 
   useEffect(() => {

@@ -1,15 +1,15 @@
-import Correct from "components/Correct";
-import React from "react";
-import { NumberWrapper, Root } from "./styled";
+import Correct from 'components/Correct';
+import React from 'react';
+import { NumberWrapper, Root } from './styled';
 
 type Props = {
   id: number;
-  value: "A" | "B" | "C" | "D" | null;
-  onClick: (value: "A" | "B" | "C" | "D") => () => void;
+  value: 'A' | 'B' | 'C' | 'D' | null;
+  onClick: (value: 'A' | 'B' | 'C' | 'D') => () => void;
 };
 
 const ToeicCorrect: React.FC<Props> = ({ id, value, onClick }) => {
-  const toeicCorrect: ("A" | "B" | "C" | "D")[] = ["A", "B", "C", "D"];
+  const toeicCorrect: ('A' | 'B' | 'C' | 'D')[] = ['A', 'B', 'C', 'D'];
 
   return (
     <Root>
