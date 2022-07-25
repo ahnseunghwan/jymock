@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from 'pages/Main';
-import ToeicExam from 'pages/Exam/Toeic';
 import { store } from 'features';
 import { Provider } from 'react-redux';
 import 'antd/dist/antd.css';
@@ -49,7 +48,6 @@ root.render(
           <ContentRouterContainer>
             <Routes>
               <Route path='/' element={<Main />} />
-              <Route path='/exam/toeic' element={<ToeicExam />} />
               <Route path='/student/register' element={<StudentRegister />} />
               <Route path='/student/rest' element={<StudentRest />} />
               <Route path='/student/search' element={<StudentSearch />} />
