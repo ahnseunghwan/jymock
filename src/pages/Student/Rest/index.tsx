@@ -1,8 +1,12 @@
 import React from 'react';
-import { Root } from './styled';
+import { Root, TitleTypo } from './styled';
 
-const StudentRest = () => {
-  return <Root>휴/퇴원 관리</Root>;
+const StudentRegister = () => {
+  return (
+    <Root>
+      <TitleTypo level={2}> 휴/퇴원 관리 </TitleTypo>
+    </Root>
+  );
 };
 
-export default StudentRest;
+export default StudentRegister;
