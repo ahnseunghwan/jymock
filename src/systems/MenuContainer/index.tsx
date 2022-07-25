@@ -40,9 +40,9 @@ const items = [
     getItem('휴/퇴원 관리', '/student/rest'),
   ]),
   getItem('출결 관리', 'ATTENDENCE', <CalendarOutlined />, [
-    getItem('출결 조회', 'ATTENDENCE_1'),
-    getItem('출결 등록', 'ATTENDENCE_2'),
-    getItem('출결 통계', 'ATTENDENCE_3'),
+    getItem('출결 조회', '/attendence/search'),
+    getItem('출결 등록', '/attendence/register'),
+    getItem('출결 통계', '/attendence/graph'),
   ]),
   getItem('교재 관리', 'LEARNING_MATERIAL', <ReadOutlined />, [
     getItem('교재 조회', 'LEARNING_MATERIAL_1'),

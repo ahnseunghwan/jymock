@@ -12,6 +12,9 @@ import UserInfoContainer from 'systems/UserInfoContainer';
 import StudentSearch from 'pages/Student/Search';
 import StudentRest from 'pages/Student/Rest';
 import StudentRegister from 'pages/Student/Register';
+import AttendenceSearch from 'pages/Attendence/Search';
+import AttendenceRegister from 'pages/Attendence/Register';
+import AttendenceGraph from 'pages/Attendence/Graph';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -48,6 +51,12 @@ root.render(
               <Route path='/student/register' element={<StudentRegister />} />
               <Route path='/student/rest' element={<StudentRest />} />
               <Route path='/student/search' element={<StudentSearch />} />
+              <Route path='/attendence/search' element={<AttendenceSearch />} />
+              <Route
+                path='/attendence/register'
+                element={<AttendenceRegister />}
+              />
+              <Route path='/attendence/graph' element={<AttendenceGraph />} />
             </Routes>
           </ContentRouterContainer>
         </ContentContainer>
