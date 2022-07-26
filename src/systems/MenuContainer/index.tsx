@@ -57,7 +57,7 @@ const items = [
     getItem('문제 등록', '/exam/register'),
   ]),
   getItem('성적 관리', 'SCORE', <PieChartOutlined />, [
-    getItem('반별 성적표', '/score/report'),
+    getItem('반별 성적표', '/score/class'),
     getItem('학생별 성적', '/score/student'),
   ]),
   getItem('숙제 관리', 'ASSIGNMENT', <BookOutlined />, [
