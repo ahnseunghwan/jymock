@@ -32,60 +32,20 @@ const ScoreStudent = () => {
     '전체',
     ...studentSearchMenu.classes,
   ]);
-  const [tableData, setTableData] = useState<any[]>(
-    studentSearchMenu.table_data
-  );
+  const [tableData, setTableData] = useState<any[]>([
+    ...studentSearchMenu.exam_table_data,
+  ]);
 
   const tableColumns = [
+    {
+      title: '시험 uuid',
+      dataIndex: 'exam_uuid',
+      key: 'exam_uuid',
+    },
     {
       title: '이름',
       dataIndex: 'name',
       key: 'name',
-    },
-    {
-      title: '아이디',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
-      title: '비밀번호',
-      dataIndex: 'password',
-      key: 'password',
-    },
-    {
-      title: '가입일',
-      dataIndex: 'created_at',
-      key: 'created_at',
-    },
-    {
-      title: '클래스',
-      dataIndex: 'class_title',
-      key: 'class_title',
-      render: (tags: string[]) => (
-        <>
-          {tags.map((tag) => (
-            <Tag color='blue' key={tag}>
-              {tag}
-            </Tag>
-          ))}
-        </>
-      ),
-    },
-    {
-      title: '학교',
-      dataIndex: 'school',
-      key: 'school',
-    },
-    {
-      title: '학년',
-      dataIndex: 'grade',
-      key: 'grade',
-    },
-    {
-      title: '수정',
-      dataIndex: 'edit',
-      key: 'edit',
-      render: () => <Button>수정</Button>,
     },
   ];
 
