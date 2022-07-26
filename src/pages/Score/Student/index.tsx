@@ -22,8 +22,11 @@ import {
 } from './styled';
 import studentSearchMenu from 'assets/json/student_search_menu.json';
 import { Button, Checkbox, Divider, Tag } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const ScoreStudent = () => {
+  const navigate = useNavigate();
+
   const [teacherList, setTeacherList] = useState<string[]>([
     '전체',
     ...studentSearchMenu.teachers,
@@ -61,6 +64,10 @@ const ScoreStudent = () => {
       disabled: record.name === 'Disabled User',
       name: record.name,
     }),
+  };
+
+  const onClickPrint = () => {
+    window.open('/score/print');
   };
 
   return (
@@ -128,7 +135,7 @@ const ScoreStudent = () => {
             <ContentActionButton>
               <ContentActionButtonTypo>SMS발송</ContentActionButtonTypo>
             </ContentActionButton>
-            <ContentActionButton>
+            <ContentActionButton onClick={onClickPrint}>
               <ContentActionButtonTypo>프린트</ContentActionButtonTypo>
             </ContentActionButton>
             <ContentActionButton>

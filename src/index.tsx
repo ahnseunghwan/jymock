@@ -18,6 +18,8 @@ import LearningMaterialSearch from 'pages/LearningMaterial/Search';
 import LearningMaterialRegister from 'pages/LearningMaterial/Register';
 import ScoreClass from 'pages/Score/Class';
 import ScoreStudent from 'pages/Score/Student';
+import ScorePrint from 'pages/Score/Print';
+import MenuWrapping from 'systems/MenuWrapping';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -43,36 +45,98 @@ const ContentRouterContainer = styled.div`
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Container>
-        <MenuContainer />
-        <ContentContainer>
-          <UserInfoContainer />
-          <ContentRouterContainer>
-            <Routes>
-              <Route path='/' element={<Main />} />
-              <Route path='/student/register' element={<StudentRegister />} />
-              <Route path='/student/rest' element={<StudentRest />} />
-              <Route path='/student/search' element={<StudentSearch />} />
-              <Route path='/attendence/search' element={<AttendenceSearch />} />
-              <Route
-                path='/attendence/register'
-                element={<AttendenceRegister />}
-              />
-              <Route path='/attendence/graph' element={<AttendenceGraph />} />
-              <Route
-                path='/learning_material/search'
-                element={<LearningMaterialSearch />}
-              />
-              <Route
-                path='/learning_material/register'
-                element={<LearningMaterialRegister />}
-              />
-              <Route path='/score/class' element={<ScoreClass />} />
-              <Route path='/score/student' element={<ScoreStudent />} />
-            </Routes>
-          </ContentRouterContainer>
-        </ContentContainer>
-      </Container>
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <MenuWrapping>
+              <Main />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/student/register'
+          element={
+            <MenuWrapping>
+              <StudentRegister />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/student/rest'
+          element={
+            <MenuWrapping>
+              <StudentRest />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/student/search'
+          element={
+            <MenuWrapping>
+              <StudentSearch />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/attendence/search'
+          element={
+            <MenuWrapping>
+              <AttendenceSearch />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/attendence/register'
+          element={
+            <MenuWrapping>
+              <AttendenceRegister />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/attendence/graph'
+          element={
+            <MenuWrapping>
+              <AttendenceGraph />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/learning_material/search'
+          element={
+            <MenuWrapping>
+              <LearningMaterialSearch />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/learning_material/register'
+          element={
+            <MenuWrapping>
+              <LearningMaterialRegister />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/score/class'
+          element={
+            <MenuWrapping>
+              <ScoreClass />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/score/student'
+          element={
+            <MenuWrapping>
+              <ScoreStudent />
+            </MenuWrapping>
+          }
+        />
+
+        <Route path='/score/print' element={<ScorePrint />} />
+      </Routes>
     </BrowserRouter>
   </Provider>
 );
