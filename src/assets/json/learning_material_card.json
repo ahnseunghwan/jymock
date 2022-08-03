@@ -1,0 +1,39 @@
+{
+  "learning_material_card_list": [
+    {
+      "id": "1",
+      "title": "맨 처음 토익",
+      "audio_list": [],
+      "created_at": "2020-02-20",
+      "thumbnail": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+    },
+    {
+      "id": "2",
+      "title": "맨 처음 토익2",
+      "audio_list": [],
+      "created_at": "2020-02-20",
+      "thumbnail": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+    },
+    {
+      "id": "3",
+      "title": "맨 처음 토익3",
+      "audio_list": [],
+      "created_at": "2020-02-20",
+      "thumbnail": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+    },
+    {
+      "id": "4",
+      "title": "맨 처음 토익4",
+      "audio_list": [],
+      "created_at": "2020-02-20",
+      "thumbnail": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+    },
+    {
+      "id": "5",
+      "title": "맨 처음 토익5",
+      "audio_list": [],
+      "created_at": "2020-02-20",
+      "thumbnail": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+    }
+  ]
+}
