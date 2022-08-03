@@ -20,6 +20,8 @@ import ScoreClass from 'pages/Score/Class';
 import ScoreStudent from 'pages/Score/Student';
 import ScorePrint from 'pages/Score/Print';
 import MenuWrapping from 'systems/MenuWrapping';
+import ProblemRegister from 'pages/Problem/Register';
+import ProblemSearch from 'pages/Problem/Search';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -131,6 +133,22 @@ root.render(
           element={
             <MenuWrapping>
               <ScoreStudent />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/problem/register'
+          element={
+            <MenuWrapping>
+              <ProblemRegister />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/problem/search'
+          element={
+            <MenuWrapping>
+              <ProblemSearch />
             </MenuWrapping>
           }
         />

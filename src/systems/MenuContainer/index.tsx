@@ -52,6 +52,10 @@ const items = [
     getItem('문제 조회', '/toeic_exam/search'),
     getItem('문제 등록', '/toeic_exam/register'),
   ]),
+  getItem('문제 관리', 'PROBLEM', <ReadOutlined />, [
+    getItem('문제 조회', '/problem/search'),
+    getItem('문제 등록', '/problem/register'),
+  ]),
   getItem('시험 관리', 'EXAM', <InboxOutlined />, [
     getItem('문제 조회', '/exam/search'),
     getItem('문제 등록', '/exam/register'),
