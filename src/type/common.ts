@@ -17,3 +17,17 @@ export type SelectMenuType =
   | 'ASSIGNMENT_2'
   | 'CONSULT_LOG_1'
   | 'CONSULT_LOG_2';
+
+export type LearningMaterialAudioType = {
+  audio: string;
+  title: string;
+  page: number;
+};
+
+export type LearningMaterialType = {
+  id: string;
+  title: string;
+  audio_list: LearningMaterialAudioType[];
+  created_at: string;
+  thumbnail: string;
+};
