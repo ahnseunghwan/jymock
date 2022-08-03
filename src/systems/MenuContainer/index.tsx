@@ -41,7 +41,7 @@ const items = [
   ]),
   getItem('출결 관리', 'ATTENDENCE', <CalendarOutlined />, [
     getItem('출결 조회', '/attendence/search'),
-    getItem('출결 등록', '/attendence/register'),
+    // getItem('출결 등록', '/attendence/register'),
     getItem('출결 통계', '/attendence/graph'),
   ]),
   getItem('교재 관리', 'LEARNING_MATERIAL', <ReadOutlined />, [
