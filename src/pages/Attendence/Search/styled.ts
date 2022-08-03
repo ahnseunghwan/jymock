@@ -103,6 +103,12 @@ const ContentTable = styled(Table)`
 
 const ContentRangePicker = styled(DatePicker.RangePicker)``;
 
+const ContentInput = styled(Input)``;
+
+const ContentSelect = styled(Select)``;
+
+const ContentSelectOption = styled(Select.Option)``;
+
 export {
   Root,
   TitleTypo,
@@ -124,4 +130,7 @@ export {
   ContentActionButtonTypo,
   ContentTable,
   ContentRangePicker,
+  ContentInput,
+  ContentSelect,
+  ContentSelectOption,
 };
