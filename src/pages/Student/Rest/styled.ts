@@ -2,7 +2,7 @@ import { Button, Input, Select, Table, Typography } from 'antd';
 import styled from 'styled-components';
 
 const Root = styled.div`
-  width: 100%;
+  width: 1000px;
   display: flex;
   flex-direction: column;
   margin-top: 20px;
@@ -18,9 +18,9 @@ const TitleTypo = styled(Typography.Title)`
 const MenuContainer = styled.div`
   width: 1000px;
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  gap: 25px;
   margin-top: 20px;
+  margin-bottom: 14px;
 `;
 
 const MenuItemContainer = styled.div`
@@ -37,9 +37,16 @@ const ContentTable = styled(Table)`
   margin-top: 10px;
 `;
 
+const MenuItemContentContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 25px;
+`;
+
 const MenuItemContentSelectContainer = styled.div`
   display: flex;
   align-items: center;
+  gap: 25px;
 `;
 
 const MenuItemContentSelect = styled(Select)`
@@ -56,6 +63,8 @@ const MenuItemContentButton = styled(Button)`
   width: 80px;
 `;
 
+const MenuItemTitleTypo = styled(Typography)``;
+
 const MenuItemContentButtonTypo = styled(Typography)`
   &&& {
     color: #fff;
@@ -67,6 +76,7 @@ const ContentInputColumnButtonContainer = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 20px;
+  margin-top: 25px;
 `;
 
 const ContentButton = styled(Button)``;
@@ -83,12 +93,14 @@ export {
   MenuItemContainer,
   ContentInput,
   ContentTable,
+  MenuItemContentContainer,
   MenuItemContentSelectContainer,
   MenuItemContentSelect,
   MenuItemContentSelectOption,
   MenuItemContentTextInput,
   MenuItemContentButton,
   MenuItemContentButtonTypo,
+  MenuItemTitleTypo,
   ContentInputColumnButtonContainer,
   ContentButton,
   ContentButtonTypo,

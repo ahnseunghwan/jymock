@@ -13,6 +13,8 @@ import {
   ContentInputColumnButtonContainer,
   ContentButton,
   ContentButtonTypo,
+  MenuItemTitleTypo,
+  MenuItemContentContainer,
 } from './styled';
 import studentSearchMenu from 'assets/json/student_search_menu.json';
 
@@ -23,6 +25,11 @@ const StudentRegister = () => {
 
   const tableColumns = [
     {
+      title: '구분',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
       title: '이름',
       dataIndex: 'name',
       key: 'name',
@@ -31,6 +38,11 @@ const StudentRegister = () => {
       title: '아이디',
       dataIndex: 'id',
       key: 'id',
+    },
+    {
+      title: '퇴원일',
+      dataIndex: 'discharge_date',
+      key: 'discharge_date',
     },
   ];
 
@@ -52,7 +64,25 @@ const StudentRegister = () => {
     <Root>
       <TitleTypo level={2}> 휴/퇴원 관리 </TitleTypo>
       <MenuContainer>
+        <MenuItemContentContainer>
+          <MenuItemTitleTypo>회원 구분</MenuItemTitleTypo>
+          <MenuItemContentSelect placeholder='선택'>
+            <MenuItemContentSelectOption value={1}>
+              전체
+            </MenuItemContentSelectOption>
+            <MenuItemContentSelectOption value={2}>
+              원생
+            </MenuItemContentSelectOption>
+            <MenuItemContentSelectOption value={3}>
+              휴원생
+            </MenuItemContentSelectOption>
+            <MenuItemContentSelectOption value={4}>
+              퇴원생
+            </MenuItemContentSelectOption>
+          </MenuItemContentSelect>
+        </MenuItemContentContainer>
         <MenuItemContentSelectContainer>
+          <MenuItemTitleTypo>학생</MenuItemTitleTypo>
           <MenuItemContentSelect placeholder='선택'>
             <MenuItemContentSelectOption value={1}>
               이름
@@ -61,30 +91,37 @@ const StudentRegister = () => {
               아이디
             </MenuItemContentSelectOption>
           </MenuItemContentSelect>
-          <MenuItemContentTextInput style={{ marginLeft: '25px' }} />
-          <MenuItemContentButton type='primary' style={{ marginLeft: '25px' }}>
+          <MenuItemContentTextInput />
+          <MenuItemContentButton type='primary'>
             <MenuItemContentButtonTypo>검색</MenuItemContentButtonTypo>
           </MenuItemContentButton>
         </MenuItemContentSelectContainer>
-        <ContentInputColumnButtonContainer>
-          <ContentButton>
-            <ContentButtonTypo>SMS발송</ContentButtonTypo>
-          </ContentButton>
-          <ContentButton type='primary'>
-            <ContentButtonTypo style={{ color: 'white' }}>
-              휴/퇴원
-            </ContentButtonTypo>
-          </ContentButton>
-        </ContentInputColumnButtonContainer>
-        <ContentTable
-          columns={tableColumns}
-          rowSelection={{
-            type: 'checkbox',
-            ...rowSelection,
-          }}
-          dataSource={tableData}
-        />
       </MenuContainer>
+      <ContentInputColumnButtonContainer>
+        <ContentButton type='primary'>
+          <ContentButtonTypo style={{ color: 'white' }}>
+            휴원 전환
+          </ContentButtonTypo>
+        </ContentButton>
+        <ContentButton type='primary'>
+          <ContentButtonTypo style={{ color: 'white' }}>
+            퇴원 전환
+          </ContentButtonTypo>
+        </ContentButton>
+        <ContentButton type='primary'>
+          <ContentButtonTypo style={{ color: 'white' }}>
+            원생 전환
+          </ContentButtonTypo>
+        </ContentButton>
+      </ContentInputColumnButtonContainer>
+      <ContentTable
+        columns={tableColumns}
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+        }}
+        dataSource={tableData}
+      />
     </Root>
   );
 };
