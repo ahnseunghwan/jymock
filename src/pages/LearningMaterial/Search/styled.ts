@@ -19,6 +19,9 @@ const TitleTypo = styled(Typography.Title)`
 const ContentContainer = styled.div`
   width: 1000px;
   background: #fff;
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
   border-radius: 16px;
   padding: 20px;
 `;
