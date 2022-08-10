@@ -10,6 +10,7 @@ import {
   PageHandlerWrapper,
   PageNumTypo,
   PageNumTypoWrapper,
+  PageWrapper,
   Root,
 } from './styled';
 import sample6 from 'assets/pdf/sample6.pdf';
@@ -17,8 +18,6 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { commonAxios } from 'api/common';
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const LearningMaterialViewer = () => {
   const location = useLocation();
@@ -56,6 +55,7 @@ const LearningMaterialViewer = () => {
 
   useEffect(() => {
     const id = location.search.split('?id=')[1];
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     commonAxios({ url: `materials/${id}`, method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
         setPdfFileUrl(res.data.file);
@@ -69,27 +69,27 @@ const LearningMaterialViewer = () => {
     <Root>
       {pdfFileUrl !== '' && (
         <Document
-          file={{ url: pdfFileUrl }}
+          file={`https://cors-anywhere.herokuapp.com/${pdfFileUrl}`}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={console.error}
         >
           <PageContainer>
-            <div style={{ border: '1px #0002 solid' }}>
+            <PageWrapper>
               <Page pageNumber={page} />
               <PageNumTypoWrapper>
                 <PageNumTypo>
                   Page {page} of {numPages}
                 </PageNumTypo>
               </PageNumTypoWrapper>
-            </div>
-            <div style={{ border: '1px #0002 solid' }}>
+            </PageWrapper>
+            <PageWrapper>
               <Page pageNumber={page + 1} />
               <PageNumTypoWrapper>
                 <PageNumTypo>
                   Page {page + 1} of {numPages}
                 </PageNumTypo>
               </PageNumTypoWrapper>
-            </div>
+            </PageWrapper>
           </PageContainer>
         </Document>
       )}

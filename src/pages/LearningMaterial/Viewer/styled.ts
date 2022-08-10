@@ -6,11 +6,20 @@ export const Root = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 50px;
 `;
 
 export const PageContainer = styled.div`
   display: flex;
   margin-top: 20px;
+`;
+
+export const PageWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px #0002 solid;
 `;
 
 export const PageNumTypoWrapper = styled.div`
