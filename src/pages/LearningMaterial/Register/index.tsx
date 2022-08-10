@@ -1,6 +1,6 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Alert, message } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Root,
   TitleTypo,
@@ -20,53 +20,48 @@ import {
 } from './styled';
 
 const LearningMaterialRegister = () => {
-  const props = {
-    name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    headers: {
-      authorization: 'authorization-text',
-    },
+  const [name, setName] = useState<string>('');
+  const [pdfFile, setPdfFile] = useState<any>();
+  const [profileImg, setProfileImg] = useState<any>();
+  const [profileSrc, setProfileSrc] = useState<any>();
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
-    onChange(info: any) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} 파일 업로드에 성공했습니다.`);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} 파일 업로드에 실패했습니다.`);
-      }
-    },
+  const encodeFileToBase64 = (fileBlob: any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setProfileSrc(reader.result);
+        resolve(() => {});
+      };
+    });
   };
   return (
     <Root>
       <TitleTypo level={2}> 교재 등록</TitleTypo>
       <ContentContainer>
-        <Alert
-          type='error'
-          message='교재명을 입력해주세요.'
-          showIcon={true}
-          style={{ marginBottom: '20px' }}
-        />
+        {errorMessage !== '' && (
+          <Alert
+            type='error'
+            message={errorMessage}
+            showIcon={true}
+            style={{ marginBottom: '20px' }}
+          />
+        )}
         <ContentInputContainer>
           <ContentInputColumnContainer>
             <ContentInput
               addonBefore='교재명 *'
               required={true}
               placeholder='교재명을 입력하세요.'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
-            <ContentInput
-              addonBefore='아이디 *'
-              required={true}
-              placeholder='아이디를 입력하세요.'
+            <input
+              type='file'
+              accept='application/pdf'
+              onChange={(e: any) => setPdfFile(e.target.files[0])}
             />
-
-            <ContentUpload {...props}>
-              <ContentButton icon={<UploadOutlined />}>
-                교재 업로드
-              </ContentButton>
-            </ContentUpload>
             <ContentInputColumnButtonContainer>
               <ContentButton type='primary'>
                 <ContentButtonTypo style={{ color: 'white' }}>
@@ -79,10 +74,15 @@ const LearningMaterialRegister = () => {
             </ContentInputColumnButtonContainer>
           </ContentInputColumnContainer>
           <ContentImageContainer>
-            <ContentImage src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' />
-            <ContentButton style={{ width: '100%' }}>
-              <ContentButtonTypo>표지 선택</ContentButtonTypo>
-            </ContentButton>
+            <ContentImage src={profileSrc} />
+            <input
+              type='file'
+              accept='image/jpg,impge/png,image/jpeg,image/gif'
+              onChange={(e: any) => {
+                setProfileImg(e.target.files[0]);
+                encodeFileToBase64(e.target.files[0]);
+              }}
+            />
           </ContentImageContainer>
         </ContentInputContainer>
       </ContentContainer>
