@@ -69,7 +69,7 @@ const LearningMaterialViewer = () => {
     <Root>
       {pdfFileUrl !== '' && (
         <Document
-          file={pdfFileUrl}
+          file={{ url: pdfFileUrl }}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={console.error}
         >
