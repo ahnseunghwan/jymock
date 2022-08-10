@@ -50,7 +50,8 @@ const items = [
   ]),
   getItem('토익 관리', 'TOEIC_EXAM', <ExclamationCircleOutlined />, [
     getItem('문제 조회', '/toeic_exam/search'),
-    getItem('문제 등록', '/toeic_exam/register'),
+    getItem('응시 기록', '/toeic_exam/history'),
+    // getItem('문제 등록', '/toeic_exam/register'),
   ]),
   getItem('문제 관리', 'PROBLEM', <ReadOutlined />, [
     getItem('문제 조회', '/problem/search'),

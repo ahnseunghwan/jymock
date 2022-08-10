@@ -24,6 +24,9 @@ import ProblemRegister from 'pages/Problem/Register';
 import ProblemSearch from 'pages/Problem/Search';
 import StudentEdit from 'pages/Student/Edit';
 import LearningMaterialViewer from 'pages/LearningMaterial/Viewer';
+import ToeicExamHistory from 'pages/ToeicExam/History';
+import ToeicExamViewer from 'pages/ToeicExam/Viewer';
+import ToeicExamSearch from 'pages/ToeicExam/Search';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -127,6 +130,23 @@ root.render(
           element={
             <MenuWrapping>
               <LearningMaterialRegister />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/toeic_exam/history'
+          element={
+            <MenuWrapping>
+              <ToeicExamHistory />
+            </MenuWrapping>
+          }
+        />
+        <Route path='/toeic_exam/viewer' element={<ToeicExamViewer />} />
+        <Route
+          path='/toeic_exam/search'
+          element={
+            <MenuWrapping>
+              <ToeicExamSearch />
             </MenuWrapping>
           }
         />
