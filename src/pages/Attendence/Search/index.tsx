@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ContentActionButton,
   ContentActionButtonTypo,
@@ -25,6 +25,7 @@ import {
 import studentSearchMenu from 'assets/json/student_search_menu.json';
 import { Button, Checkbox, Divider, Tag } from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
+import { commonAxios } from 'api/common';
 
 const AttendenceSearch = () => {
   const [teacherList, setTeacherList] = useState<string[]>([
@@ -35,9 +36,7 @@ const AttendenceSearch = () => {
     '전체',
     ...studentSearchMenu.classes,
   ]);
-  const [tableData, setTableData] = useState<any[]>(
-    studentSearchMenu.attendence_table_data
-  );
+  const [tableData, setTableData] = useState<any[]>([]);
   const [editId, setEditId] = useState<string>();
 
   const onEditComplete = () => {
@@ -55,13 +54,13 @@ const AttendenceSearch = () => {
   const onSelectAttendenceStatus = (key: string) => (value: any) => {
     let newValue = '';
 
-    if (value === 1) {
+    if (value === 'present') {
       newValue = '출석';
-    } else if (value === 2) {
+    } else if (value === 'absent') {
       newValue = '결석';
-    } else if (value === 3) {
+    } else if (value === 'late') {
       newValue = '지각';
-    } else if (value === 4) {
+    } else if (value === 'compassionate') {
       newValue = '조퇴';
     }
 
@@ -71,6 +70,28 @@ const AttendenceSearch = () => {
       )
     );
   };
+
+  useEffect(() => {
+    commonAxios({
+      url: 'attendances/',
+      method: 'GET',
+      params: {
+        attended_at: '2022-07-30 ~ 2022-10-31',
+        attendance_type: 'all',
+        curriculums: 'all',
+        lecturers: 'all',
+      },
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        res.data.map((value: any) => ({
+          ...value,
+          key: value.id,
+        }));
+      } else {
+        alert('출결 조회 실패');
+      }
+    });
+  }, []);
 
   const tableColumns = [
     {
@@ -236,16 +257,16 @@ const AttendenceSearch = () => {
             <MenuItemHeaderTypo>출결 상태</MenuItemHeaderTypo>
           </MenuItemHeaderTypoWrapper>
           <MenuItemContentSelect placeholder='선택'>
-            <MenuItemContentSelectOption value={1}>
+            <MenuItemContentSelectOption value={'present'}>
               출석
             </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={2}>
+            <MenuItemContentSelectOption value={'absent'}>
               결석
             </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={3}>
+            <MenuItemContentSelectOption value={'late'}>
               지각
             </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={4}>
+            <MenuItemContentSelectOption value={'compassionate'}>
               조퇴
             </MenuItemContentSelectOption>
           </MenuItemContentSelect>
