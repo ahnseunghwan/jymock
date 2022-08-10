@@ -72,7 +72,9 @@ const StudentRegister = () => {
     formData.append('birth', dayjs(birth).format('YYYY-MM-DD'));
     formData.append('address', address);
     formData.append('student_type', type);
-    formData.append('profile_image', profileImg);
+    if (profileImg) {
+      formData.append('profile_image', profileImg);
+    }
 
     commonAxios({
       url: 'students/',
