@@ -36,6 +36,13 @@ const LearningMaterialRegister = () => {
       };
     });
   };
+
+  const onClickCancel = () => {
+    window.location.reload();
+  };
+
+  const onClickSubmit = () => {};
+
   return (
     <Root>
       <TitleTypo level={2}> 교재 등록</TitleTypo>
@@ -63,12 +70,12 @@ const LearningMaterialRegister = () => {
               onChange={(e: any) => setPdfFile(e.target.files[0])}
             />
             <ContentInputColumnButtonContainer>
-              <ContentButton type='primary'>
+              <ContentButton type='primary' onClick={onClickCancel}>
                 <ContentButtonTypo style={{ color: 'white' }}>
                   취소
                 </ContentButtonTypo>
               </ContentButton>
-              <ContentButton>
+              <ContentButton onClick={onClickSubmit}>
                 <ContentButtonTypo>저장</ContentButtonTypo>
               </ContentButton>
             </ContentInputColumnButtonContainer>

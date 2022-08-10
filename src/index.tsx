@@ -23,6 +23,7 @@ import MenuWrapping from 'systems/MenuWrapping';
 import ProblemRegister from 'pages/Problem/Register';
 import ProblemSearch from 'pages/Problem/Search';
 import StudentEdit from 'pages/Student/Edit';
+import LearningMaterialViewer from 'pages/LearningMaterial/Viewer';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -163,6 +164,10 @@ root.render(
         />
 
         <Route path='/score/print' element={<ScorePrint />} />
+        <Route
+          path='/learning_material/viewer'
+          element={<LearningMaterialViewer />}
+        />
       </Routes>
     </BrowserRouter>
   </Provider>
