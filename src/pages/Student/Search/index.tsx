@@ -39,6 +39,12 @@ const StudentSearch = () => {
   const [tableData, setTableData] = useState<any[]>(
     studentSearchMenu.table_data
   );
+  const [curriculums, setCurriculums] = useState<
+    { id: string; name: string; isSelected: boolean }[]
+  >([]);
+
+  const [searchName, setSearchName] = useState<string>('');
+  const [searchStatus, setSearchStatus] = useState<string>('all');
 
   const [studentList, setStudentList] = useState<any[]>([]);
 
@@ -118,8 +124,17 @@ const StudentSearch = () => {
   };
 
   useEffect(() => {
+    commonAxios({ url: 'curriculums/', method: 'GET' }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setCurriculums(
+          res.data.map((value: any) => ({ ...value, isSelected: false }))
+        );
+      } else {
+        alert('서버 에러');
+      }
+    });
     commonAxios({ url: 'students/', method: 'GET' }).then((res) => {
-      if (res.status === 200) {
+      if (res.status >= 200 && res.status < 300) {
         setStudentList(
           res.data.map((value: any) => ({
             ...value,
@@ -128,10 +143,38 @@ const StudentSearch = () => {
           }))
         );
       } else {
-        message.error('서버 에러');
+        alert('서버 에러');
       }
     });
   }, []);
+
+  const onSelectCurriculum = (id: number) => () => {
+    setCurriculums((prev) =>
+      prev.map((value, index) =>
+        id === index ? { ...value, isSelected: !value.isSelected } : value
+      )
+    );
+  };
+
+  const onClickSearch = () => {
+    commonAxios({
+      url: 'students/',
+      method: 'GET',
+      params: { name: searchName, status: searchStatus },
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setStudentList(
+          res.data.map((value: any) => ({
+            ...value,
+            key: value.id,
+            created_at: dayjs(value.created_at).format('YYYY-MM-DD'),
+          }))
+        );
+      } else {
+        alert('서버 에러');
+      }
+    });
+  };
 
   return (
     <Root>
@@ -157,10 +200,13 @@ const StudentSearch = () => {
           </MenuItemHeaderTypoWrapper>
           <Divider type='vertical' />
           <MenuItemContentContainer>
-            {classList.map((classTitle, index) => (
+            {curriculums.map((curriculum, index) => (
               <MenuItemContentTypoContainer key={`menu_class_${index}`}>
-                <Checkbox />
-                <MenuItemContentTypo>{classTitle}</MenuItemContentTypo>
+                <Checkbox
+                  checked={curriculum.isSelected}
+                  onClick={onSelectCurriculum(index)}
+                />
+                <MenuItemContentTypo>{curriculum.name}</MenuItemContentTypo>
               </MenuItemContentTypoContainer>
             ))}
           </MenuItemContentContainer>
@@ -169,27 +215,39 @@ const StudentSearch = () => {
           <MenuItemHeaderTypoWrapper width={70}>
             <MenuItemHeaderTypo>회원 구분</MenuItemHeaderTypo>
           </MenuItemHeaderTypoWrapper>
-          <MenuItemContentSelect placeholder='선택'>
-            <MenuItemContentSelectOption value={1}>
+          <MenuItemContentSelect
+            placeholder='선택'
+            value={searchStatus}
+            onChange={(value: any) => setSearchStatus(value)}
+          >
+            <MenuItemContentSelectOption value={'all'}>
+              전체
+            </MenuItemContentSelectOption>
+            <MenuItemContentSelectOption value={'active'}>
               원생
             </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={2}>
+            <MenuItemContentSelectOption value={'inactive'}>
+              휴원
+            </MenuItemContentSelectOption>
+            <MenuItemContentSelectOption value={'take-off'}>
+              퇴원
+            </MenuItemContentSelectOption>
+            <MenuItemContentSelectOption value={'inactive/take-off'}>
               휴/퇴원
             </MenuItemContentSelectOption>
           </MenuItemContentSelect>
-          <MenuItemHeaderTypoWrapper width={50} style={{ marginLeft: '25px' }}>
-            <MenuItemHeaderTypo>학생</MenuItemHeaderTypo>
+          <MenuItemHeaderTypoWrapper width={70} style={{ marginLeft: '25px' }}>
+            <MenuItemHeaderTypo>학생 이름</MenuItemHeaderTypo>
           </MenuItemHeaderTypoWrapper>
-          <MenuItemContentSelect placeholder='선택'>
-            <MenuItemContentSelectOption value={1}>
-              이름
-            </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={2}>
-              아이디
-            </MenuItemContentSelectOption>
-          </MenuItemContentSelect>
-          <MenuItemContentTextInput style={{ marginLeft: '25px' }} />
-          <MenuItemContentButton type='primary' style={{ marginLeft: '25px' }}>
+          <MenuItemContentTextInput
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+          />
+          <MenuItemContentButton
+            type='primary'
+            style={{ marginLeft: '25px' }}
+            onClick={onClickSearch}
+          >
             <MenuItemContentButtonTypo>검색</MenuItemContentButtonTypo>
           </MenuItemContentButton>
         </MenuItemContainer>

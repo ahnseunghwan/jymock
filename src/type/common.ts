@@ -28,6 +28,6 @@ export type LearningMaterialType = {
   id: string;
   title: string;
   audio_list: LearningMaterialAudioType[];
-  created_at: string;
+  description: string;
   thumbnail: string;
 };

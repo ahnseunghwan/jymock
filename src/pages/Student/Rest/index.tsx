@@ -19,10 +19,14 @@ import {
 import { commonAxios } from 'api/common';
 import dayjs from 'dayjs';
 import { message } from 'antd';
+import moment from 'moment';
 
 const StudentRegister = () => {
   const [studentList, setStudentList] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+
+  const [searchName, setSearchName] = useState<string>('');
+  const [searchStatus, setSearchStatus] = useState<string>('all');
 
   const onSelectChange = (newSelectedRowKeys: any[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -57,8 +61,11 @@ const StudentRegister = () => {
     },
     {
       title: '최종 수정일',
-      dataIndex: 'updated_ad',
-      key: 'updated_ad',
+      dataIndex: 'updated_at',
+      key: 'updated_at',
+      render: (_: any) => {
+        return moment(_).format('YYYY-MM-DD');
+      },
     },
   ];
 
@@ -147,39 +154,61 @@ const StudentRegister = () => {
     }
   };
 
+  const onClickSearch = () => {
+    commonAxios({
+      url: 'students/',
+      method: 'GET',
+      params: { name: searchName, status: searchStatus },
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setStudentList(
+          res.data.map((value: any) => ({
+            ...value,
+            key: value.id,
+            created_at: dayjs(value.created_at).format('YYYY-MM-DD'),
+          }))
+        );
+      } else {
+        alert('서버 에러');
+      }
+    });
+  };
+
   return (
     <Root>
       <TitleTypo level={2}> 휴/퇴원 관리 </TitleTypo>
       <MenuContainer>
         <MenuItemContentContainer>
           <MenuItemTitleTypo>회원 구분</MenuItemTitleTypo>
-          <MenuItemContentSelect placeholder='선택'>
-            <MenuItemContentSelectOption value={1}>
+          <MenuItemContentSelect
+            placeholder='선택'
+            value={searchStatus}
+            onChange={(value: any) => setSearchStatus(value)}
+          >
+            <MenuItemContentSelectOption value={'all'}>
               전체
             </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={2}>
+            <MenuItemContentSelectOption value={'active'}>
               원생
             </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={3}>
-              휴원생
+            <MenuItemContentSelectOption value={'inactive'}>
+              휴원
             </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={4}>
-              퇴원생
+            <MenuItemContentSelectOption value={'take-off'}>
+              퇴원
+            </MenuItemContentSelectOption>
+            <MenuItemContentSelectOption value={'inactive/take-off'}>
+              휴/퇴원
             </MenuItemContentSelectOption>
           </MenuItemContentSelect>
         </MenuItemContentContainer>
         <MenuItemContentSelectContainer>
           <MenuItemTitleTypo>학생</MenuItemTitleTypo>
-          <MenuItemContentSelect placeholder='선택'>
-            <MenuItemContentSelectOption value={1}>
-              이름
-            </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={2}>
-              아이디
-            </MenuItemContentSelectOption>
-          </MenuItemContentSelect>
-          <MenuItemContentTextInput />
-          <MenuItemContentButton type='primary'>
+          <MenuItemContentTextInput
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+          />
+          <MenuItemContentButton type='primary' onClick={onClickSearch}>
             <MenuItemContentButtonTypo>검색</MenuItemContentButtonTypo>
           </MenuItemContentButton>
         </MenuItemContentSelectContainer>
