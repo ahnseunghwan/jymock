@@ -46,7 +46,7 @@ const items = [
   ]),
   getItem('교재 관리', 'LEARNING_MATERIAL', <ReadOutlined />, [
     getItem('교재 조회', '/learning_material/search'),
-    getItem('교재 등록', '/learning_material/register'),
+    // getItem('교재 등록', '/learning_material/register'),
   ]),
   getItem('토익 관리', 'TOEIC_EXAM', <ExclamationCircleOutlined />, [
     getItem('문제 조회', '/toeic_exam/search'),

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 import {
   PageContainer,
   PageHandlerContainer,
@@ -14,11 +14,18 @@ import {
 } from './styled';
 import sample6 from 'assets/pdf/sample6.pdf';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { commonAxios } from 'api/common';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const LearningMaterialViewer = () => {
+  const location = useLocation();
   const [numPages, setNumPages] = useState<number>(1);
   const [page, setPage] = useState(1);
   const [toPage, setToPage] = useState<number>(1);
+  const [pdfFileUrl, setPdfFileUrl] = useState<string>('');
 
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
@@ -47,28 +54,45 @@ const LearningMaterialViewer = () => {
     }
   };
 
+  useEffect(() => {
+    const id = location.search.split('?id=')[1];
+    commonAxios({ url: `materials/${id}`, method: 'GET' }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setPdfFileUrl(res.data.file);
+      } else {
+        alert('오류');
+      }
+    });
+  }, []);
+
   return (
     <Root>
-      <Document file={sample6} onLoadSuccess={onDocumentLoadSuccess}>
-        <PageContainer>
-          <div style={{ border: '1px #0002 solid' }}>
-            <Page pageNumber={page} />
-            <PageNumTypoWrapper>
-              <PageNumTypo>
-                Page {page} of {numPages}
-              </PageNumTypo>
-            </PageNumTypoWrapper>
-          </div>
-          <div style={{ border: '1px #0002 solid' }}>
-            <Page pageNumber={page + 1} />
-            <PageNumTypoWrapper>
-              <PageNumTypo>
-                Page {page + 1} of {numPages}
-              </PageNumTypo>
-            </PageNumTypoWrapper>
-          </div>
-        </PageContainer>
-      </Document>
+      {pdfFileUrl !== '' && (
+        <Document
+          file={pdfFileUrl}
+          onLoadSuccess={onDocumentLoadSuccess}
+          onLoadError={console.error}
+        >
+          <PageContainer>
+            <div style={{ border: '1px #0002 solid' }}>
+              <Page pageNumber={page} />
+              <PageNumTypoWrapper>
+                <PageNumTypo>
+                  Page {page} of {numPages}
+                </PageNumTypo>
+              </PageNumTypoWrapper>
+            </div>
+            <div style={{ border: '1px #0002 solid' }}>
+              <Page pageNumber={page + 1} />
+              <PageNumTypoWrapper>
+                <PageNumTypo>
+                  Page {page + 1} of {numPages}
+                </PageNumTypo>
+              </PageNumTypoWrapper>
+            </div>
+          </PageContainer>
+        </Document>
+      )}
       <PageHandlerContainer>
         <PageHandlerWrapper>
           <LeftOutlined onClick={handlePage('PREVIOUS')} />

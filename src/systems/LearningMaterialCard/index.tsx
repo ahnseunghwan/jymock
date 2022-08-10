@@ -3,7 +3,9 @@ import React from 'react';
 import { LearningMaterialType } from 'type/common';
 import { CardMeta, Root } from './styled';
 
-type Props = {} & LearningMaterialType;
+type Props = {
+  onClick: () => void;
+} & LearningMaterialType;
 
 const LearningMaterialCard: React.FC<Props> = ({
   audio_list,
@@ -11,14 +13,16 @@ const LearningMaterialCard: React.FC<Props> = ({
   id,
   title,
   thumbnail,
+  onClick,
 }) => {
   return (
     <Root
+      onClick={onClick}
       style={{
         width: 300,
       }}
       cover={<img alt='example' src={thumbnail} />}
-      actions={[<FilePdfOutlined key='setting' />, <EditOutlined key='edit' />]}
+      // actions={[<FilePdfOutlined key='setting' />, <EditOutlined key='edit' />]}
     >
       <CardMeta title={title} description={description} />
     </Root>

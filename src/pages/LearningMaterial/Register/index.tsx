@@ -1,5 +1,6 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Alert, message } from 'antd';
+import { commonAxios } from 'api/common';
 import React, { useState } from 'react';
 import {
   Root,
@@ -21,6 +22,7 @@ import {
 
 const LearningMaterialRegister = () => {
   const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [pdfFile, setPdfFile] = useState<any>();
   const [profileImg, setProfileImg] = useState<any>();
   const [profileSrc, setProfileSrc] = useState<any>();
@@ -41,7 +43,39 @@ const LearningMaterialRegister = () => {
     window.location.reload();
   };
 
-  const onClickSubmit = () => {};
+  const onClickSubmit = () => {
+    if (name === '') {
+      setErrorMessage('이름을 입력해주세요.');
+      return;
+    }
+    if (!pdfFile) {
+      setErrorMessage('교재 파일을 입력해주세요.');
+      return;
+    }
+    if (!profileImg) {
+      setErrorMessage('교재 썸네일을 입력해주세요.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('title', name);
+    formData.append('description', description);
+    formData.append('thumbnail', profileImg);
+    formData.append('file', pdfFile);
+
+    commonAxios({
+      url: 'material/upload',
+      method: 'POST',
+      data: formData,
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        alert('성공');
+        window.location.reload();
+      } else {
+        alert('실패');
+      }
+    });
+  };
 
   return (
     <Root>
@@ -63,6 +97,13 @@ const LearningMaterialRegister = () => {
               placeholder='교재명을 입력하세요.'
               value={name}
               onChange={(e) => setName(e.target.value)}
+            />
+            <ContentInput
+              addonBefore='설명'
+              required={true}
+              placeholder='설명을 입력하세요.'
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
             <input
               type='file'

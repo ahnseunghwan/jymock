@@ -17,6 +17,10 @@ const LearningMaterialSearch = () => {
     });
   }, []);
 
+  const onClickCard = (id: string) => () => {
+    window.open(`/learning_material/viewer/?id=${id}`);
+  };
+
   return (
     <Root>
       <TitleTypo level={2}>교재 조회</TitleTypo>
@@ -24,6 +28,7 @@ const LearningMaterialSearch = () => {
         {cardList?.map((cardData, index) => (
           <LearningMaterialCard
             {...cardData}
+            onClick={onClickCard(cardData.id)}
             key={`learning_material_${cardData.id}`}
           />
         ))}
