@@ -19,6 +19,7 @@ import {
 import { commonAxios } from 'api/common';
 import dayjs from 'dayjs';
 import { message } from 'antd';
+import moment from 'moment';
 
 const StudentRegister = () => {
   const [studentList, setStudentList] = useState<any[]>([]);
@@ -60,8 +61,11 @@ const StudentRegister = () => {
     },
     {
       title: '최종 수정일',
-      dataIndex: 'updated_ad',
-      key: 'updated_ad',
+      dataIndex: 'updated_at',
+      key: 'updated_at',
+      render: (_: any) => {
+        return moment(_).format('YYYY-MM-DD');
+      },
     },
   ];
 
