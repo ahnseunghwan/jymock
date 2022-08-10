@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ContentActionButton,
   ContentActionButtonTypo,
@@ -21,9 +21,13 @@ import {
   TitleTypo,
 } from './styled';
 import studentSearchMenu from 'assets/json/student_search_menu.json';
-import { Button, Checkbox, Divider, Tag } from 'antd';
+import { Button, Checkbox, Divider, message, Tag } from 'antd';
+import { commonAxios } from 'api/common';
+import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 const StudentSearch = () => {
+  const navigate = useNavigate();
   const [teacherList, setTeacherList] = useState<string[]>([
     '전체',
     ...studentSearchMenu.teachers,
@@ -36,6 +40,8 @@ const StudentSearch = () => {
     studentSearchMenu.table_data
   );
 
+  const [studentList, setStudentList] = useState<any[]>([]);
+
   const tableColumns = [
     {
       title: '이름',
@@ -44,8 +50,8 @@ const StudentSearch = () => {
     },
     {
       title: '아이디',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'username',
+      key: 'username',
     },
     {
       title: '비밀번호',
@@ -57,24 +63,24 @@ const StudentSearch = () => {
       dataIndex: 'created_at',
       key: 'created_at',
     },
-    {
-      title: '클래스',
-      dataIndex: 'class_title',
-      key: 'class_title',
-      render: (tags: string[]) => (
-        <>
-          {tags.map((tag) => (
-            <Tag color='blue' key={tag}>
-              {tag}
-            </Tag>
-          ))}
-        </>
-      ),
-    },
+    // {
+    //   title: '클래스',
+    //   dataIndex: 'class_title',
+    //   key: 'class_title',
+    //   render: (tags: string[]) => (
+    //     <>
+    //       {tags.map((tag) => (
+    //         <Tag color='blue' key={tag}>
+    //           {tag}
+    //         </Tag>
+    //       ))}
+    //     </>
+    //   ),
+    // },
     {
       title: '학교',
-      dataIndex: 'school',
-      key: 'school',
+      dataIndex: 'school_name',
+      key: 'school_name',
     },
     {
       title: '학년',
@@ -85,7 +91,15 @@ const StudentSearch = () => {
       title: '수정',
       dataIndex: 'edit',
       key: 'edit',
-      render: () => <Button>수정</Button>,
+      render: (_: any, record: any) => (
+        <Button
+          onClick={() => {
+            navigate(`/student/edit/?id=${record.id}`);
+          }}
+        >
+          수정
+        </Button>
+      ),
     },
   ];
 
@@ -102,6 +116,22 @@ const StudentSearch = () => {
       name: record.name,
     }),
   };
+
+  useEffect(() => {
+    commonAxios({ url: 'students/', method: 'GET' }).then((res) => {
+      if (res.status === 200) {
+        setStudentList(
+          res.data.map((value: any) => ({
+            ...value,
+            key: value.id,
+            created_at: dayjs(value.created_at).format('YYYY-MM-DD'),
+          }))
+        );
+      } else {
+        message.error('서버 에러');
+      }
+    });
+  }, []);
 
   return (
     <Root>
@@ -141,7 +171,7 @@ const StudentSearch = () => {
           </MenuItemHeaderTypoWrapper>
           <MenuItemContentSelect placeholder='선택'>
             <MenuItemContentSelectOption value={1}>
-              원생
+              원생₩
             </MenuItemContentSelectOption>
             <MenuItemContentSelectOption value={2}>
               휴/퇴원
@@ -181,7 +211,7 @@ const StudentSearch = () => {
               type: 'checkbox',
               ...rowSelection,
             }}
-            dataSource={tableData}
+            dataSource={studentList}
           />
         </ContentContainer>
       </MenuContainer>

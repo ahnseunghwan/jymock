@@ -22,6 +22,7 @@ import ScorePrint from 'pages/Score/Print';
 import MenuWrapping from 'systems/MenuWrapping';
 import ProblemRegister from 'pages/Problem/Register';
 import ProblemSearch from 'pages/Problem/Search';
+import StudentEdit from 'pages/Student/Edit';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -61,6 +62,14 @@ root.render(
           element={
             <MenuWrapping>
               <StudentRegister />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/student/edit'
+          element={
+            <MenuWrapping>
+              <StudentEdit />
             </MenuWrapping>
           }
         />

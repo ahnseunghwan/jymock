@@ -21,7 +21,7 @@ import {
 
 const today = new Date();
 
-const StudentRegister = () => {
+const StudentEdit = () => {
   const [name, setName] = useState<string>('');
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -101,7 +101,7 @@ const StudentRegister = () => {
 
   return (
     <Root>
-      <TitleTypo level={2}> 원생 등록</TitleTypo>
+      <TitleTypo level={2}> 원생 정보 수정</TitleTypo>
       <ContentContainer>
         {errorMessage !== '' && (
           <Alert
@@ -244,4 +244,4 @@ const StudentRegister = () => {
   );
 };
 
-export default StudentRegister;
+export default StudentEdit;
