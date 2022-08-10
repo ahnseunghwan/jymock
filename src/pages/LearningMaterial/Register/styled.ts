@@ -1,4 +1,12 @@
-import { Button, DatePicker, Image, Input, Select, Typography } from 'antd';
+import {
+  Button,
+  DatePicker,
+  Image,
+  Input,
+  Select,
+  Typography,
+  Upload,
+} from 'antd';
 import styled from 'styled-components';
 
 const Root = styled.div`
@@ -81,6 +89,10 @@ const ContentInputColumnButtonContainer = styled.div`
   gap: 20px;
 `;
 
+const ContentUpload = styled(Upload)`
+  width: 600px;
+`;
+
 export {
   Root,
   TitleTypo,
@@ -96,4 +108,5 @@ export {
   ContentButtonTypo,
   ContentDatePicker,
   ContentInputColumnButtonContainer,
+  ContentUpload,
 };

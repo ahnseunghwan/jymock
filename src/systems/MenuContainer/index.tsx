@@ -41,7 +41,7 @@ const items = [
   ]),
   getItem('출결 관리', 'ATTENDENCE', <CalendarOutlined />, [
     getItem('출결 조회', '/attendence/search'),
-    getItem('출결 등록', '/attendence/register'),
+    // getItem('출결 등록', '/attendence/register'),
     getItem('출결 통계', '/attendence/graph'),
   ]),
   getItem('교재 관리', 'LEARNING_MATERIAL', <ReadOutlined />, [
@@ -52,12 +52,16 @@ const items = [
     getItem('문제 조회', '/toeic_exam/search'),
     getItem('문제 등록', '/toeic_exam/register'),
   ]),
+  getItem('문제 관리', 'PROBLEM', <ReadOutlined />, [
+    getItem('문제 조회', '/problem/search'),
+    getItem('문제 등록', '/problem/register'),
+  ]),
   getItem('시험 관리', 'EXAM', <InboxOutlined />, [
     getItem('문제 조회', '/exam/search'),
     getItem('문제 등록', '/exam/register'),
   ]),
   getItem('성적 관리', 'SCORE', <PieChartOutlined />, [
-    getItem('반별 성적표', '/score/report'),
+    getItem('반별 성적표', '/score/class'),
     getItem('학생별 성적', '/score/student'),
   ]),
   getItem('숙제 관리', 'ASSIGNMENT', <BookOutlined />, [

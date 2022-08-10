@@ -4,8 +4,6 @@ import {
   ContentActionButtonTypo,
   ContentActionContainer,
   ContentContainer,
-  ContentInput,
-  ContentRangePicker,
   ContentTable,
   MenuContainer,
   MenuItemContainer,
@@ -24,9 +22,8 @@ import {
 } from './styled';
 import studentSearchMenu from 'assets/json/student_search_menu.json';
 import { Button, Checkbox, Divider, Tag } from 'antd';
-import locale from 'antd/es/date-picker/locale/ko_KR';
 
-const AttendenceSearch = () => {
+const ScoreClass = () => {
   const [teacherList, setTeacherList] = useState<string[]>([
     '전체',
     ...studentSearchMenu.teachers,
@@ -36,41 +33,8 @@ const AttendenceSearch = () => {
     ...studentSearchMenu.classes,
   ]);
   const [tableData, setTableData] = useState<any[]>(
-    studentSearchMenu.attendence_table_data
+    studentSearchMenu.table_data
   );
-  const [editId, setEditId] = useState<string>();
-
-  const onEditComplete = () => {
-    setEditId(undefined);
-  };
-
-  const onChangeReason = (key: string) => (e: any) => {
-    setTableData((prev) =>
-      prev.map((value) =>
-        value.key === key ? { ...value, reason: e.target.value } : value
-      )
-    );
-  };
-
-  const onSelectAttendenceStatus = (key: string) => (value: any) => {
-    let newValue = '';
-
-    if (value === 1) {
-      newValue = '출석';
-    } else if (value === 2) {
-      newValue = '결석';
-    } else if (value === 3) {
-      newValue = '지각';
-    } else if (value === 4) {
-      newValue = '조퇴';
-    }
-
-    setTableData((prev) =>
-      prev.map((value) =>
-        value.key === key ? { ...value, attendence_status: newValue } : value
-      )
-    );
-  };
 
   const tableColumns = [
     {
@@ -84,9 +48,14 @@ const AttendenceSearch = () => {
       key: 'id',
     },
     {
-      title: '날짜',
-      dataIndex: 'date',
-      key: 'date',
+      title: '비밀번호',
+      dataIndex: 'password',
+      key: 'password',
+    },
+    {
+      title: '가입일',
+      dataIndex: 'created_at',
+      key: 'created_at',
     },
     {
       title: '클래스',
@@ -103,76 +72,20 @@ const AttendenceSearch = () => {
       ),
     },
     {
-      title: '출결상태',
-      dataIndex: 'attendence_status',
-      key: 'attendence_status',
-      render: (attendenceStatus: string, record: any) => {
-        if (record.key === editId) {
-          return (
-            <MenuItemContentSelect
-              placeholder='선택'
-              style={{ width: '80px' }}
-              onChange={onSelectAttendenceStatus(record.key)}
-            >
-              <MenuItemContentSelectOption value={1}>
-                출석
-              </MenuItemContentSelectOption>
-              <MenuItemContentSelectOption value={2}>
-                결석
-              </MenuItemContentSelectOption>
-              <MenuItemContentSelectOption value={3}>
-                지각
-              </MenuItemContentSelectOption>
-              <MenuItemContentSelectOption value={4}>
-                조퇴
-              </MenuItemContentSelectOption>
-            </MenuItemContentSelect>
-          );
-        }
-        return attendenceStatus;
-      },
+      title: '학교',
+      dataIndex: 'school',
+      key: 'school',
     },
     {
-      title: '등원시간',
-      dataIndex: 'startTime',
-      key: 'startTime',
-    },
-    {
-      title: '하원시간',
-      dataIndex: 'endTime',
-      key: 'endTime',
-    },
-    {
-      title: '사유',
-      dataIndex: 'reason',
-      key: 'reason',
-      render: (reason: string, record: any) => {
-        if (record.key === editId) {
-          return (
-            <ContentInput
-              onChange={onChangeReason(record.key)}
-              value={reason}
-              style={{ width: '100px' }}
-            />
-          );
-        }
-        return reason;
-      },
+      title: '학년',
+      dataIndex: 'grade',
+      key: 'grade',
     },
     {
       title: '수정',
       dataIndex: 'edit',
       key: 'edit',
-      render: (_: string, record: any) => {
-        if (record.key === editId) {
-          return (
-            <Button type='primary' onClick={onEditComplete}>
-              완료
-            </Button>
-          );
-        }
-        return <Button onClick={() => setEditId(record.key)}>수정</Button>;
-      },
+      render: () => <Button>수정</Button>,
     },
   ];
 
@@ -192,7 +105,7 @@ const AttendenceSearch = () => {
 
   return (
     <Root>
-      <TitleTypo level={2}>출결 조회</TitleTypo>
+      <TitleTypo level={2}>반별 성적표</TitleTypo>
       <MenuContainer>
         <MenuItemContainer>
           <MenuItemHeaderTypoWrapper width={40}>
@@ -223,30 +136,15 @@ const AttendenceSearch = () => {
           </MenuItemContentContainer>
         </MenuItemContainer>
         <MenuItemContainer>
-          <MenuItemHeaderTypoWrapper width={40}>
-            <MenuItemHeaderTypo>기간</MenuItemHeaderTypo>
-          </MenuItemHeaderTypoWrapper>
-          <Divider type='vertical' />
-          <MenuItemContentContainer>
-            <ContentRangePicker locale={locale} />
-          </MenuItemContentContainer>
-        </MenuItemContainer>
-        <MenuItemContainer>
           <MenuItemHeaderTypoWrapper width={70}>
-            <MenuItemHeaderTypo>출결 상태</MenuItemHeaderTypo>
+            <MenuItemHeaderTypo>회원 구분</MenuItemHeaderTypo>
           </MenuItemHeaderTypoWrapper>
           <MenuItemContentSelect placeholder='선택'>
             <MenuItemContentSelectOption value={1}>
-              출석
+              원생
             </MenuItemContentSelectOption>
             <MenuItemContentSelectOption value={2}>
-              결석
-            </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={3}>
-              지각
-            </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={4}>
-              조퇴
+              휴/퇴원
             </MenuItemContentSelectOption>
           </MenuItemContentSelect>
           <MenuItemHeaderTypoWrapper width={50} style={{ marginLeft: '25px' }}>
@@ -268,6 +166,9 @@ const AttendenceSearch = () => {
         <ContentContainer>
           <ContentActionContainer>
             <ContentActionButton>
+              <ContentActionButtonTypo>SMS발송</ContentActionButtonTypo>
+            </ContentActionButton>
+            <ContentActionButton>
               <ContentActionButtonTypo>프린트</ContentActionButtonTypo>
             </ContentActionButton>
             <ContentActionButton>
@@ -288,4 +189,4 @@ const AttendenceSearch = () => {
   );
 };
 
-export default AttendenceSearch;
+export default ScoreClass;

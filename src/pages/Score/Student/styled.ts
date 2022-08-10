@@ -2,7 +2,7 @@ import { Button, Input, Select, Table, Typography } from 'antd';
 import styled from 'styled-components';
 
 const Root = styled.div`
-  width: 1000px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 20px;
@@ -16,11 +16,11 @@ const TitleTypo = styled(Typography.Title)`
 `;
 
 const MenuContainer = styled.div`
-  width: 1000px;
+  width: 100%;
   display: flex;
-  gap: 25px;
+  flex-direction: column;
+  gap: 14px;
   margin-top: 20px;
-  margin-bottom: 14px;
 `;
 
 const MenuItemContainer = styled.div`
@@ -28,25 +28,34 @@ const MenuItemContainer = styled.div`
   align-items: center;
 `;
 
-const ContentInput = styled(Input)`
-  width: 200px;
+type MenuItemHeaderTypoWrapperProps = {
+  width: number;
+};
+
+const MenuItemHeaderTypoWrapper = styled.div<MenuItemHeaderTypoWrapperProps>`
+  width: ${(props) => props.width}px;
 `;
 
-const ContentTable = styled(Table)`
-  width: 100%;
-  margin-top: 10px;
+const MenuItemHeaderTypo = styled(Typography)`
+  &&& {
+  }
 `;
 
 const MenuItemContentContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 18px;
 `;
 
-const MenuItemContentSelectContainer = styled.div`
+const MenuItemContentTypoContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 10px;
+`;
+
+const MenuItemContentTypo = styled(Typography)`
+  &&& {
+  }
 `;
 
 const MenuItemContentSelect = styled(Select)`
@@ -63,27 +72,33 @@ const MenuItemContentButton = styled(Button)`
   width: 80px;
 `;
 
-const MenuItemTitleTypo = styled(Typography)``;
-
 const MenuItemContentButtonTypo = styled(Typography)`
   &&& {
     color: #fff;
   }
 `;
 
-const ContentInputColumnButtonContainer = styled.div`
+const ContentContainer = styled.div`
+  width: 1000px;
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 20px;
-  margin-top: 25px;
+  flex-direction: column;
 `;
 
-const ContentButton = styled(Button)``;
+const ContentActionContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+`;
 
-const ContentButtonTypo = styled(Typography)`
-  &&& {
-  }
+const ContentActionButton = styled(Button)``;
+
+const ContentActionButtonTypo = styled(Typography)``;
+
+const ContentTable = styled(Table)`
+  width: 100%;
+  margin-top: 10px;
 `;
 
 export {
@@ -91,17 +106,19 @@ export {
   TitleTypo,
   MenuContainer,
   MenuItemContainer,
-  ContentInput,
-  ContentTable,
+  MenuItemHeaderTypoWrapper,
+  MenuItemHeaderTypo,
   MenuItemContentContainer,
-  MenuItemContentSelectContainer,
+  MenuItemContentTypoContainer,
+  MenuItemContentTypo,
   MenuItemContentSelect,
   MenuItemContentSelectOption,
   MenuItemContentTextInput,
   MenuItemContentButton,
   MenuItemContentButtonTypo,
-  MenuItemTitleTypo,
-  ContentInputColumnButtonContainer,
-  ContentButton,
-  ContentButtonTypo,
+  ContentContainer,
+  ContentActionContainer,
+  ContentActionButton,
+  ContentActionButtonTypo,
+  ContentTable,
 };

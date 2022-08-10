@@ -2,7 +2,8 @@ import { Alert, Image } from 'antd';
 import { commonAxios } from 'api/common';
 import dayjs from 'dayjs';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   Root,
   TitleTypo,
@@ -22,7 +23,9 @@ import {
 
 const today = new Date();
 
-const StudentRegister = () => {
+const StudentEdit = () => {
+  const [key, setKey] = useState<string>();
+  const location = useLocation();
   const [name, setName] = useState<string>('');
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -31,7 +34,7 @@ const StudentRegister = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [schoolName, setSchoolName] = useState<string>('');
   const [grade, setGrade] = useState<string>('');
-  const [birth, setBirth] = useState<any>(today);
+  const [birth, setBirth] = useState<any>(moment(today));
   const [type, setType] = useState<string>('');
   const [parentName, setParentName] = useState<string>('');
   const [parentPhoneNumber, setParentPhoneNumber] = useState<string>('');
@@ -68,20 +71,23 @@ const StudentRegister = () => {
     formData.append('reason_for_application', reason);
     formData.append('student_phone_number', phoneNumber);
     formData.append('school_name', schoolName);
-    formData.append('grade', grade);
+    if (grade !== null) {
+      formData.append('grade', grade);
+    }
     formData.append('birth', dayjs(birth).format('YYYY-MM-DD'));
     formData.append('address', address);
     formData.append('student_type', type);
-    formData.append('profile_image', profileImg);
+    if (profileImg) {
+      formData.append('profile_image', profileImg);
+    }
 
     commonAxios({
-      url: 'students/',
-      method: 'POST',
+      url: `students/${key}`,
+      method: 'PATCH',
       data: formData,
     }).then((res) => {
-      console.log({ res });
       if (res.status >= 200 && res.status < 300) {
-        alert('원생 등록에 성공하였습니다.');
+        alert('원생 정보 수정에 성공하였습니다.');
         window.location.reload();
       } else {
         setErrorMessage('원생 등록에 실패하였습니다. (서버 문제)');
@@ -100,9 +106,38 @@ const StudentRegister = () => {
     });
   };
 
+  useEffect(() => {
+    const newKey = location.search.split('?id=')[1];
+    setKey(newKey);
+
+    commonAxios({
+      url: `students/${newKey}`,
+      method: 'GET',
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setName(res.data.name);
+        setPassword(res.data.password);
+        setId(res.data.username);
+        setParentName(res.data.parent_name);
+        setParentPhoneNumber(res.data.parent_phone_number);
+        setEnglishName(res.data.english_name);
+        setReason(res.data.reason_for_application);
+        setPhoneNumber(res.data.student_phone_number);
+        setSchoolName(res.data.school_name);
+        setGrade(res.data.grade);
+        setBirth(moment(res.data.birth));
+        setAddress(res.data.address);
+        setType(res.data.student_type);
+        setProfileSrc(res.data.profile_image);
+      } else {
+        alert('정보 불러오기를 실패했습니다.');
+      }
+    });
+  }, []);
+
   return (
     <Root>
-      <TitleTypo level={2}> 원생 등록</TitleTypo>
+      <TitleTypo level={2}> 원생 정보 수정</TitleTypo>
       <ContentContainer>
         {errorMessage !== '' && (
           <Alert
@@ -249,4 +284,4 @@ const StudentRegister = () => {
   );
 };
 
-export default StudentRegister;
+export default StudentEdit;

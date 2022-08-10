@@ -1,9 +1,12 @@
-import React from 'react';
-import MenuContainer from 'systems/MenuContainer';
+import React, { useEffect } from 'react';
 import { Root } from './styled';
 
 const Main = () => {
-  return <Root>메인</Root>;
+  useEffect(() => {
+    window.location.replace('/student/search');
+  }, []);
+
+  return <Root></Root>;
 };
 
 export default Main;
