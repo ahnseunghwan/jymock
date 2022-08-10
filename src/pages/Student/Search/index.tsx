@@ -171,7 +171,7 @@ const StudentSearch = () => {
           </MenuItemHeaderTypoWrapper>
           <MenuItemContentSelect placeholder='선택'>
             <MenuItemContentSelectOption value={1}>
-              원생₩
+              원생
             </MenuItemContentSelectOption>
             <MenuItemContentSelectOption value={2}>
               휴/퇴원

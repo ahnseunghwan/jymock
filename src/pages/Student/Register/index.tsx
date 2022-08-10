@@ -1,6 +1,7 @@
 import { Alert, Image } from 'antd';
 import { commonAxios } from 'api/common';
 import dayjs from 'dayjs';
+import moment from 'moment';
 import React, { useState } from 'react';
 import {
   Root,
@@ -176,7 +177,11 @@ const StudentRegister = () => {
               <ContentSelectOption value={5}>5학년</ContentSelectOption>
               <ContentSelectOption value={6}>6학년</ContentSelectOption>
             </ContentSelect>
-            <ContentDatePicker placeholder='생일을 입력하세요.' />
+            <ContentDatePicker
+              placeholder='생일을 입력하세요.'
+              value={moment(birth)}
+              onChange={(e) => setBirth(moment(e))}
+            />
             <ContentSelect
               placeholder='유형 선택'
               value={type}
