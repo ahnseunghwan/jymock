@@ -21,7 +21,7 @@ const LearningMaterialSearch = () => {
     <Root>
       <TitleTypo level={2}>교재 조회</TitleTypo>
       <ContentContainer>
-        {testData.learning_material_card_list.map((cardData, index) => (
+        {cardList?.map((cardData, index) => (
           <LearningMaterialCard
             {...cardData}
             key={`learning_material_${cardData.id}`}

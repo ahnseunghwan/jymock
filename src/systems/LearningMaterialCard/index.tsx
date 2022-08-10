@@ -7,7 +7,7 @@ type Props = {} & LearningMaterialType;
 
 const LearningMaterialCard: React.FC<Props> = ({
   audio_list,
-  created_at,
+  description,
   id,
   title,
   thumbnail,
@@ -20,7 +20,7 @@ const LearningMaterialCard: React.FC<Props> = ({
       cover={<img alt='example' src={thumbnail} />}
       actions={[<FilePdfOutlined key='setting' />, <EditOutlined key='edit' />]}
     >
-      <CardMeta title={title} description={created_at} />
+      <CardMeta title={title} description={description} />
     </Root>
   );
 };
