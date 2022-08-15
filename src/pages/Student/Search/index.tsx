@@ -28,10 +28,9 @@ import { useNavigate } from 'react-router-dom';
 
 const StudentSearch = () => {
   const navigate = useNavigate();
-  const [teacherList, setTeacherList] = useState<string[]>([
-    '전체',
-    ...studentSearchMenu.teachers,
-  ]);
+  const [teacherList, setTeacherList] = useState<
+    { id: string; name: string }[]
+  >([]);
   const [classList, setClassList] = useState<string[]>([
     '전체',
     ...studentSearchMenu.classes,
@@ -133,6 +132,15 @@ const StudentSearch = () => {
         alert('서버 에러');
       }
     });
+    commonAxios({ url: 'lecturers/', method: 'GET' }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setTeacherList(
+          res.data.map((value: any) => ({ ...value, isSelected: false }))
+        );
+      } else {
+        alert('서버 에러');
+      }
+    });
     commonAxios({ url: 'students/', method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
         setStudentList(
@@ -189,7 +197,7 @@ const StudentSearch = () => {
             {teacherList.map((teacher, index) => (
               <MenuItemContentTypoContainer key={`menu_teacher_${index}`}>
                 <Checkbox />
-                <MenuItemContentTypo>{teacher}</MenuItemContentTypo>
+                <MenuItemContentTypo>{teacher.name}</MenuItemContentTypo>
               </MenuItemContentTypoContainer>
             ))}
           </MenuItemContentContainer>
