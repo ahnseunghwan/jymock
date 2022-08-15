@@ -55,3 +55,13 @@ export const PageHandlerInput = styled(InputNumber)``;
 export const PageHandlerInputButton = styled(Button)``;
 
 export const PageHandlerInputButtonTypo = styled(Typography)``;
+
+export const AudioContainer = styled.div`
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 5px 20px;
+  box-sizing: border-box;
+`;

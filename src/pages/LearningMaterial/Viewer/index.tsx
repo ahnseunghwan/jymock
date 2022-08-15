@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 import {
+  AudioContainer,
   PageContainer,
   PageHandlerContainer,
   PageHandlerInput,
@@ -13,11 +14,12 @@ import {
   PageWrapper,
   Root,
 } from './styled';
-import sample6 from 'assets/pdf/sample6.pdf';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { commonAxios } from 'api/common';
+import AudioPlayer from 'components/AudioPlayer';
+import sample from 'assets/pdf/sample6.pdf';
 
 const LearningMaterialViewer = () => {
   const location = useLocation();
@@ -25,6 +27,9 @@ const LearningMaterialViewer = () => {
   const [page, setPage] = useState(1);
   const [toPage, setToPage] = useState<number>(1);
   const [pdfFileUrl, setPdfFileUrl] = useState<string>('');
+  const [audioList, setAudioList] = useState<
+    { file: string; id: number; material: string; name: string; page: number }[]
+  >([]);
 
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
@@ -59,22 +64,37 @@ const LearningMaterialViewer = () => {
     commonAxios({ url: `materials/${id}`, method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
         setPdfFileUrl(res.data.file);
+        setAudioList(res.data.attachments);
       } else {
         alert('오류');
       }
     });
   }, []);
 
+  const leftAudioList = audioList.filter((item) => item.page === page);
+  const rightAudioList = audioList.filter((item) => item.page === page + 1);
+
+  console.log({ leftAudioList, rightAudioList });
+
   return (
     <Root>
       {pdfFileUrl !== '' && (
         <Document
-          file={`https://cors-anywhere.herokuapp.com/${pdfFileUrl}`}
+          file={sample}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={console.error}
         >
           <PageContainer>
             <PageWrapper>
+              <AudioContainer>
+                {leftAudioList.map((audio) => (
+                  <AudioPlayer
+                    src={audio.file}
+                    name={audio.name}
+                    key={`audio_player_${audio.id}`}
+                  />
+                ))}
+              </AudioContainer>
               <Page pageNumber={page} />
               <PageNumTypoWrapper>
                 <PageNumTypo>
@@ -83,6 +103,15 @@ const LearningMaterialViewer = () => {
               </PageNumTypoWrapper>
             </PageWrapper>
             <PageWrapper>
+              <AudioContainer>
+                {rightAudioList.map((audio) => (
+                  <AudioPlayer
+                    src={audio.file}
+                    name={audio.name}
+                    key={`audio_player_${audio.id}`}
+                  />
+                ))}
+              </AudioContainer>
               <Page pageNumber={page + 1} />
               <PageNumTypoWrapper>
                 <PageNumTypo>
