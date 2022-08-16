@@ -28,14 +28,12 @@ import locale from 'antd/es/date-picker/locale/ko_KR';
 import { commonAxios } from 'api/common';
 
 const AttendenceSearch = () => {
-  const [teacherList, setTeacherList] = useState<string[]>([
-    '전체',
-    ...studentSearchMenu.teachers,
-  ]);
-  const [classList, setClassList] = useState<string[]>([
-    '전체',
-    ...studentSearchMenu.classes,
-  ]);
+  const [teacherList, setTeacherList] = useState<
+    { id: string; name: string }[]
+  >([]);
+  const [curriculums, setCurriculums] = useState<
+    { id: string; name: string; isSelected: boolean }[]
+  >([]);
   const [tableData, setTableData] = useState<any[]>([]);
   const [editId, setEditId] = useState<string>();
 
@@ -89,6 +87,24 @@ const AttendenceSearch = () => {
         }));
       } else {
         alert('출결 조회 실패');
+      }
+    });
+    commonAxios({ url: 'curriculums/', method: 'GET' }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setCurriculums(
+          res.data.map((value: any) => ({ ...value, isSelected: false }))
+        );
+      } else {
+        alert('서버 에러');
+      }
+    });
+    commonAxios({ url: 'lecturers/', method: 'GET' }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setTeacherList(
+          res.data.map((value: any) => ({ ...value, isSelected: false }))
+        );
+      } else {
+        alert('서버 에러');
       }
     });
   }, []);
@@ -224,7 +240,7 @@ const AttendenceSearch = () => {
             {teacherList.map((teacher, index) => (
               <MenuItemContentTypoContainer key={`menu_teacher_${index}`}>
                 <Checkbox />
-                <MenuItemContentTypo>{teacher}</MenuItemContentTypo>
+                <MenuItemContentTypo>{teacher.name}</MenuItemContentTypo>
               </MenuItemContentTypoContainer>
             ))}
           </MenuItemContentContainer>
@@ -235,10 +251,10 @@ const AttendenceSearch = () => {
           </MenuItemHeaderTypoWrapper>
           <Divider type='vertical' />
           <MenuItemContentContainer>
-            {classList.map((classTitle, index) => (
+            {curriculums.map((curriculum, index) => (
               <MenuItemContentTypoContainer key={`menu_class_${index}`}>
                 <Checkbox />
-                <MenuItemContentTypo>{classTitle}</MenuItemContentTypo>
+                <MenuItemContentTypo>{curriculum.name}</MenuItemContentTypo>
               </MenuItemContentTypoContainer>
             ))}
           </MenuItemContentContainer>
