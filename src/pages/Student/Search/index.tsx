@@ -45,6 +45,8 @@ const StudentSearch = () => {
       title: '이름',
       dataIndex: 'name',
       key: 'name',
+      sorter: (a: any, b: any) =>
+        a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
     },
     {
       title: '아이디',
@@ -60,6 +62,8 @@ const StudentSearch = () => {
       title: '가입일',
       dataIndex: 'created_at',
       key: 'created_at',
+      sorter: (a: any, b: any) =>
+        a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0,
     },
     // {
     //   title: '클래스',
@@ -84,6 +88,8 @@ const StudentSearch = () => {
       title: '학년',
       dataIndex: 'grade',
       key: 'grade',
+      sorter: (a: any, b: any) =>
+        a.grade < b.grade ? -1 : a.grade > b.grade ? 1 : 0,
     },
     {
       title: '수정',
