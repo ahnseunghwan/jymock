@@ -94,7 +94,7 @@ root.render(
           }
         />
         <Route
-          path='/attendence/search'
+          path='/attendance/search'
           element={
             <MenuWrapping>
               <AttendenceSearch />
@@ -102,7 +102,7 @@ root.render(
           }
         />
         <Route
-          path='/attendence/register'
+          path='/attendance/register'
           element={
             <MenuWrapping>
               <AttendenceRegister />
@@ -110,7 +110,7 @@ root.render(
           }
         />
         <Route
-          path='/attendence/graph'
+          path='/attendance/graph'
           element={
             <MenuWrapping>
               <AttendenceGraph />
