@@ -22,10 +22,12 @@ import {
   Root,
   TitleTypo,
 } from './styled';
-import studentSearchMenu from 'assets/json/student_search_menu.json';
 import { Button, Checkbox, Divider, Tag } from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
 import { commonAxios } from 'api/common';
+import moment from 'moment';
+
+const today = new Date();
 
 const AttendenceSearch = () => {
   const [teacherList, setTeacherList] = useState<
@@ -34,7 +36,15 @@ const AttendenceSearch = () => {
   const [curriculums, setCurriculums] = useState<
     { id: string; name: string; isSelected: boolean }[]
   >([]);
+  const [dateRange, setDateRange] = useState<[moment.Moment, moment.Moment]>([
+    moment(today),
+    moment(today),
+  ]);
   const [tableData, setTableData] = useState<any[]>([]);
+
+  const [searchName, setSearchName] = useState<string>('');
+  const [searchStatus, setSearchStatus] = useState<string>('all');
+
   const [studentList, setStudentList] = useState<any[]>([]);
   const [editId, setEditId] = useState<string>();
 
@@ -99,47 +109,52 @@ const AttendenceSearch = () => {
     },
     {
       title: '아이디',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'username',
+      key: 'username',
     },
     {
       title: '날짜',
-      dataIndex: 'date',
-      key: 'date',
-    },
-    {
-      title: '클래스',
-      dataIndex: 'class_title',
-      key: 'class_title',
+      dataIndex: 'attended_at',
+      key: 'attended_at',
     },
     {
       title: '출결상태',
-      dataIndex: 'attendence_status',
-      key: 'attendence_status',
+      dataIndex: 'attendance_type',
+      key: 'attendance_type',
       render: (attendenceStatus: string, record: any) => {
         if (record.key === editId) {
           return (
             <MenuItemContentSelect
               placeholder='선택'
               style={{ width: '80px' }}
+              value={attendenceStatus}
               onChange={onSelectAttendenceStatus(record.key)}
             >
-              <MenuItemContentSelectOption value={1}>
+              <MenuItemContentSelectOption value={'present'}>
                 출석
               </MenuItemContentSelectOption>
-              <MenuItemContentSelectOption value={2}>
+              <MenuItemContentSelectOption value={'absent'}>
                 결석
               </MenuItemContentSelectOption>
-              <MenuItemContentSelectOption value={3}>
+              <MenuItemContentSelectOption value={'late'}>
                 지각
               </MenuItemContentSelectOption>
-              <MenuItemContentSelectOption value={4}>
+              <MenuItemContentSelectOption value={'compassionate'}>
                 조퇴
               </MenuItemContentSelectOption>
             </MenuItemContentSelect>
           );
         }
-        return attendenceStatus;
+        if (attendenceStatus === 'present') {
+          return '출석';
+        }
+        if (attendenceStatus === 'absent') {
+          return '결석';
+        }
+        if (attendenceStatus === 'late') {
+          return '지각';
+        }
+        return '조퇴';
       },
     },
     {
@@ -241,20 +256,34 @@ const AttendenceSearch = () => {
       }
     });
 
+    console.log({ dateRange });
+
+    let newDateRange = ``;
+
+    if (dateRange) {
+      newDateRange = `${moment(dateRange[0]).format('YYYY-MM-DD')} ~ ${moment(
+        dateRange[1]
+      ).format('YYYY-MM-DD')}`;
+    }
+
     commonAxios({
       url: 'attendances/',
       method: 'GET',
       params: {
-        attended_at: '2022-07-30 ~ 2022-10-31',
-        attendance_type: 'all',
-        curriculums: 'all',
-        lecturers: 'all',
+        student: searchName,
+        attendance_type: searchStatus,
+        curriculums: curriculumsString,
+        lecturers: lecturersString,
+        attended_at: newDateRange,
       },
     }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
         // 데이터 추가 요람
         const newStudentList = res.data?.map((value: any) => ({
           name: value.attendee.student.name,
+          username: value.attendee.student.username,
+          attended_at: value.attended_at,
+          attendance_type: value.attendance_type,
           key: value.id,
         }));
         setStudentList(newStudentList);
@@ -308,14 +337,27 @@ const AttendenceSearch = () => {
           </MenuItemHeaderTypoWrapper>
           <Divider type='vertical' />
           <MenuItemContentContainer>
-            <ContentRangePicker locale={locale} />
+            <ContentRangePicker
+              onCalendarChange={(value: any) => {
+                setDateRange(value);
+              }}
+              value={dateRange}
+              locale={locale}
+            />
           </MenuItemContentContainer>
         </MenuItemContainer>
         <MenuItemContainer>
           <MenuItemHeaderTypoWrapper width={70}>
             <MenuItemHeaderTypo>출결 상태</MenuItemHeaderTypo>
           </MenuItemHeaderTypoWrapper>
-          <MenuItemContentSelect placeholder='선택'>
+          <MenuItemContentSelect
+            placeholder='선택'
+            value={searchStatus}
+            onChange={(value: any) => setSearchStatus(value)}
+          >
+            <MenuItemContentSelectOption value={'all'}>
+              전체
+            </MenuItemContentSelectOption>
             <MenuItemContentSelectOption value={'present'}>
               출석
             </MenuItemContentSelectOption>
@@ -332,15 +374,10 @@ const AttendenceSearch = () => {
           <MenuItemHeaderTypoWrapper width={50} style={{ marginLeft: '25px' }}>
             <MenuItemHeaderTypo>학생</MenuItemHeaderTypo>
           </MenuItemHeaderTypoWrapper>
-          <MenuItemContentSelect placeholder='선택'>
-            <MenuItemContentSelectOption value={1}>
-              이름
-            </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={2}>
-              아이디
-            </MenuItemContentSelectOption>
-          </MenuItemContentSelect>
-          <MenuItemContentTextInput style={{ marginLeft: '25px' }} />
+          <MenuItemContentTextInput
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+          />
           <MenuItemContentButton
             type='primary'
             style={{ marginLeft: '25px' }}
@@ -351,9 +388,6 @@ const AttendenceSearch = () => {
         </MenuItemContainer>
         <ContentContainer>
           <ContentActionContainer>
-            <ContentActionButton>
-              <ContentActionButtonTypo>프린트</ContentActionButtonTypo>
-            </ContentActionButton>
             <ContentActionButton>
               <ContentActionButtonTypo>엑셀 다운로드</ContentActionButtonTypo>
             </ContentActionButton>

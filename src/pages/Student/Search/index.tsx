@@ -31,13 +31,6 @@ const StudentSearch = () => {
   const [teacherList, setTeacherList] = useState<
     { id: string; name: string; isSelected: boolean }[]
   >([]);
-  const [classList, setClassList] = useState<string[]>([
-    '전체',
-    ...studentSearchMenu.classes,
-  ]);
-  const [tableData, setTableData] = useState<any[]>(
-    studentSearchMenu.table_data
-  );
   const [curriculums, setCurriculums] = useState<
     { id: string; name: string; isSelected: boolean }[]
   >([]);
@@ -303,9 +296,6 @@ const StudentSearch = () => {
           <ContentActionContainer>
             <ContentActionButton>
               <ContentActionButtonTypo>SMS발송</ContentActionButtonTypo>
-            </ContentActionButton>
-            <ContentActionButton>
-              <ContentActionButtonTypo>프린트</ContentActionButtonTypo>
             </ContentActionButton>
             <ContentActionButton>
               <ContentActionButtonTypo>엑셀 다운로드</ContentActionButtonTypo>
