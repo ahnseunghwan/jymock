@@ -49,7 +49,7 @@ const items = [
     // getItem('교재 등록', '/learning_material/register'),
   ]),
   getItem('토익 관리', 'TOEIC_EXAM', <ExclamationCircleOutlined />, [
-    getItem('문제 조회', '/toeic_exam/search'),
+    getItem('시험 조회', '/toeic_exam/search'),
     getItem('응시 기록', '/toeic_exam/history'),
     // getItem('문제 등록', '/toeic_exam/register'),
   ]),
