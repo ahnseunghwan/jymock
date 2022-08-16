@@ -429,15 +429,14 @@ const AttendenceGraph = () => {
     let absent = 0;
 
     attendances?.forEach((value) => {
-      if (value.attendance_type === 'present') {
-        present++;
-      }
       if (value.attendance_type === 'absent') {
         absent++;
+      } else {
+        present++;
       }
       data = {
         ...data,
-        [`day_${value.attended_at.split('-')[1]}`]: value.attendance_type,
+        [`day_${value.attended_at.split('-')[2]}`]: value.attendance_type,
       };
     });
 
