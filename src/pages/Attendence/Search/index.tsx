@@ -29,12 +29,13 @@ import { commonAxios } from 'api/common';
 
 const AttendenceSearch = () => {
   const [teacherList, setTeacherList] = useState<
-    { id: string; name: string }[]
+    { id: string; name: string; isSelected: boolean }[]
   >([]);
   const [curriculums, setCurriculums] = useState<
     { id: string; name: string; isSelected: boolean }[]
   >([]);
   const [tableData, setTableData] = useState<any[]>([]);
+  const [studentList, setStudentList] = useState<any[]>([]);
   const [editId, setEditId] = useState<string>();
 
   const onEditComplete = () => {
@@ -70,25 +71,6 @@ const AttendenceSearch = () => {
   };
 
   useEffect(() => {
-    commonAxios({
-      url: 'attendances/',
-      method: 'GET',
-      params: {
-        attended_at: '2022-07-30 ~ 2022-10-31',
-        attendance_type: 'all',
-        curriculums: 'all',
-        lecturers: 'all',
-      },
-    }).then((res) => {
-      if (res.status >= 200 && res.status < 300) {
-        res.data.map((value: any) => ({
-          ...value,
-          key: value.id,
-        }));
-      } else {
-        alert('출결 조회 실패');
-      }
-    });
     commonAxios({ url: 'curriculums/', method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
         setCurriculums(
@@ -129,15 +111,6 @@ const AttendenceSearch = () => {
       title: '클래스',
       dataIndex: 'class_title',
       key: 'class_title',
-      render: (tags: string[]) => (
-        <>
-          {tags.map((tag) => (
-            <Tag color='blue' key={tag}>
-              {tag}
-            </Tag>
-          ))}
-        </>
-      ),
     },
     {
       title: '출결상태',
@@ -227,6 +200,70 @@ const AttendenceSearch = () => {
     }),
   };
 
+  const onSelectCurriculum = (id: number) => () => {
+    setCurriculums((prev) =>
+      prev.map((value, index) =>
+        id === index ? { ...value, isSelected: !value.isSelected } : value
+      )
+    );
+  };
+
+  const onLecturersCurriculum = (id: number) => () => {
+    setTeacherList((prev) =>
+      prev.map((value, index) =>
+        id === index ? { ...value, isSelected: !value.isSelected } : value
+      )
+    );
+  };
+
+  const onClickSearch = () => {
+    let lecturersString = '';
+
+    teacherList.forEach((value, index) => {
+      if (value.isSelected) {
+        if (lecturersString === '') {
+          lecturersString += `${value.name}`;
+        } else {
+          lecturersString += `,${value.name}`;
+        }
+      }
+    });
+
+    let curriculumsString = '';
+
+    curriculums.forEach((value, index) => {
+      if (value.isSelected) {
+        if (curriculumsString === '') {
+          curriculumsString += `${value.name}`;
+        } else {
+          curriculumsString += `,${value.name}`;
+        }
+      }
+    });
+
+    commonAxios({
+      url: 'attendances/',
+      method: 'GET',
+      params: {
+        attended_at: '2022-07-30 ~ 2022-10-31',
+        attendance_type: 'all',
+        curriculums: 'all',
+        lecturers: 'all',
+      },
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        // 데이터 추가 요람
+        const newStudentList = res.data?.map((value: any) => ({
+          name: value.attendee.student.name,
+          key: value.id,
+        }));
+        setStudentList(newStudentList);
+      } else {
+        alert('출결 조회 실패');
+      }
+    });
+  };
+
   return (
     <Root>
       <TitleTypo level={2}>출결 조회</TitleTypo>
@@ -239,7 +276,10 @@ const AttendenceSearch = () => {
           <MenuItemContentContainer>
             {teacherList.map((teacher, index) => (
               <MenuItemContentTypoContainer key={`menu_teacher_${index}`}>
-                <Checkbox />
+                <Checkbox
+                  checked={teacher.isSelected}
+                  onClick={onLecturersCurriculum(index)}
+                />
                 <MenuItemContentTypo>{teacher.name}</MenuItemContentTypo>
               </MenuItemContentTypoContainer>
             ))}
@@ -253,7 +293,10 @@ const AttendenceSearch = () => {
           <MenuItemContentContainer>
             {curriculums.map((curriculum, index) => (
               <MenuItemContentTypoContainer key={`menu_class_${index}`}>
-                <Checkbox />
+                <Checkbox
+                  checked={curriculum.isSelected}
+                  onClick={onSelectCurriculum(index)}
+                />
                 <MenuItemContentTypo>{curriculum.name}</MenuItemContentTypo>
               </MenuItemContentTypoContainer>
             ))}
@@ -298,7 +341,11 @@ const AttendenceSearch = () => {
             </MenuItemContentSelectOption>
           </MenuItemContentSelect>
           <MenuItemContentTextInput style={{ marginLeft: '25px' }} />
-          <MenuItemContentButton type='primary' style={{ marginLeft: '25px' }}>
+          <MenuItemContentButton
+            type='primary'
+            style={{ marginLeft: '25px' }}
+            onClick={onClickSearch}
+          >
             <MenuItemContentButtonTypo>검색</MenuItemContentButtonTypo>
           </MenuItemContentButton>
         </MenuItemContainer>
@@ -317,7 +364,7 @@ const AttendenceSearch = () => {
               type: 'checkbox',
               ...rowSelection,
             }}
-            dataSource={tableData}
+            dataSource={studentList}
           />
         </ContentContainer>
       </MenuContainer>
