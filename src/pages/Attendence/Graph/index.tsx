@@ -139,8 +139,8 @@ const AttendenceGraph = () => {
         },
         {
           title: '클래스',
-          dataIndex: 'attended_at',
-          key: 'attended_at',
+          dataIndex: 'curriculum',
+          key: 'curriculum',
           fixed: 'left',
           width: 75,
         },
@@ -489,6 +489,7 @@ const AttendenceGraph = () => {
         const newStudentList = res.data?.map((value: any) => ({
           name: value.student.name,
           parent_phone_number: value.student.parent_phone_number,
+          curriculum: value.curriculum,
           ...convertAttendances(value.attendances),
         }));
         setStudentList(newStudentList);

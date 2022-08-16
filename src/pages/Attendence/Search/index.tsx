@@ -44,20 +44,33 @@ const AttendenceSearch = () => {
 
   const [searchName, setSearchName] = useState<string>('');
   const [searchStatus, setSearchStatus] = useState<string>('all');
-
   const [studentList, setStudentList] = useState<any[]>([]);
   const [editId, setEditId] = useState<string>();
+  const [reasonText, setReasonText] = useState<string>();
+  const [attendanceType, setAttendanceType] = useState<string>();
 
   const onEditComplete = () => {
+    commonAxios({
+      url: `attendances/${editId}/update`,
+      method: 'PATCH',
+      data: {
+        reason: reasonText,
+        attendance_type: attendanceType,
+      },
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        onClickSearch();
+      } else {
+        alert('서버 에러');
+      }
+    });
     setEditId(undefined);
+    setAttendanceType(undefined);
+    setReasonText(undefined);
   };
 
   const onChangeReason = (key: string) => (e: any) => {
-    setTableData((prev) =>
-      prev.map((value) =>
-        value.key === key ? { ...value, reason: e.target.value } : value
-      )
-    );
+    setReasonText(e.target.value);
   };
 
   const onSelectAttendenceStatus = (key: string) => (value: any) => {
@@ -73,11 +86,7 @@ const AttendenceSearch = () => {
       newValue = '조퇴';
     }
 
-    setTableData((prev) =>
-      prev.map((value) =>
-        value.key === key ? { ...value, attendence_status: newValue } : value
-      )
-    );
+    setAttendanceType(value);
   };
 
   useEffect(() => {
@@ -127,7 +136,7 @@ const AttendenceSearch = () => {
             <MenuItemContentSelect
               placeholder='선택'
               style={{ width: '80px' }}
-              value={attendenceStatus}
+              value={attendanceType}
               onChange={onSelectAttendenceStatus(record.key)}
             >
               <MenuItemContentSelectOption value={'present'}>
@@ -159,13 +168,13 @@ const AttendenceSearch = () => {
     },
     {
       title: '등원시간',
-      dataIndex: 'startTime',
-      key: 'startTime',
+      dataIndex: 'arrived_at',
+      key: 'arrived_at',
     },
     {
       title: '하원시간',
-      dataIndex: 'endTime',
-      key: 'endTime',
+      dataIndex: 'left_at',
+      key: 'left_at',
     },
     {
       title: '사유',
@@ -176,7 +185,7 @@ const AttendenceSearch = () => {
           return (
             <ContentInput
               onChange={onChangeReason(record.key)}
-              value={reason}
+              value={reasonText}
               style={{ width: '100px' }}
             />
           );
@@ -284,6 +293,9 @@ const AttendenceSearch = () => {
           username: value.attendee.student.username,
           attended_at: value.attended_at,
           attendance_type: value.attendance_type,
+          arrived_at: value.arrived_at,
+          left_at: value.left_at,
+          reason: value.reason,
           key: value.id,
         }));
         setStudentList(newStudentList);
