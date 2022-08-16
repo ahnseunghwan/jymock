@@ -29,7 +29,7 @@ import { useNavigate } from 'react-router-dom';
 const StudentSearch = () => {
   const navigate = useNavigate();
   const [teacherList, setTeacherList] = useState<
-    { id: string; name: string }[]
+    { id: string; name: string; isSelected: boolean }[]
   >([]);
   const [classList, setClassList] = useState<string[]>([
     '전체',
@@ -164,11 +164,48 @@ const StudentSearch = () => {
     );
   };
 
+  const onLecturersCurriculum = (id: number) => () => {
+    setTeacherList((prev) =>
+      prev.map((value, index) =>
+        id === index ? { ...value, isSelected: !value.isSelected } : value
+      )
+    );
+  };
+
   const onClickSearch = () => {
+    let lecturersString = '';
+
+    teacherList.forEach((value, index) => {
+      if (value.isSelected) {
+        if (lecturersString === '') {
+          lecturersString += `${value.name}`;
+        } else {
+          lecturersString += `,${value.name}`;
+        }
+      }
+    });
+
+    let curriculumsString = '';
+
+    curriculums.forEach((value, index) => {
+      if (value.isSelected) {
+        if (curriculumsString === '') {
+          curriculumsString += `${value.name}`;
+        } else {
+          curriculumsString += `,${value.name}`;
+        }
+      }
+    });
+
     commonAxios({
       url: 'students/',
       method: 'GET',
-      params: { name: searchName, status: searchStatus },
+      params: {
+        name: searchName,
+        status: searchStatus,
+        curriculums: curriculumsString,
+        lecturers: lecturersString,
+      },
     }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
         setStudentList(
@@ -196,7 +233,10 @@ const StudentSearch = () => {
           <MenuItemContentContainer>
             {teacherList.map((teacher, index) => (
               <MenuItemContentTypoContainer key={`menu_teacher_${index}`}>
-                <Checkbox />
+                <Checkbox
+                  checked={teacher.isSelected}
+                  onClick={onLecturersCurriculum(index)}
+                />
                 <MenuItemContentTypo>{teacher.name}</MenuItemContentTypo>
               </MenuItemContentTypoContainer>
             ))}
