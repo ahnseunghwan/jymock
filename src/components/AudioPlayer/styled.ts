@@ -5,4 +5,5 @@ export const Root = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
 `;
