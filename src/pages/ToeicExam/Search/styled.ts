@@ -20,6 +20,7 @@ const ContentContainer = styled.div`
   width: 1000px;
   background: #fff;
   display: flex;
+  flex-direction: column;
   gap: 25px;
   flex-wrap: wrap;
   border-radius: 16px;
