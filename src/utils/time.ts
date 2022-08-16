@@ -1,6 +1,13 @@
 export const convertSecondToToeicTime = (value: number) => {
+  const hour = (() => {
+    const newValue = Math.floor(Math.floor(value / 60) / 60);
+    if (newValue < 10) {
+      return `0${newValue}`;
+    }
+    return newValue;
+  })();
   const minute = (() => {
-    const newValue = Math.floor(value / 60);
+    const newValue = Math.floor(value / 60) % 60;
     if (newValue < 10) {
       return `0${newValue}`;
     }
@@ -13,7 +20,7 @@ export const convertSecondToToeicTime = (value: number) => {
     }
     return newValue;
   })();
-  return `${minute}:${second}`;
+  return `${hour}:${minute}:${second}`;
 };
 
 export const monthToDateRange = (value: string) => {
