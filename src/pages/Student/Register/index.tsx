@@ -62,16 +62,36 @@ const StudentRegister = () => {
     formData.append('password', password);
     formData.append('username', id);
     formData.append('name', name);
-    formData.append('parent_name', parentName);
-    formData.append('parent_phone_number', parentPhoneNumber);
-    formData.append('english_name', englishName);
-    formData.append('reason_for_application', reason);
-    formData.append('student_phone_number', phoneNumber);
-    formData.append('school_name', schoolName);
-    formData.append('grade', grade);
-    formData.append('birth', dayjs(birth).format('YYYY-MM-DD'));
-    formData.append('address', address);
-    formData.append('student_type', type);
+    if (parentName !== '') {
+      formData.append('parent_name', parentName);
+    }
+    if (parentPhoneNumber !== '') {
+      formData.append('parent_phone_number', parentPhoneNumber);
+    }
+    if (englishName !== '') {
+      formData.append('english_name', englishName);
+    }
+    if (reason !== '') {
+      formData.append('reason_for_application', reason);
+    }
+    if (phoneNumber !== '') {
+      formData.append('student_phone_number', phoneNumber);
+    }
+    if (schoolName !== '') {
+      formData.append('school_name', schoolName);
+    }
+    if (grade !== '') {
+      formData.append('grade', grade);
+    }
+    if (birth !== '') {
+      formData.append('birth', dayjs(birth).format('YYYY-MM-DD'));
+    }
+    if (address !== '') {
+      formData.append('address', address);
+    }
+    if (type !== '') {
+      formData.append('student_type', type);
+    }
     if (profileImg) {
       formData.append('profile_image', profileImg);
     }
