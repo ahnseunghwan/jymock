@@ -21,6 +21,7 @@ export const UserInfoTypoWrapper = styled.div`
   padding: 5px 30px;
   border: 1px #3669c4 solid;
   border-radius: 30px;
+  cursor: pointer;
 `;
 
 export const UserInfoTypo = styled(Typography)`
