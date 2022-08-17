@@ -25,6 +25,8 @@ import AudioPlayer from 'components/AudioPlayer';
 import useTimer from 'hooks/useTimer';
 import { convertSecondToToeicTime } from 'utils/time';
 import useWindowDimensions from 'hooks/useWindowSize';
+import useLoginCheck from 'hooks/useLoginCheck';
+import LoginModal from 'systems/LoginModal';
 
 type AnswerType = 'A' | 'B' | 'C' | 'D' | 'NONE';
 
@@ -36,6 +38,7 @@ const ToeicExamViewer = () => {
   const { isPoint, now, onPause, onStart, timerStatus } = useTimer({
     duration: 7200,
   });
+  const { isLogin } = useLoginCheck();
   const [cardList, setCardList] = useState<any[]>([]);
   const [numPages, setNumPages] = useState<number>(1);
   const [pdfFileUrl, setPdfFileUrl] = useState<string>('');
@@ -43,25 +46,11 @@ const ToeicExamViewer = () => {
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
   }
-  const [menuOpen, setMenuOpen] = useState(false);
   const { height, width } = useWindowDimensions();
+  const [open, setOpen] = useState<boolean>(true);
 
-  const [open, setOpen] = useState<boolean>(false);
-
-  const handleMenuOpen = (type: 'OPEN' | 'CLOSE' | 'TOGGLE') => {
-    if (type === 'OPEN') {
-      setMenuOpen(true);
-      return;
-    }
-    if (type === 'CLOSE') {
-      setMenuOpen(false);
-      return;
-    }
-    setMenuOpen((prev) => !prev);
-  };
-
+  const id = location.search.split('?id=')[1];
   useEffect(() => {
-    const id = location.search.split('?id=')[1];
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     commonAxios({ url: `toeic-exams/${id}`, method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
@@ -91,6 +80,26 @@ const ToeicExamViewer = () => {
     }
     setOpen((prev) => !prev);
     return;
+  };
+
+  if (!isLogin) {
+    return <LoginModal />;
+  }
+
+  const onClickSubmit = () => {
+    const userId = localStorage.getItem('user_id');
+    const newAnswer = answer.map((value, index) => ({
+      answer: value === 'NONE' ? '' : value,
+      ordering: `${index + 1}`,
+    }));
+    console.log({ newAnswer });
+    commonAxios({
+      url: `toeic-exams/${id}/submit`,
+      method: 'POST',
+      data: { student: userId, submitted_answer: newAnswer },
+    }).then((res) => {
+      console.log(res);
+    });
   };
 
   return (
@@ -164,7 +173,7 @@ const ToeicExamViewer = () => {
                 ))}
               </AnswerRoot>
               <SubmitButtonContainer>
-                <SubmitButton>
+                <SubmitButton onClick={onClickSubmit}>
                   <SubmitButtonTypo>제출하기</SubmitButtonTypo>
                 </SubmitButton>
               </SubmitButtonContainer>
