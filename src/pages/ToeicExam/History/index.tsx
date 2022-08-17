@@ -37,9 +37,9 @@ const ToeicExamHistory = () => {
               });
 
               return {
-                name: value.student,
+                name: value.student.name,
                 score: value.score,
-                exam_id: value.toeic_exam,
+                exam_id: value.toeic_exam.material_name,
                 date: moment(value.created_at).format('YYYY-MM-DD'),
                 ...answerList,
               };
@@ -87,7 +87,7 @@ const ToeicExamHistory = () => {
             a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
         },
         {
-          title: '시험 번호',
+          title: '시험 이름',
           dataIndex: 'exam_id',
           key: 'exam_id',
           fixed: 'left',
