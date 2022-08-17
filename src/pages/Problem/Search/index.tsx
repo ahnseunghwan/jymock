@@ -49,7 +49,9 @@ const ProblemSearch = () => {
       key: 'edit',
       render: (a: any, b: any) => {
         return (
-          <ContentButton onClick={() => window.open(`/problem/edit/${b.id}`)}>
+          <ContentButton
+            onClick={() => window.open(`/problem/edit/?id=${b.id}`)}
+          >
             <ContentButtonTypo>수정</ContentButtonTypo>
           </ContentButton>
         );

@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import { commonAxios } from 'api/common';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   ContentButton,
   ContentButtonTypo,
@@ -20,7 +21,9 @@ type SubproblemType = {
   metadata: any;
 };
 
-const ProblemRegister = () => {
+const ProblemEdit = () => {
+  const location = useLocation();
+  const problemId = location.search.split('?id=')[1];
   const order1Default = { order: '1', description: '' };
   const order2Default = { order: '2', description: '' };
   const order3Default = { order: '3', description: '' };
@@ -151,6 +154,23 @@ const ProblemRegister = () => {
     });
   };
 
+  useEffect(() => {
+    commonAxios({
+      url: `problems/${problemId}`,
+      method: 'GET',
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        const data = res.data;
+        setName(data.name);
+        setTitle(data.title);
+        setDescription(data.description);
+        setSubproblems(data.subproblems);
+      } else {
+        alert('서버 오류');
+      }
+    });
+  }, []);
+
   return (
     <Root>
       <TitleTypo level={2}>문제 등록</TitleTypo>
@@ -219,6 +239,7 @@ const ProblemRegister = () => {
               <ContentSelect
                 placeholder='정답 선택'
                 onChange={onChangeSubproblemAnswer(index)}
+                value={subproblem.metadata.answer}
               >
                 {[...Array(4)].map((value, index) => (
                   <ContentSelectOption
@@ -264,4 +285,4 @@ const ProblemRegister = () => {
   );
 };
 
-export default ProblemRegister;
+export default ProblemEdit;

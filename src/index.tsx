@@ -29,6 +29,7 @@ import ToeicExamViewer from 'pages/ToeicExam/Viewer';
 import ToeicExamSearch from 'pages/ToeicExam/Search';
 import ConsultRegister from 'pages/Consult/Register';
 import ConsultSearch from 'pages/Consult/Search';
+import ProblemEdit from 'pages/Problem/Edit';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -181,6 +182,14 @@ root.render(
           element={
             <MenuWrapping>
               <ProblemSearch />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/problem/edit'
+          element={
+            <MenuWrapping>
+              <ProblemEdit />
             </MenuWrapping>
           }
         />
