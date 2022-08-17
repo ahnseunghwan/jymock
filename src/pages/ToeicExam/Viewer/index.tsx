@@ -117,6 +117,15 @@ const ToeicExamViewer = () => {
     });
   };
 
+  const onClickLogout = () => {
+    let result = window.confirm('정말로 로그아웃 하시겠습니까?');
+    if (result) {
+      localStorage.removeItem('user_id');
+      localStorage.removeItem(`toeic_exam_${id}`);
+      window.location.reload();
+    }
+  };
+
   return (
     <Root>
       {pdfFileUrl !== '' && (
@@ -138,6 +147,9 @@ const ToeicExamViewer = () => {
             <MenuContainer>
               <MenuButton onClick={handleOpen('CLOSE')}>
                 <MenuButtonTypo>메뉴 접기</MenuButtonTypo>
+              </MenuButton>
+              <MenuButton onClick={onClickLogout} style={{ marginTop: '5px' }}>
+                <MenuButtonTypo>로그아웃</MenuButtonTypo>
               </MenuButton>
               <MenuTimerContainer>
                 <MenuTimerTypo isPoint={isPoint}>
