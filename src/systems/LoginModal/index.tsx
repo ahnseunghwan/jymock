@@ -21,8 +21,12 @@ const LoginModal = () => {
       data: { username, password },
     })
       .then((res) => {
-        localStorage.setItem('user_id', res.data.user.id);
-        window.location.reload();
+        if (res.data.user_type === 'student') {
+          localStorage.setItem('user_id', res.data.user.id);
+          window.location.reload();
+        } else {
+          message.error('선생님 계정입니다. 학생 계정으로 로그인해주세요.');
+        }
       })
       .catch(() => {
         message.error('등록되지 않은 유저입니다.');

@@ -17,8 +17,12 @@ const useAdminLogin = () => {
         data: { username, password },
       })
         .then((res) => {
-          localStorage.setItem('access_token', res.data.user.id);
-          window.location.reload();
+          if (res.data.user_type === 'student') {
+            message.error('학생 계정입니다. 선생님 계정으로 로그인해주세요.');
+          } else {
+            localStorage.setItem('access_token', res.data.user.id);
+            window.location.reload();
+          }
         })
         .catch(() => {
           message.error('등록되지 않은 유저입니다.');

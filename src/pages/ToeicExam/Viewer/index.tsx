@@ -27,6 +27,7 @@ import { convertSecondToToeicTime } from 'utils/time';
 import useWindowDimensions from 'hooks/useWindowSize';
 import useLoginCheck from 'hooks/useLoginCheck';
 import LoginModal from 'systems/LoginModal';
+import { onClickLogout } from 'utils/default';
 
 type AnswerType = 'A' | 'B' | 'C' | 'D' | 'NONE';
 
@@ -103,7 +104,7 @@ const ToeicExamViewer = () => {
   }
 
   const onClickSubmit = () => {
-    const userId = localStorage.getItem('user_id');
+    const userId = localStorage.getItem('user_id') as any;
     const newAnswer = answer.map((value, index) => ({
       answer: value === 'NONE' ? '' : value,
       ordering: `${index + 1}`,
@@ -111,19 +112,12 @@ const ToeicExamViewer = () => {
     commonAxios({
       url: `toeic-exams/${id}/submit`,
       method: 'POST',
-      data: { student: userId, submitted_answer: newAnswer },
+      data: { student: +userId, submitted_answer: newAnswer },
     }).then((res) => {
-      console.log(res);
-    });
-  };
-
-  const onClickLogout = () => {
-    let result = window.confirm('정말로 로그아웃 하시겠습니까?');
-    if (result) {
-      localStorage.removeItem('user_id');
+      alert(`시험 결과 : ${res.data.score}점`);
       localStorage.removeItem(`toeic_exam_${id}`);
-      window.location.reload();
-    }
+      // window.location.reload();
+    });
   };
 
   return (
