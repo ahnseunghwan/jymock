@@ -107,7 +107,7 @@ const ToeicExamViewer = () => {
     const userId = localStorage.getItem('user_id') as any;
     const newAnswer = answer.map((value, index) => ({
       answer: value === 'NONE' ? '' : value,
-      ordering: `${index + 1}`,
+      ordering: index + 1,
     }));
     commonAxios({
       url: `toeic-exams/${id}/submit`,
