@@ -61,12 +61,28 @@ const ToeicExamViewer = () => {
       }
     });
     onStart();
+    const legacyAnswer = localStorage.getItem(`toeic_exam_${id}`);
+    if (!!legacyAnswer) {
+      let result = window.confirm(
+        '기존에 시험을 본 이력이 있습니다. 정보를 가져오시겠습니까? 시험 시간은 불러오지 못합니다.'
+      );
+      if (result) {
+        setAnswer(JSON.parse(legacyAnswer));
+      } else {
+        localStorage.removeItem(`toeic_exam_${id}`);
+      }
+    }
   }, []);
 
-  const onClickAnswer = (id: number, answer: AnswerType) => () => {
-    setAnswer((prev) =>
-      prev.map((value, index) => (id === index ? answer : value))
-    );
+  const onClickAnswer = (index2: number, answer: AnswerType) => () => {
+    setAnswer((prev) => {
+      const newAnswer = prev.map((value, index) =>
+        index2 === index ? answer : value
+      );
+      localStorage.removeItem(`toeic_exam_${id}`);
+      localStorage.setItem(`toeic_exam_${id}`, JSON.stringify(newAnswer));
+      return newAnswer;
+    });
   };
 
   const handleOpen = (value: 'OPEN' | 'CLOSE' | 'TOGGLE') => () => {
@@ -92,7 +108,6 @@ const ToeicExamViewer = () => {
       answer: value === 'NONE' ? '' : value,
       ordering: `${index + 1}`,
     }));
-    console.log({ newAnswer });
     commonAxios({
       url: `toeic-exams/${id}/submit`,
       method: 'POST',
