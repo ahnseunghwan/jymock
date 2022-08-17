@@ -30,6 +30,9 @@ import ToeicExamSearch from 'pages/ToeicExam/Search';
 import ConsultRegister from 'pages/Consult/Register';
 import ConsultSearch from 'pages/Consult/Search';
 import ProblemEdit from 'pages/Problem/Edit';
+import ExamSearch from 'pages/Exam/Search';
+import ExamRegister from 'pages/Exam/Register';
+import ExamViewer from 'pages/Exam/Viewer';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -209,12 +212,29 @@ root.render(
             </MenuWrapping>
           }
         />
+        <Route
+          path='/exam/search'
+          element={
+            <MenuWrapping>
+              <ExamSearch />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/exam/register'
+          element={
+            <MenuWrapping>
+              <ExamRegister />
+            </MenuWrapping>
+          }
+        />
 
         <Route path='/score/print' element={<ScorePrint />} />
         <Route
           path='/learning_material/viewer'
           element={<LearningMaterialViewer />}
         />
+        <Route path='/exam/viewer' element={<ExamViewer />} />
       </Routes>
     </BrowserRouter>
   </Provider>
