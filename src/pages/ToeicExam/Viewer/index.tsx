@@ -116,7 +116,7 @@ const ToeicExamViewer = () => {
     }).then((res) => {
       alert(`시험 결과 : ${res.data.score}점`);
       localStorage.removeItem(`toeic_exam_${id}`);
-      // window.location.reload();
+      window.location.reload();
     });
   };
 
