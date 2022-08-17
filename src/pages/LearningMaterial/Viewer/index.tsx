@@ -39,6 +39,7 @@ const LearningMaterialViewer = () => {
     if (type === 'NEXT') {
       if (page + 2 <= numPages) {
         setPage((prev) => prev + 2);
+        return;
       }
       return;
     }
@@ -48,6 +49,7 @@ const LearningMaterialViewer = () => {
         return;
       }
       setPage((prev) => prev - 2);
+      return;
     }
     if (toPage && toPage > 0) {
       if (toPage % 2 === 1) {
@@ -55,6 +57,7 @@ const LearningMaterialViewer = () => {
         return;
       }
       setPage(toPage - 1);
+      return;
     }
   };
 
