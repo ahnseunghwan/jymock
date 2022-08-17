@@ -19,8 +19,6 @@ import {
 const today = new Date();
 
 const ConsultRegister = () => {
-  const [name, setName] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [studentList, setStudentList] = useState<any[]>([]);
   const [lecturerList, setLecturerList] = useState<any[]>([]);
