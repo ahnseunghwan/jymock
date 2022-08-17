@@ -70,8 +70,8 @@ const items = [
     getItem('숙제 등록', '/assignment/register'),
   ]),
   getItem('상담 관리', 'CONSULT_LOG', <AlignCenterOutlined />, [
-    getItem('상담 조회', '/consult_log/search'),
-    getItem('상담 등록', '/consult_log/register'),
+    getItem('상담 조회', '/consult/search'),
+    getItem('상담 등록', '/consult/register'),
   ]),
 ];
 
