@@ -11,6 +11,7 @@ import {
   MenuButton,
   MenuButtonTypo,
   MenuContainer,
+  MenuOpenContainer,
   MenuTimerContainer,
   MenuTimerTypo,
   Root,
@@ -23,6 +24,7 @@ import sample from 'assets/pdf/sample6.pdf';
 import AudioPlayer from 'components/AudioPlayer';
 import useTimer from 'hooks/useTimer';
 import { convertSecondToToeicTime } from 'utils/time';
+import useWindowDimensions from 'hooks/useWindowSize';
 
 type AnswerType = 'A' | 'B' | 'C' | 'D' | 'NONE';
 
@@ -42,6 +44,9 @@ const ToeicExamViewer = () => {
     setNumPages(numPages);
   }
   const [menuOpen, setMenuOpen] = useState(false);
+  const { height, width } = useWindowDimensions();
+
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleMenuOpen = (type: 'OPEN' | 'CLOSE' | 'TOGGLE') => {
     if (type === 'OPEN') {
@@ -75,6 +80,19 @@ const ToeicExamViewer = () => {
     );
   };
 
+  const handleOpen = (value: 'OPEN' | 'CLOSE' | 'TOGGLE') => () => {
+    if (value === 'OPEN') {
+      setOpen(true);
+      return;
+    }
+    if (value === 'CLOSE') {
+      setOpen(false);
+      return;
+    }
+    setOpen((prev) => !prev);
+    return;
+  };
+
   return (
     <Root>
       {pdfFileUrl !== '' && (
@@ -85,64 +103,79 @@ const ToeicExamViewer = () => {
             onLoadError={console.error}
           >
             {[...Array(numPages)].map((value, index) => (
-              <Page pageNumber={index + 1} key={`page_${index}`} width={1000} />
+              <Page
+                pageNumber={index + 1}
+                key={`page_${index}`}
+                width={width > 1000 ? 1000 : width}
+              />
             ))}
           </Document>
-          <MenuContainer>
-            <MenuTimerContainer>
-              <MenuTimerTypo isPoint={isPoint}>
-                {convertSecondToToeicTime(now)}
-              </MenuTimerTypo>
-            </MenuTimerContainer>
-            <MenuAudioContainer>
-              <AudioPlayer src={audioFile} name='음성 파일' />
-            </MenuAudioContainer>
-            <AnswerRoot>
-              {answer.map((value, index) => (
-                <AnswerContainer key={`answer_${index}`}>
-                  <AnswerButtonTypo
-                    style={{
-                      width: '55px',
-                      display: 'flex',
-                      justifyContent: 'flex-end',
-                      marginRight: '10px',
-                    }}
-                  >
-                    {index + 1}.
-                  </AnswerButtonTypo>
-                  <AnswerButton
-                    isPoint={value === 'A'}
-                    onClick={onClickAnswer(index, 'A')}
-                  >
-                    <AnswerButtonTypo>A</AnswerButtonTypo>
-                  </AnswerButton>
-                  <AnswerButton
-                    isPoint={value === 'B'}
-                    onClick={onClickAnswer(index, 'B')}
-                  >
-                    <AnswerButtonTypo>B</AnswerButtonTypo>
-                  </AnswerButton>
-                  <AnswerButton
-                    isPoint={value === 'C'}
-                    onClick={onClickAnswer(index, 'C')}
-                  >
-                    <AnswerButtonTypo>C</AnswerButtonTypo>
-                  </AnswerButton>
-                  <AnswerButton
-                    isPoint={value === 'D'}
-                    onClick={onClickAnswer(index, 'D')}
-                  >
-                    <AnswerButtonTypo>D</AnswerButtonTypo>
-                  </AnswerButton>
-                </AnswerContainer>
-              ))}
-            </AnswerRoot>
-            <SubmitButtonContainer>
-              <SubmitButton>
-                <SubmitButtonTypo>제출하기</SubmitButtonTypo>
-              </SubmitButton>
-            </SubmitButtonContainer>
-          </MenuContainer>
+          {open ? (
+            <MenuContainer>
+              <MenuButton onClick={handleOpen('CLOSE')}>
+                <MenuButtonTypo>메뉴 접기</MenuButtonTypo>
+              </MenuButton>
+              <MenuTimerContainer>
+                <MenuTimerTypo isPoint={isPoint}>
+                  {convertSecondToToeicTime(now)}
+                </MenuTimerTypo>
+              </MenuTimerContainer>
+              <MenuAudioContainer>
+                <AudioPlayer src={audioFile} name='음성 파일' />
+              </MenuAudioContainer>
+              <AnswerRoot>
+                {answer.map((value, index) => (
+                  <AnswerContainer key={`answer_${index}`}>
+                    <AnswerButtonTypo
+                      style={{
+                        width: '55px',
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginRight: '10px',
+                      }}
+                    >
+                      {index + 1}.
+                    </AnswerButtonTypo>
+                    <AnswerButton
+                      isPoint={value === 'A'}
+                      onClick={onClickAnswer(index, 'A')}
+                    >
+                      <AnswerButtonTypo>A</AnswerButtonTypo>
+                    </AnswerButton>
+                    <AnswerButton
+                      isPoint={value === 'B'}
+                      onClick={onClickAnswer(index, 'B')}
+                    >
+                      <AnswerButtonTypo>B</AnswerButtonTypo>
+                    </AnswerButton>
+                    <AnswerButton
+                      isPoint={value === 'C'}
+                      onClick={onClickAnswer(index, 'C')}
+                    >
+                      <AnswerButtonTypo>C</AnswerButtonTypo>
+                    </AnswerButton>
+                    <AnswerButton
+                      isPoint={value === 'D'}
+                      onClick={onClickAnswer(index, 'D')}
+                    >
+                      <AnswerButtonTypo>D</AnswerButtonTypo>
+                    </AnswerButton>
+                  </AnswerContainer>
+                ))}
+              </AnswerRoot>
+              <SubmitButtonContainer>
+                <SubmitButton>
+                  <SubmitButtonTypo>제출하기</SubmitButtonTypo>
+                </SubmitButton>
+              </SubmitButtonContainer>
+            </MenuContainer>
+          ) : (
+            <MenuOpenContainer>
+              <MenuButton onClick={handleOpen('OPEN')}>
+                <MenuButtonTypo>메뉴 열기</MenuButtonTypo>
+              </MenuButton>
+            </MenuOpenContainer>
+          )}
         </>
       )}
     </Root>

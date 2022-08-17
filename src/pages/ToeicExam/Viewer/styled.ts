@@ -119,6 +119,12 @@ const SubmitButtonTypo = styled(Typography)`
   }
 `;
 
+const MenuOpenContainer = styled.div`
+  position: fixed;
+  top: 20px;
+  right: 20px;
+`;
+
 export {
   Root,
   TitleTypo,
@@ -135,4 +141,5 @@ export {
   SubmitButtonContainer,
   SubmitButton,
   SubmitButtonTypo,
+  MenuOpenContainer,
 };
