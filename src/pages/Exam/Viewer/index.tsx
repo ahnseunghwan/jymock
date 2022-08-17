@@ -29,6 +29,7 @@ import useWindowDimensions from 'hooks/useWindowSize';
 import useLoginCheck from 'hooks/useLoginCheck';
 import LoginModal from 'systems/LoginModal';
 import { onClickLogout } from 'utils/default';
+import Problem from 'systems/Problem';
 
 type AnswerType = 'A' | 'B' | 'C' | 'D' | 'NONE';
 
@@ -39,19 +40,15 @@ const ExamViewer = () => {
     duration: 7200,
   });
   const { isLogin } = useLoginCheck();
-  const [numPages, setNumPages] = useState<number>(1);
-  const [pdfFileUrl, setPdfFileUrl] = useState<string>('');
-  const [audioFile, setAudioFile] = useState<string>('');
-  function onDocumentLoadSuccess({ numPages }: any) {
-    setNumPages(numPages);
-  }
   const [open, setOpen] = useState<boolean>(true);
+  const [problemList, setProblemList] = useState<any[]>([]);
+  const { height, width } = useWindowDimensions();
 
   const id = location.search.split('?id=')[1];
   useEffect(() => {
     commonAxios({ url: `exams/${id}`, method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
-        console.log(res.data);
+        setProblemList(res.data.problems);
         if (res.data.problems) {
           setAnswer([...Array(res.data.problems.length)].fill('NONE'));
         }
@@ -121,7 +118,11 @@ const ExamViewer = () => {
   return (
     <Root>
       <>
-        <ContentContainer></ContentContainer>
+        <ContentContainer style={{ width: width > 1000 ? '1000px' : width }}>
+          {problemList.map((problemData, index: number) => (
+            <Problem {...problemData} no={index + 1} key={`problem_${index}`} />
+          ))}
+        </ContentContainer>
         {open ? (
           <MenuContainer>
             <MenuButton onClick={handleOpen('CLOSE')}>
@@ -155,25 +156,25 @@ const ExamViewer = () => {
                     isPoint={value === 'A'}
                     onClick={onClickAnswer(index, 'A')}
                   >
-                    <AnswerButtonTypo>A</AnswerButtonTypo>
+                    <AnswerButtonTypo>1</AnswerButtonTypo>
                   </AnswerButton>
                   <AnswerButton
                     isPoint={value === 'B'}
                     onClick={onClickAnswer(index, 'B')}
                   >
-                    <AnswerButtonTypo>B</AnswerButtonTypo>
+                    <AnswerButtonTypo>2</AnswerButtonTypo>
                   </AnswerButton>
                   <AnswerButton
                     isPoint={value === 'C'}
                     onClick={onClickAnswer(index, 'C')}
                   >
-                    <AnswerButtonTypo>C</AnswerButtonTypo>
+                    <AnswerButtonTypo>3</AnswerButtonTypo>
                   </AnswerButton>
                   <AnswerButton
                     isPoint={value === 'D'}
                     onClick={onClickAnswer(index, 'D')}
                   >
-                    <AnswerButtonTypo>D</AnswerButtonTypo>
+                    <AnswerButtonTypo>4</AnswerButtonTypo>
                   </AnswerButton>
                 </AnswerContainer>
               ))}

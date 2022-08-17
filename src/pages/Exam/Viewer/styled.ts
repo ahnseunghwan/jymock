@@ -4,8 +4,7 @@ import styled from 'styled-components';
 const Root = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   margin-top: 20px;
   margin-left: 20px;
   margin-bottom: 50px;
@@ -126,10 +125,9 @@ const MenuOpenContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  max-width: 1000px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 50px;
 `;
 
 export {
