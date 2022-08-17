@@ -35,7 +35,7 @@ const StudentEdit = () => {
   const [schoolName, setSchoolName] = useState<string>('');
   const [grade, setGrade] = useState<string>('');
   const [birth, setBirth] = useState<any>(moment(today));
-  const [type, setType] = useState<string>('');
+  const [type, setType] = useState<string>('elementary-school');
   const [parentName, setParentName] = useState<string>('');
   const [parentPhoneNumber, setParentPhoneNumber] = useState<string>('');
   const [address, setAddress] = useState<string>('');
@@ -125,9 +125,11 @@ const StudentEdit = () => {
         setPhoneNumber(res.data.student_phone_number);
         setSchoolName(res.data.school_name);
         setGrade(res.data.grade);
-        setBirth(moment(res.data.birth));
+        setBirth(res.data.birth ? res.data.birth : today);
         setAddress(res.data.address);
-        setType(res.data.student_type);
+        setType(
+          res.data.student_type ? res.data.student_type : 'elementary-school'
+        );
         setProfileSrc(res.data.profile_image);
       } else {
         alert('정보 불러오기를 실패했습니다.');
