@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { message, Typography } from 'antd';
 import { commonAxios } from 'api/common';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -261,22 +261,7 @@ const ProblemEdit = () => {
             </ContentInputColumnContainer>
           );
         })}
-        <input
-          type='file'
-          placeholder='음성 파일을 입력해주세요.'
-          accept='audio'
-          onChange={(e: any) => {
-            setAudioFile(e.target.files[0]);
-          }}
-        />
-        <input
-          type='file'
-          placeholder='pdf 파일을 입력해주세요.'
-          accept='application/pdf'
-          onChange={(e: any) => {
-            setAudioFile(e.target.files[0]);
-          }}
-        />
+        <Typography>음성 파일은 수정할 수 없습니다.</Typography>
         <ContentButton onClick={onSubmitProblem}>
           <ContentButtonTypo>문제 등록</ContentButtonTypo>
         </ContentButton>
