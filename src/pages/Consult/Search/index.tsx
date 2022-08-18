@@ -51,8 +51,6 @@ const ConsultSearch = () => {
       dataIndex: 'content',
       key: 'content',
       width: 680,
-      sorter: (a: any, b: any) =>
-        a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
     },
   ];
   return (
