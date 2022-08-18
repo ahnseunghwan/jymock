@@ -38,6 +38,7 @@ import AssignmentSearch from 'pages/Assignment/Search';
 import AssignmentRegister from 'pages/Assignment/Register';
 import AssignmentHistory from 'pages/Assignment/History';
 import AssignmentViewer from 'pages/Assignment/Viewer';
+import AttendenceViewer from 'pages/Attendence/Viewer';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -273,6 +274,7 @@ root.render(
         />
         <Route path='/exam/viewer' element={<ExamViewer />} />
         <Route path='/assignment/viewer' element={<AssignmentViewer />} />
+        <Route path='/attendance/viewer' element={<AttendenceViewer />} />
       </Routes>
     </BrowserRouter>
   </Provider>
