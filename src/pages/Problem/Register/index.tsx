@@ -135,7 +135,9 @@ const ProblemRegister = () => {
     formData.append('title', title);
     formData.append('description', description);
     formData.append('subproblems', JSON.stringify(newSubproblems));
-    formData.append('audio_file', audioFile);
+    if (audioFile) {
+      formData.append('audio_file', audioFile);
+    }
     // formData.append('pdf', pdfFile);
 
     commonAxios({
