@@ -171,6 +171,10 @@ const StudentSearch = () => {
     );
   };
 
+  const onClickPrintExcel = () => {
+    window.open('https://jy-academy.herokuapp.com/api/students/export');
+  };
+
   const onClickSearch = () => {
     let lecturersString = '';
 
@@ -303,7 +307,7 @@ const StudentSearch = () => {
             <ContentActionButton>
               <ContentActionButtonTypo>SMS발송</ContentActionButtonTypo>
             </ContentActionButton>
-            <ContentActionButton>
+            <ContentActionButton onClick={onClickPrintExcel}>
               <ContentActionButtonTypo>엑셀 다운로드</ContentActionButtonTypo>
             </ContentActionButton>
           </ContentActionContainer>
