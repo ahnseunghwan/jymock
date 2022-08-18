@@ -110,6 +110,22 @@ const ContentSelect = styled(Select)``;
 
 const ContentSelectOption = styled(Select.Option)``;
 
+const ChartContainer = styled.div`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+`;
+
+const ChartTitleTypo = styled(Typography)`
+  &&& {
+    font-size: 24px;
+  }
+`;
+
 export {
   Root,
   TitleTypo,
@@ -135,4 +151,6 @@ export {
   ContentSelect,
   ContentSelectOption,
   ContentDatePicker,
+  ChartContainer,
+  ChartTitleTypo,
 };

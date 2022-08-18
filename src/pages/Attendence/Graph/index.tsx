@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
+  ChartContainer,
+  ChartTitleTypo,
   ContentActionButton,
   ContentActionButtonTypo,
   ContentActionContainer,
@@ -23,13 +25,16 @@ import {
   Root,
   TitleTypo,
 } from './styled';
-import { Button, Checkbox, Divider, Tag } from 'antd';
+import { Button, Checkbox, Divider, Tag, Typography } from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
 import { commonAxios } from 'api/common';
 import moment from 'moment';
 import { monthToDateRange } from 'utils/time';
+import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 const today = new Date();
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const AttendenceGraph = () => {
   const [teacherList, setTeacherList] = useState<
@@ -46,39 +51,8 @@ const AttendenceGraph = () => {
 
   const [studentList, setStudentList] = useState<any[]>([]);
   const [editId, setEditId] = useState<string>();
-
-  const onEditComplete = () => {
-    setEditId(undefined);
-  };
-
-  const onChangeReason = (key: string) => (e: any) => {
-    setTableData((prev) =>
-      prev.map((value) =>
-        value.key === key ? { ...value, reason: e.target.value } : value
-      )
-    );
-  };
-
-  const onSelectAttendenceStatus = (key: string) => (value: any) => {
-    let newValue = '';
-
-    if (value === 'present') {
-      newValue = '출석';
-    } else if (value === 'absent') {
-      newValue = '결석';
-    } else if (value === 'late') {
-      newValue = '지각';
-    } else if (value === 'compassionate') {
-      newValue = '조퇴';
-    }
-
-    setTableData((prev) =>
-      prev.map((value) =>
-        value.key === key ? { ...value, attendence_status: newValue } : value
-      )
-    );
-  };
-
+  const [selectedStudent, setSelectedStudent] = useState<string>();
+  const [pieData, setPieData] = useState<any[]>([1, 2, 3, 4]);
   useEffect(() => {
     commonAxios({ url: 'curriculums/', method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
@@ -122,13 +96,26 @@ const AttendenceGraph = () => {
       key: 'info',
       children: [
         {
-          title: '이름',
+          title: '이름 (차트)',
           dataIndex: 'name',
           key: 'name',
           fixed: 'left',
-          width: 75,
+          width: 120,
           sorter: (a: any, b: any) =>
             a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
+          render: (a: any, b: any) => {
+            console.log({ b });
+            return (
+              <Button
+                onClick={() => {
+                  setSelectedStudent(b.name);
+                  setPieData(b.pieData);
+                }}
+              >
+                <Typography>{b.name}</Typography>
+              </Button>
+            );
+          },
         },
         {
           title: '학부모 연락처',
@@ -391,20 +378,6 @@ const AttendenceGraph = () => {
     },
   ];
 
-  const rowSelection = {
-    onChange: (selectedRowKeys: any, selectedRows: any) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      );
-    },
-    getCheckboxProps: (record: any) => ({
-      disabled: record.name === 'Disabled User',
-      name: record.name,
-    }),
-  };
-
   const onSelectCurriculum = (id: number) => () => {
     setCurriculums((prev) =>
       prev.map((value, index) =>
@@ -427,12 +400,19 @@ const AttendenceGraph = () => {
     let data = {};
     let present = 0;
     let absent = 0;
+    let pieData = [0, 0, 0, 0];
 
     attendances?.forEach((value) => {
       if (value.attendance_type === 'absent') {
         absent++;
-      } else {
+        pieData[1]++;
+      } else if (value.attendance_type === 'present') {
         present++;
+        pieData[0]++;
+      } else if (value.attendance_type === 'compassionate') {
+        pieData[2]++;
+      } else {
+        pieData[3]++;
       }
       data = {
         ...data,
@@ -440,7 +420,7 @@ const AttendenceGraph = () => {
       };
     });
 
-    return { ...data, present, absent };
+    return { ...data, present, absent, pieData };
   };
 
   const onClickSearch = () => {
@@ -471,7 +451,7 @@ const AttendenceGraph = () => {
     let newDateRange = ``;
 
     newDateRange = monthToDateRange(moment(dateRange).format('YYYY-MM'));
-
+    setSelectedStudent(undefined);
     commonAxios({
       url: 'attendees/',
       method: 'GET',
@@ -486,6 +466,7 @@ const AttendenceGraph = () => {
       if (res.status >= 200 && res.status < 300) {
         // 데이터 추가 요람
         const newStudentList = res.data?.map((value: any) => ({
+          id: value.student.id,
           name: value.student.name,
           parent_phone_number: value.student.parent_phone_number,
           curriculum: value.curriculum,
@@ -582,6 +563,35 @@ const AttendenceGraph = () => {
               x: '1000px',
             }}
           />
+          {selectedStudent && (
+            <ChartContainer>
+              <ChartTitleTypo>{selectedStudent} 님의 출결 통계</ChartTitleTypo>
+              <Pie
+                data={{
+                  labels: ['결석', '출석', '지각', '조퇴'],
+                  datasets: [
+                    {
+                      label: '출결 관리',
+                      data: pieData,
+                      backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                      ],
+                      borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                      ],
+                      borderWidth: 1,
+                    },
+                  ],
+                }}
+              />
+            </ChartContainer>
+          )}
         </ContentContainer>
       </MenuContainer>
     </Root>
