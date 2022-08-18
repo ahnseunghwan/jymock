@@ -19,7 +19,6 @@ import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { commonAxios } from 'api/common';
 import AudioPlayer from 'components/AudioPlayer';
-import sample from 'assets/pdf/sample6.pdf';
 
 const LearningMaterialViewer = () => {
   const location = useLocation();
@@ -77,13 +76,11 @@ const LearningMaterialViewer = () => {
   const leftAudioList = audioList.filter((item) => item.page === page);
   const rightAudioList = audioList.filter((item) => item.page === page + 1);
 
-  console.log({ leftAudioList, rightAudioList });
-
   return (
     <Root>
       {pdfFileUrl !== '' && (
         <Document
-          file={sample}
+          file={`https://corsanywhere-kojima.herokuapp.com/${pdfFileUrl}`}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={console.error}
         >

@@ -125,7 +125,7 @@ const ToeicExamViewer = () => {
       {pdfFileUrl !== '' && (
         <>
           <Document
-            file={sample}
+            file={`https://corsanywhere-kojima.herokuapp.com/${pdfFileUrl}`}
             onLoadSuccess={onDocumentLoadSuccess}
             onLoadError={console.error}
           >
