@@ -18,6 +18,7 @@ type SubproblemType = {
   title: string;
   description: string;
   metadata: any;
+  answer: string;
 };
 
 const ProblemRegister = () => {
@@ -34,13 +35,13 @@ const ProblemRegister = () => {
       { ...order3Default },
       { ...order4Default },
     ],
-    answer: '',
   };
 
   const subproblemDefault = {
     title: '',
     description: '',
     metadata: { ...metadataDefaut },
+    answer: '',
   };
 
   const [name, setName] = useState<string>('');
@@ -77,7 +78,7 @@ const ProblemRegister = () => {
 
   const onChangeSubproblemAnswer = (index: number) => (value: any) => {
     const newSubproblems = [...subproblems];
-    newSubproblems[index].metadata.answer = value;
+    newSubproblems[index].answer = value;
     setSubproblems([...newSubproblems]);
   };
 
@@ -240,7 +241,7 @@ const ProblemRegister = () => {
             </ContentInputColumnContainer>
           );
         })}
-        <input
+        {/* <input
           type='file'
           placeholder='음성 파일을 입력해주세요.'
           accept='audio'
@@ -255,7 +256,7 @@ const ProblemRegister = () => {
           onChange={(e: any) => {
             setAudioFile(e.target.files[0]);
           }}
-        />
+        /> */}
         <ContentButton onClick={onSubmitProblem}>
           <ContentButtonTypo>문제 등록</ContentButtonTypo>
         </ContentButton>

@@ -34,6 +34,10 @@ import ExamSearch from 'pages/Exam/Search';
 import ExamRegister from 'pages/Exam/Register';
 import ExamViewer from 'pages/Exam/Viewer';
 import ExamHistory from 'pages/Exam/History';
+import AssignmentSearch from 'pages/Assignment/Search';
+import AssignmentRegister from 'pages/Assignment/Register';
+import AssignmentHistory from 'pages/Assignment/History';
+import AssignmentViewer from 'pages/Assignment/Viewer';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -237,6 +241,30 @@ root.render(
             </MenuWrapping>
           }
         />
+        <Route
+          path='/assignment/search'
+          element={
+            <MenuWrapping>
+              <AssignmentSearch />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/assignment/register'
+          element={
+            <MenuWrapping>
+              <AssignmentRegister />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/assignment/history'
+          element={
+            <MenuWrapping>
+              <AssignmentHistory />
+            </MenuWrapping>
+          }
+        />
 
         <Route path='/score/print' element={<ScorePrint />} />
         <Route
@@ -244,6 +272,7 @@ root.render(
           element={<LearningMaterialViewer />}
         />
         <Route path='/exam/viewer' element={<ExamViewer />} />
+        <Route path='/assignment/viewer' element={<AssignmentViewer />} />
       </Routes>
     </BrowserRouter>
   </Provider>
