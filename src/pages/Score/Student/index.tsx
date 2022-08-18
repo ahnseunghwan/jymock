@@ -273,14 +273,6 @@ const StudentSearch = () => {
           </MenuItemContentButton>
         </MenuItemContainer>
         <ContentContainer>
-          <ContentActionContainer>
-            <ContentActionButton>
-              <ContentActionButtonTypo>SMS발송</ContentActionButtonTypo>
-            </ContentActionButton>
-            <ContentActionButton>
-              <ContentActionButtonTypo>엑셀 다운로드</ContentActionButtonTypo>
-            </ContentActionButton>
-          </ContentActionContainer>
           <ContentTable
             columns={tableColumns}
             rowSelection={{
