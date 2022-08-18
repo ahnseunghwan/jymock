@@ -40,8 +40,6 @@ const AttendenceSearch = () => {
     moment(today),
     moment(today),
   ]);
-  const [tableData, setTableData] = useState<any[]>([]);
-
   const [searchName, setSearchName] = useState<string>('');
   const [searchStatus, setSearchStatus] = useState<string>('all');
   const [studentList, setStudentList] = useState<any[]>([]);
@@ -265,8 +263,6 @@ const AttendenceSearch = () => {
       }
     });
 
-    console.log({ dateRange });
-
     let newDateRange = ``;
 
     if (dateRange) {
@@ -303,6 +299,43 @@ const AttendenceSearch = () => {
         alert('출결 조회 실패');
       }
     });
+  };
+
+  const onClickPrintExcel = () => {
+    let lecturersString = '';
+
+    teacherList.forEach((value, index) => {
+      if (value.isSelected) {
+        if (lecturersString === '') {
+          lecturersString += `${value.name}`;
+        } else {
+          lecturersString += `,${value.name}`;
+        }
+      }
+    });
+
+    let curriculumsString = '';
+
+    curriculums.forEach((value, index) => {
+      if (value.isSelected) {
+        if (curriculumsString === '') {
+          curriculumsString += `${value.name}`;
+        } else {
+          curriculumsString += `,${value.name}`;
+        }
+      }
+    });
+
+    let newDateRange = ``;
+
+    if (dateRange) {
+      newDateRange = `${moment(dateRange[0]).format('YYYY-MM-DD')} ~ ${moment(
+        dateRange[1]
+      ).format('YYYY-MM-DD')}`;
+    }
+    window.open(
+      `https://jy-academy.herokuapp.com/api/attendances/export?student=${searchName}&attendance_type=${searchStatus}&curriculums=${curriculumsString}&lecturers=${lecturersString}&attended_at=${newDateRange}`
+    );
   };
 
   return (
@@ -400,7 +433,7 @@ const AttendenceSearch = () => {
         </MenuItemContainer>
         <ContentContainer>
           <ContentActionContainer>
-            <ContentActionButton>
+            <ContentActionButton onClick={onClickPrintExcel}>
               <ContentActionButtonTypo>엑셀 다운로드</ContentActionButtonTypo>
             </ContentActionButton>
           </ContentActionContainer>
