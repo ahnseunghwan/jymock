@@ -53,3 +53,9 @@ export const SubproblemCandidateTypo = styled(Typography)`
     font-size: 14px;
   }
 `;
+
+export const AudioContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+`;

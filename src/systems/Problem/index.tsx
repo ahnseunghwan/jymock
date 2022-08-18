@@ -1,5 +1,7 @@
+import AudioPlayer from 'components/AudioPlayer';
 import React from 'react';
 import {
+  AudioContainer,
   DescriptionTypo,
   Root,
   SubproblemCandidateContainer,
@@ -46,6 +48,11 @@ const Problem: React.FC<Props> = ({
       <TitleTypo level={2}>
         {no}. {title}
       </TitleTypo>
+      {audio_file && (
+        <AudioContainer>
+          <AudioPlayer src={audio_file} name='듣기 파일' />
+        </AudioContainer>
+      )}
       <DescriptionTypo>{description}</DescriptionTypo>
       <SubproblemContainer>
         {subproblems.map((subproblems, index) => (

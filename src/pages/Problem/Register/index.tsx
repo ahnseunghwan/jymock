@@ -135,7 +135,7 @@ const ProblemRegister = () => {
     formData.append('title', title);
     formData.append('description', description);
     formData.append('subproblems', JSON.stringify(newSubproblems));
-    // formData.append('audio', audioFile);
+    formData.append('audio_file', audioFile);
     // formData.append('pdf', pdfFile);
 
     commonAxios({
@@ -241,7 +241,7 @@ const ProblemRegister = () => {
             </ContentInputColumnContainer>
           );
         })}
-        {/* <input
+        <input
           type='file'
           placeholder='음성 파일을 입력해주세요.'
           accept='audio'
@@ -249,7 +249,7 @@ const ProblemRegister = () => {
             setAudioFile(e.target.files[0]);
           }}
         />
-        <input
+        {/* <input
           type='file'
           placeholder='pdf 파일을 입력해주세요.'
           accept='application/pdf'
