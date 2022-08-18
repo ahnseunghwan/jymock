@@ -99,10 +99,10 @@ const ProblemRegister = () => {
       message.error('이름을 입력해주세요');
       return;
     }
-    if (description === '') {
-      message.error('설명을 입력해주세요');
-      return;
-    }
+    // if (description === '') {
+    //   message.error('설명을 입력해주세요');
+    //   return;
+    // }
     let check = false;
 
     subproblems.forEach((value, index) => {
@@ -110,10 +110,10 @@ const ProblemRegister = () => {
         message.error(`문제 ${index + 1}의 제목을 입력해주세요`);
         check = true;
       }
-      if (value.description === '') {
-        message.error(`문제 ${index + 1}의 설명을 입력해주세요`);
-        check = true;
-      }
+      // if (value.description === '') {
+      //   message.error(`문제 ${index + 1}의 설명을 입력해주세요`);
+      //   check = true;
+      // }
       if (value.metadata.answer === '') {
         message.error(`문제 ${index + 1}의 정답을 입력해주세요`);
         check = true;
