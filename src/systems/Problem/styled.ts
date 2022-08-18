@@ -5,7 +5,7 @@ export const Root = styled.div`
   width: 475px;
   border: 1px #0003 solid;
   box-sizing: border-box;
-  padding: 20px;
+  padding: 20px 30px;
 `;
 
 export const TitleTypo = styled(Typography.Title)``;

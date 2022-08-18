@@ -21,7 +21,7 @@ const MenuButton = styled(Button)``;
 const MenuButtonTypo = styled(Typography)``;
 
 const MenuContainer = styled.div`
-  width: 320px;
+  width: 340px;
   height: 100vh;
   background: #0002;
   display: flex;
@@ -67,7 +67,7 @@ const AnswerRoot = styled.div`
 `;
 
 const AnswerContainer = styled.div`
-  width: 270px;
+  width: 290px;
   height: 45px;
   display: flex;
   justify-content: space-between;
@@ -128,6 +128,7 @@ const ContentContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 50px;
+  margin-bottom: 50px;
 `;
 
 export {

@@ -35,7 +35,7 @@ type AnswerType = 'A' | 'B' | 'C' | 'D' | 'NONE';
 
 const ExamViewer = () => {
   const location = useLocation();
-  const [answer, setAnswer] = useState<AnswerType[]>([]);
+  const [answer, setAnswer] = useState<any[]>([]);
   const { isPoint, now, onPause, onStart, timerStatus } = useTimer({
     duration: 7200,
   });
@@ -46,37 +46,42 @@ const ExamViewer = () => {
 
   const id = location.search.split('?id=')[1];
   useEffect(() => {
+    const legacyAnswer = localStorage.getItem(`exam_${id}`);
+    let newAnswer: any[] = [];
     commonAxios({ url: `exams/${id}`, method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
         setProblemList(res.data.problems);
         if (res.data.problems) {
-          setAnswer([...Array(res.data.problems.length)].fill('NONE'));
+          newAnswer = res.data.problems.map((problem: any) => [
+            ...Array(problem.subproblems.length).fill('NONE'),
+          ]);
+          if (!!legacyAnswer) {
+            let result = window.confirm(
+              '기존에 시험을 본 이력이 있습니다. 정보를 가져오시겠습니까?'
+            );
+            if (result) {
+              setAnswer(JSON.parse(legacyAnswer));
+            } else {
+              setAnswer(newAnswer);
+              localStorage.removeItem(`exam_${id}`);
+            }
+          } else {
+            setAnswer(newAnswer);
+          }
         }
       } else {
         alert('오류');
       }
     });
     onStart();
-    const legacyAnswer = localStorage.getItem(`exam_${id}`);
-    if (!!legacyAnswer) {
-      let result = window.confirm(
-        '기존에 시험을 본 이력이 있습니다. 정보를 가져오시겠습니까?'
-      );
-      if (result) {
-        setAnswer(JSON.parse(legacyAnswer));
-      } else {
-        localStorage.removeItem(`exam_${id}`);
-      }
-    }
   }, []);
 
-  const onClickAnswer = (index2: number, answer: AnswerType) => () => {
+  const onClickAnswer = (index2: number, index3: number, answer: any) => () => {
     setAnswer((prev) => {
-      const newAnswer = prev.map((value, index) =>
-        index2 === index ? answer : value
-      );
-      localStorage.removeItem(`toeic_exam_${id}`);
-      localStorage.setItem(`toeic_exam_${id}`, JSON.stringify(newAnswer));
+      let newAnswer = [...prev];
+      newAnswer[index2][index3] = answer;
+      localStorage.removeItem(`exam_${id}`);
+      localStorage.setItem(`exam_${id}`, JSON.stringify(newAnswer));
       return newAnswer;
     });
   };
@@ -100,17 +105,26 @@ const ExamViewer = () => {
 
   const onClickSubmit = () => {
     const userId = localStorage.getItem('user_id') as any;
-    const newAnswer = answer.map((value, index) => ({
-      answer: value === 'NONE' ? '' : value,
-      ordering: index + 1,
-    }));
+    let newAnswer: any[] = [];
+    let count = 1;
+
+    answer.forEach((value, index) => {
+      value.forEach((value2: any) => {
+        newAnswer.push({
+          answer: value === 'NONE' ? '' : value2,
+          ordering: count,
+        });
+        count++;
+      });
+    });
+
     commonAxios({
-      url: `toeic-exams/${id}/submit`,
+      url: `exams/${id}/submit`,
       method: 'POST',
       data: { student: +userId, submitted_answer: newAnswer },
     }).then((res) => {
       alert(`시험 결과 : ${res.data.score}점`);
-      localStorage.removeItem(`toeic_exam_${id}`);
+      localStorage.removeItem(`exam_${id}`);
       window.location.reload();
     });
   };
@@ -140,44 +154,46 @@ const ExamViewer = () => {
                 <AudioPlayer src={audioFile} name='음성 파일' />
               </MenuAudioContainer> */}
             <AnswerRoot>
-              {answer.map((value, index) => (
-                <AnswerContainer key={`answer_${index}`}>
-                  <AnswerButtonTypo
-                    style={{
-                      width: '55px',
-                      display: 'flex',
-                      justifyContent: 'flex-end',
-                      marginRight: '10px',
-                    }}
-                  >
-                    {index + 1}.
-                  </AnswerButtonTypo>
-                  <AnswerButton
-                    isPoint={value === 'A'}
-                    onClick={onClickAnswer(index, 'A')}
-                  >
-                    <AnswerButtonTypo>1</AnswerButtonTypo>
-                  </AnswerButton>
-                  <AnswerButton
-                    isPoint={value === 'B'}
-                    onClick={onClickAnswer(index, 'B')}
-                  >
-                    <AnswerButtonTypo>2</AnswerButtonTypo>
-                  </AnswerButton>
-                  <AnswerButton
-                    isPoint={value === 'C'}
-                    onClick={onClickAnswer(index, 'C')}
-                  >
-                    <AnswerButtonTypo>3</AnswerButtonTypo>
-                  </AnswerButton>
-                  <AnswerButton
-                    isPoint={value === 'D'}
-                    onClick={onClickAnswer(index, 'D')}
-                  >
-                    <AnswerButtonTypo>4</AnswerButtonTypo>
-                  </AnswerButton>
-                </AnswerContainer>
-              ))}
+              {answer.map((submissions, index) =>
+                submissions.map((value: any, index2: number) => (
+                  <AnswerContainer key={`answer_${index}_${index2}`}>
+                    <AnswerButtonTypo
+                      style={{
+                        width: '75px',
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginRight: '10px',
+                      }}
+                    >
+                      {index + 1}-{index2 + 1}.
+                    </AnswerButtonTypo>
+                    <AnswerButton
+                      isPoint={value === '1'}
+                      onClick={onClickAnswer(index, index2, '1')}
+                    >
+                      <AnswerButtonTypo>1</AnswerButtonTypo>
+                    </AnswerButton>
+                    <AnswerButton
+                      isPoint={value === '2'}
+                      onClick={onClickAnswer(index, index2, '2')}
+                    >
+                      <AnswerButtonTypo>2</AnswerButtonTypo>
+                    </AnswerButton>
+                    <AnswerButton
+                      isPoint={value === '3'}
+                      onClick={onClickAnswer(index, index2, '3')}
+                    >
+                      <AnswerButtonTypo>3</AnswerButtonTypo>
+                    </AnswerButton>
+                    <AnswerButton
+                      isPoint={value === '4'}
+                      onClick={onClickAnswer(index, index2, '4')}
+                    >
+                      <AnswerButtonTypo>4</AnswerButtonTypo>
+                    </AnswerButton>
+                  </AnswerContainer>
+                ))
+              )}
             </AnswerRoot>
             <SubmitButtonContainer>
               <SubmitButton onClick={onClickSubmit}>
