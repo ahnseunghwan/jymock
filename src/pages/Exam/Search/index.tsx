@@ -1,4 +1,5 @@
 import { commonAxios } from 'api/common';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import {
   ContentButton,
@@ -41,9 +42,28 @@ const ExamSearch = () => {
       title: '생성일',
       dataIndex: 'created_at',
       key: 'created_at',
+      render: (a: any, b: any) => {
+        return moment(b).format('YYYY-MM-DD');
+      },
+      sorter: (a: any, b: any) =>
+        a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
     },
     {
-      title: '수정',
+      title: '응시기록',
+      dataIndex: 'history',
+      key: 'history',
+      render: (a: any, b: any) => {
+        return (
+          <ContentButton
+            onClick={() => window.open(`/exam/history/?id=${b.id}`)}
+          >
+            <ContentButtonTypo>응시기록보기</ContentButtonTypo>
+          </ContentButton>
+        );
+      },
+    },
+    {
+      title: '응시하기',
       dataIndex: 'edit',
       key: 'edit',
       render: (a: any, b: any) => {

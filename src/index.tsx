@@ -33,6 +33,7 @@ import ProblemEdit from 'pages/Problem/Edit';
 import ExamSearch from 'pages/Exam/Search';
 import ExamRegister from 'pages/Exam/Register';
 import ExamViewer from 'pages/Exam/Viewer';
+import ExamHistory from 'pages/Exam/History';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -225,6 +226,14 @@ root.render(
           element={
             <MenuWrapping>
               <ExamRegister />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/exam/history'
+          element={
+            <MenuWrapping>
+              <ExamHistory />
             </MenuWrapping>
           }
         />
