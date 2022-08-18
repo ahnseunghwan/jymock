@@ -405,10 +405,10 @@ const AttendenceGraph = () => {
     attendances?.forEach((value) => {
       if (value.attendance_type === 'absent') {
         absent++;
-        pieData[1]++;
+        pieData[0]++;
       } else if (value.attendance_type === 'present') {
         present++;
-        pieData[0]++;
+        pieData[1]++;
       } else if (value.attendance_type === 'compassionate') {
         pieData[2]++;
       } else {
