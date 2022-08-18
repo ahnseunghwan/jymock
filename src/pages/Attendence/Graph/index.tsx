@@ -84,6 +84,9 @@ const AttendenceGraph = () => {
     if (attendenceStatus === 'late') {
       return 'z';
     }
+    if (attendenceStatus === 'compassionate') {
+      return 'z';
+    }
     return '-';
   };
 
@@ -410,8 +413,10 @@ const AttendenceGraph = () => {
         present++;
         pieData[1]++;
       } else if (value.attendance_type === 'compassionate') {
+        present++;
         pieData[2]++;
       } else {
+        present++;
         pieData[3]++;
       }
       data = {
