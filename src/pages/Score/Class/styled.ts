@@ -16,11 +16,12 @@ const TitleTypo = styled(Typography.Title)`
 `;
 
 const MenuContainer = styled.div`
-  width: 100%;
+  width: 1000px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   margin-top: 20px;
+  margin-bottom: 40px;
 `;
 
 const MenuItemContainer = styled.div`
@@ -101,6 +102,13 @@ const ContentTable = styled(Table)`
   margin-top: 10px;
 `;
 
+const ContentSelect = styled(Select)`
+  &&& {
+    width: 600px;
+  }
+`;
+const ContentSelectOption = styled(Select.Option)``;
+
 export {
   Root,
   TitleTypo,
@@ -121,4 +129,6 @@ export {
   ContentActionButton,
   ContentActionButtonTypo,
   ContentTable,
+  ContentSelect,
+  ContentSelectOption,
 };

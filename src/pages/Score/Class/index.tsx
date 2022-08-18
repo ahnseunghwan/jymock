@@ -1,189 +1,180 @@
-import React, { useState } from 'react';
+import { commonAxios } from 'api/common';
+import React, { useEffect, useState } from 'react';
 import {
-  ContentActionButton,
-  ContentActionButtonTypo,
-  ContentActionContainer,
-  ContentContainer,
-  ContentTable,
+  ContentSelect,
+  ContentSelectOption,
   MenuContainer,
-  MenuItemContainer,
-  MenuItemContentButton,
-  MenuItemContentButtonTypo,
-  MenuItemContentContainer,
-  MenuItemContentSelect,
-  MenuItemContentSelectOption,
-  MenuItemContentTextInput,
-  MenuItemContentTypo,
-  MenuItemContentTypoContainer,
-  MenuItemHeaderTypo,
-  MenuItemHeaderTypoWrapper,
   Root,
   TitleTypo,
 } from './styled';
-import studentSearchMenu from 'assets/json/student_search_menu.json';
-import { Button, Checkbox, Divider, Tag } from 'antd';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+type ClassType = {
+  label: string;
+  id: number;
+  students: number[];
+};
 
 const ScoreClass = () => {
-  const [teacherList, setTeacherList] = useState<string[]>([
-    '전체',
-    ...studentSearchMenu.teachers,
-  ]);
-  const [classList, setClassList] = useState<string[]>([
-    '전체',
-    ...studentSearchMenu.classes,
-  ]);
-  const [tableData, setTableData] = useState<any[]>(
-    studentSearchMenu.table_data
-  );
+  const [classList, setClassList] = useState<ClassType[]>([]);
+  const [selectedClass, setSelectedClass] = useState<number>();
+  const [selectedClassLabel, setSelectedClassLabel] = useState<string>();
+  const [selectedStudents, setSelectedStudents] = useState<any[]>([]);
+  const [examsReport, setExamsReport] = useState<any[]>([]);
 
-  const tableColumns = [
-    {
-      title: '이름',
-      dataIndex: 'name',
-      key: 'name',
+  useEffect(() => {
+    commonAxios({
+      url: 'class-divisions/',
+      method: 'GET',
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setClassList(
+          res.data.map((value: any) => ({
+            id: value.id,
+            label: `${value.curriculum.name} - ${value.name}`,
+            students: value.students,
+          }))
+        );
+      } else {
+        alert('서버 오류');
+      }
+    });
+    commonAxios({
+      url: `exams/report`,
+      method: 'GET',
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setExamsReport(res.data);
+      } else {
+        alert('서버 오류');
+      }
+    });
+  }, []);
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: `${selectedClassLabel}`,
+      },
     },
-    {
-      title: '아이디',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
-      title: '비밀번호',
-      dataIndex: 'password',
-      key: 'password',
-    },
-    {
-      title: '가입일',
-      dataIndex: 'created_at',
-      key: 'created_at',
-    },
-    {
-      title: '클래스',
-      dataIndex: 'class_title',
-      key: 'class_title',
-      render: (tags: string[]) => (
-        <>
-          {tags.map((tag) => (
-            <Tag color='blue' key={tag}>
-              {tag}
-            </Tag>
-          ))}
-        </>
-      ),
-    },
-    {
-      title: '학교',
-      dataIndex: 'school',
-      key: 'school',
-    },
-    {
-      title: '학년',
-      dataIndex: 'grade',
-      key: 'grade',
-    },
-    {
-      title: '수정',
-      dataIndex: 'edit',
-      key: 'edit',
-      render: () => <Button>수정</Button>,
-    },
+  };
+
+  const labels = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
   ];
 
-  const rowSelection = {
-    onChange: (selectedRowKeys: any, selectedRows: any) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      );
-    },
-    getCheckboxProps: (record: any) => ({
-      disabled: record.name === 'Disabled User',
-      name: record.name,
-    }),
+  const randomColor = () => {
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  };
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: '점수',
+        data: [100],
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+    ],
   };
 
   return (
     <Root>
       <TitleTypo level={2}>반별 성적표</TitleTypo>
       <MenuContainer>
-        <MenuItemContainer>
-          <MenuItemHeaderTypoWrapper width={40}>
-            <MenuItemHeaderTypo>교사</MenuItemHeaderTypo>
-          </MenuItemHeaderTypoWrapper>
-          <Divider type='vertical' />
-          <MenuItemContentContainer>
-            {teacherList.map((teacher, index) => (
-              <MenuItemContentTypoContainer key={`menu_teacher_${index}`}>
-                <Checkbox />
-                <MenuItemContentTypo>{teacher}</MenuItemContentTypo>
-              </MenuItemContentTypoContainer>
-            ))}
-          </MenuItemContentContainer>
-        </MenuItemContainer>
-        <MenuItemContainer>
-          <MenuItemHeaderTypoWrapper width={40}>
-            <MenuItemHeaderTypo>클래스</MenuItemHeaderTypo>
-          </MenuItemHeaderTypoWrapper>
-          <Divider type='vertical' />
-          <MenuItemContentContainer>
-            {classList.map((classTitle, index) => (
-              <MenuItemContentTypoContainer key={`menu_class_${index}`}>
-                <Checkbox />
-                <MenuItemContentTypo>{classTitle}</MenuItemContentTypo>
-              </MenuItemContentTypoContainer>
-            ))}
-          </MenuItemContentContainer>
-        </MenuItemContainer>
-        <MenuItemContainer>
-          <MenuItemHeaderTypoWrapper width={70}>
-            <MenuItemHeaderTypo>회원 구분</MenuItemHeaderTypo>
-          </MenuItemHeaderTypoWrapper>
-          <MenuItemContentSelect placeholder='선택'>
-            <MenuItemContentSelectOption value={1}>
-              원생
-            </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={2}>
-              휴/퇴원
-            </MenuItemContentSelectOption>
-          </MenuItemContentSelect>
-          <MenuItemHeaderTypoWrapper width={50} style={{ marginLeft: '25px' }}>
-            <MenuItemHeaderTypo>학생</MenuItemHeaderTypo>
-          </MenuItemHeaderTypoWrapper>
-          <MenuItemContentSelect placeholder='선택'>
-            <MenuItemContentSelectOption value={1}>
-              이름
-            </MenuItemContentSelectOption>
-            <MenuItemContentSelectOption value={2}>
-              아이디
-            </MenuItemContentSelectOption>
-          </MenuItemContentSelect>
-          <MenuItemContentTextInput style={{ marginLeft: '25px' }} />
-          <MenuItemContentButton type='primary' style={{ marginLeft: '25px' }}>
-            <MenuItemContentButtonTypo>검색</MenuItemContentButtonTypo>
-          </MenuItemContentButton>
-        </MenuItemContainer>
-        <ContentContainer>
-          <ContentActionContainer>
-            <ContentActionButton>
-              <ContentActionButtonTypo>SMS발송</ContentActionButtonTypo>
-            </ContentActionButton>
-            <ContentActionButton>
-              <ContentActionButtonTypo>프린트</ContentActionButtonTypo>
-            </ContentActionButton>
-            <ContentActionButton>
-              <ContentActionButtonTypo>엑셀 다운로드</ContentActionButtonTypo>
-            </ContentActionButton>
-          </ContentActionContainer>
-          <ContentTable
-            columns={tableColumns}
-            rowSelection={{
-              type: 'checkbox',
-              ...rowSelection,
-            }}
-            dataSource={tableData}
-          />
-        </ContentContainer>
+        <ContentSelect
+          value={selectedClassLabel}
+          onChange={(value: any) => {
+            const newValue = JSON.parse(value);
+            setSelectedClass(newValue.id);
+            setSelectedClassLabel(newValue.label);
+            setSelectedStudents(newValue.students);
+          }}
+          placeholder='분반을 선택해주세요.'
+        >
+          {classList !== [] &&
+            classList.map((classItem: ClassType, index: number) => {
+              return (
+                <ContentSelectOption
+                  value={JSON.stringify(classItem)}
+                  key={`content_select_option_${index}`}
+                >
+                  {classItem.label}
+                </ContentSelectOption>
+              );
+            })}
+        </ContentSelect>
+        {selectedClass &&
+          examsReport.reverse().map((value, index) => {
+            let newSelectedStudents = [...selectedStudents];
+            let newStudentsName: any[] = [];
+            const datasets = value.submissions
+              .filter((value2: any) => {
+                if (newSelectedStudents.includes(value2.student.id)) {
+                  newSelectedStudents = newSelectedStudents.filter(
+                    (value3) => value3 !== value2.student.id
+                  );
+                  return true;
+                }
+                return false;
+              })
+              .map((value2: any) => {
+                newStudentsName.push(value2.student.name);
+                return {
+                  label: value2.student.name,
+                  data: [value2.score],
+                  backgroundColor: randomColor(),
+                };
+              });
+            if (datasets.length === 0) {
+              return <></>;
+            }
+            return (
+              <Bar
+                data={{ ...data, labels: ['시험 점수'], datasets }}
+                options={{
+                  ...options,
+                  plugins: {
+                    ...options.plugins,
+                    title: { display: true, text: value.material_name },
+                  },
+                }}
+                key={`bar_${index}`}
+              />
+            );
+          })}
       </MenuContainer>
     </Root>
   );
