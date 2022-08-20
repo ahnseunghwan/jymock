@@ -14,7 +14,7 @@ export const commonAxios = ({
   data,
 }: CommonAxiosProps) => {
   return axios({
-    url: `http://api.parkahnedu.com/api/${url}`,
+    url: `https://jy-academy.herokuapp.com/api/${url}`,
     method,
     params,
     data,
