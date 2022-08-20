@@ -234,7 +234,7 @@ const ScorePrint = () => {
             <Column title='교재' dataIndex='materialName' key='materialName' />
             <Column title='점수' dataIndex='score' key='score' />
           </Table>
-          <Line options={options} data={data} />;
+          <Line options={options} data={data} />
         </TestContainer>
         <CommentContainer>
           <Table
