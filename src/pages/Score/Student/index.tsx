@@ -81,20 +81,6 @@ const StudentSearch = () => {
     },
   ];
 
-  const rowSelection = {
-    onChange: (selectedRowKeys: any, selectedRows: any) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      );
-    },
-    getCheckboxProps: (record: any) => ({
-      disabled: record.name === 'Disabled User',
-      name: record.name,
-    }),
-  };
-
   useEffect(() => {
     commonAxios({ url: 'curriculums/', method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
@@ -273,14 +259,7 @@ const StudentSearch = () => {
           </MenuItemContentButton>
         </MenuItemContainer>
         <ContentContainer>
-          <ContentTable
-            columns={tableColumns}
-            rowSelection={{
-              type: 'checkbox',
-              ...rowSelection,
-            }}
-            dataSource={studentList}
-          />
+          <ContentTable columns={tableColumns} dataSource={studentList} />
         </ContentContainer>
       </MenuContainer>
     </Root>
