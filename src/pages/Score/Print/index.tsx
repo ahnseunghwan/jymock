@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -43,55 +43,94 @@ let today = new Date();
 
 const ScorePrint = () => {
   const location = useLocation();
-  const id = location.search.split('?id=')[1];
+  const id = location.search.split('?id=')[1].split('&')[0];
+  const classId = location.search.split('&class_id=')[1];
   const { height, width } = useWindowDimensions();
+  const [attendee, setAttendee] = useState<any>();
+  const [cName, setCName] = useState<string>('');
+  const [lecturerName, setLecturerName] = useState<string>('');
+  const [scoreList, setScoreList] = useState<any[]>([]);
+  const [middleScoreList, setMiddleScoreList] = useState<any[]>([]);
 
   useEffect(() => {
-    commonAxios({ url: `attendees/${id}/report`, method: 'GET' }).then(
-      (res) => {
-        console.log(res.data);
-      }
-    );
+    commonAxios({
+      url: `class-divisions/${classId}/attendees`,
+      method: 'GET',
+    }).then((res) => {
+      setCName(`${res.data.curriculum.name} ${res.data.name}`);
+      setLecturerName(res.data.lecturer.name);
+      let newScoreList: any[] = [];
+      let newMiddleScoreList: any[] = [];
+      let newMiddleScoreList2: any = {};
+      res.data.attendees.forEach((attendeeItem: any) => {
+        let count = 0;
+        if (attendeeItem.id === +id) {
+          setAttendee(attendeeItem);
+          attendeeItem.student.exam_submissions.forEach((submission: any) => {
+            newScoreList.push(submission.score);
+          });
+        }
+        attendeeItem.student.exam_submissions.forEach((submission: any) => {
+          newMiddleScoreList.push({
+            id: submission.exam.id,
+            score: submission.score,
+            ordering: count,
+          });
+          count++;
+        });
+      });
+
+      newMiddleScoreList.forEach((newMiddleScore) => {
+        if (newMiddleScoreList2[newMiddleScore.id]) {
+          newMiddleScoreList2[newMiddleScore.id] = {
+            ...newMiddleScoreList2[newMiddleScore.id],
+            score:
+              newMiddleScoreList2[newMiddleScore.id].score +
+              newMiddleScore.score,
+            count: newMiddleScoreList2[newMiddleScore.id].count + 1,
+          };
+        } else {
+          newMiddleScoreList2[newMiddleScore.id] = {
+            score: newMiddleScore.score,
+            count: 1,
+            ordering: newMiddleScore.ordering,
+          };
+        }
+      });
+
+      newMiddleScoreList = Object.values(newMiddleScoreList2)
+        .sort((a: any, b: any) => b.ordering - a.ordering)
+        .reverse()
+        .map((value: any) => {
+          return value.score / value.count;
+        });
+
+      setScoreList(newScoreList);
+      setMiddleScoreList(newMiddleScoreList);
+    });
   }, []);
 
-  const infoData = [
-    {
-      key: '1',
-      koreanName: 'John',
-      englishName: 'Brown',
-      className: 'boot camp 2',
-      lecturerName: 'Hazel',
-      attendanceCount: '9일',
-    },
-  ];
+  const infoData = attendee
+    ? [
+        {
+          key: '1',
+          koreanName: `${attendee.student.name}`,
+          englishName: `${attendee.student.english_name}`,
+          className: `${cName}`,
+          lecturerName: `${lecturerName}`,
+          attendanceCount: `${attendee.attendances.length}일`,
+        },
+      ]
+    : [];
 
-  const testData = [
-    {
-      date: '2022-08-20',
-      materialName: '단어 테스트(08.20)',
-      score: 9,
-    },
-    {
-      date: '2022-08-19',
-      materialName: '단어 테스트(08.19)',
-      score: 7,
-    },
-    {
-      date: '2022-08-18',
-      materialName: '단어 테스트(08.18)',
-      score: 10,
-    },
-    {
-      date: '2022-08-17',
-      materialName: '단어 테스트(08.17)',
-      score: 12,
-    },
-    {
-      date: '2022-08-16',
-      materialName: '단어 테스트(08.16)',
-      score: 9,
-    },
-  ];
+  const testData = attendee
+    ? attendee.student.exam_submissions.map((submission: any) => ({
+        key: `submission_${submission.id}`,
+        date: `${moment(submission).format('YYYY-MM-DD')}`,
+        materialName: `${submission.exam.material_name}`,
+        score: submission.score,
+      }))
+    : [];
 
   const options = {
     responsive: true,
@@ -102,20 +141,18 @@ const ScorePrint = () => {
     },
   };
 
-  const labels = ['January', 'February', 'March', 'April', 'May'];
-
   const data = {
-    labels,
+    labels: ['', '', ''],
     datasets: [
       {
         label: '본인',
-        data: [9, 7, 10, 12, 9],
+        data: scoreList,
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: '반평균',
-        data: [10, 10.2, 8, 9, 9],
+        data: middleScoreList,
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
@@ -126,62 +163,47 @@ const ScorePrint = () => {
     {
       key: '1',
       comment1: '듣기 집중력',
-      comment1Score: 8,
+      comment1Score: attendee?.report.scores.verbal_concentration_score,
       comment2: '단어 인지도',
-      comment2Score: 8,
+      comment2Score: attendee?.report.scores.reading_word_awareness_score,
       comment3: '수업 태도',
-      comment3Score: 10,
+      comment3Score: attendee?.report.scores.attitude_class_score,
     },
     {
       key: '2',
       comment1: '발음 구사력',
-      comment1Score: 7,
+      comment1Score: attendee?.report.scores.verbal_pronunciation_score,
       comment2: '단어 적합성',
-      comment2Score: 10,
+      comment2Score: attendee?.report.scores.reading_word_fit_score,
       comment3: '숙제 완수 정도',
-      comment3Score: 8,
+      comment3Score: attendee?.report.scores.attitude_assignment_score,
     },
     {
       key: '3',
       comment1: '답변 정확도',
-      comment1Score: 10,
+      comment1Score: attendee?.report.scores.verbal_accuracy_score,
       comment2: '문장 이해도',
-      comment2Score: 8,
+      comment2Score: attendee?.report.scores.reading_comprehension_score,
       comment3: '학원 규칙 준수',
-      comment3Score: 10,
+      comment3Score: attendee?.report.scores.attitude_followership_score,
     },
     {
       key: '4',
       comment1: '문장 완성도',
-      comment1Score: 7,
+      comment1Score: attendee?.report.scores.verbal_completeness_score,
       comment2: '철자 정확도',
-      comment2Score: 10,
+      comment2Score: attendee?.report.scores.reading_spelling_score,
       comment3: '감정 전달',
-      comment3Score: 9,
+      comment3Score: attendee?.report.scores.attitude_emotion_score,
     },
     {
       key: '5',
       comment1: '지시사항 이해도',
-      comment1Score: 9,
+      comment1Score: attendee?.report.scores.verbal_comprehension_score,
       comment2: '문법 정확도',
-      comment2Score: 10,
+      comment2Score: attendee?.report.scores.reading_syntax_score,
       comment3: '독립적 학습 태도',
-      comment3Score: 6,
-    },
-  ];
-
-  const lecturerData = [
-    {
-      key: '1',
-      lecturerName: 'Hazel',
-      lecturerOpinion:
-        '1-2월 동안 Fundamental Reading Plus 1 그리고 Grammar Vista 2 을 배웠습니다. 채연이는 성실한 학생이며 문법에 대한 이해가 전에 비해 향상 되었습니다. 지금처럼 꾸준히 숙제 및 복습이 이루어진다면 영어 실력이 더 발전할 학생입니다. 또한 어휘 공부 및 문장 읽기 연습을 실천한다면 더욱 발전할 학생입니다.',
-    },
-    {
-      key: '2',
-      lecturerName: '아드리엘',
-      lecturerOpinion:
-        'Hello, my name is Adrienne Teacher and I teach English Communications 1. In class, we have had discussions about appearance, clothes, abilities and skills, requirements, the past and past actions, past activities, and making plans and suggestions. Chaeyeon practices the dialogues well and participates in speaking activities. She listens during lessons and has a good understanding of the vocabulary and grammar. She is kind to everyone and always does her best. Good job, Chaeyeon!',
+      comment3Score: attendee?.report.scores.attitude_self_studying_score,
     },
   ];
 
@@ -262,22 +284,13 @@ const ScorePrint = () => {
             />
           </Table>
           <Table
-            dataSource={lecturerData}
+            dataSource={attendee?.report?.lecturer_opinions ?? []}
             style={{ width: width > 600 ? '600px' : width }}
             pagination={false}
           >
             <ColumnGroup title='선생님 의견'>
-              <Column
-                width={100}
-                title='이름'
-                dataIndex='lecturerName'
-                key='leturerName'
-              />
-              <Column
-                title='의견'
-                dataIndex='lecturerOpinion'
-                key='lecturerOpinion'
-              />
+              <Column width={100} title='이름' dataIndex='name' key='name' />
+              <Column title='의견' dataIndex='opinion' key='opinion' />
             </ColumnGroup>
           </Table>
         </CommentContainer>
