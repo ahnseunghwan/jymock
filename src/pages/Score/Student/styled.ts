@@ -82,6 +82,8 @@ const ContentContainer = styled.div`
   width: 1000px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  margin-top: 50px;
 `;
 
 const ContentActionContainer = styled.div`
@@ -92,7 +94,11 @@ const ContentActionContainer = styled.div`
   margin-top: 20px;
 `;
 
-const ContentActionButton = styled(Button)``;
+const ContentActionButton = styled(Button)`
+  &&& {
+    width: 600px;
+  }
+`;
 
 const ContentActionButtonTypo = styled(Typography)``;
 
@@ -100,6 +106,13 @@ const ContentTable = styled(Table)`
   width: 100%;
   margin-top: 10px;
 `;
+
+const ContentSelect = styled(Select)`
+  &&& {
+    width: 600px;
+  }
+`;
+const ContentSelectOption = styled(Select.Option)``;
 
 export {
   Root,
@@ -121,4 +134,6 @@ export {
   ContentActionButton,
   ContentActionButtonTypo,
   ContentTable,
+  ContentSelect,
+  ContentSelectOption,
 };
