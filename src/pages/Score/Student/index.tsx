@@ -119,7 +119,9 @@ const ScoreStudent = () => {
         {attendees.map((attendee, index) => (
           <ContentActionButton
             onClick={() => {
-              window.open(`/score/print?id=${attendee.id}`);
+              window.open(
+                `/score/print?id=${attendee.id}&class_id=${selectedClass}`
+              );
             }}
             key={`content_action_button_attendee_${index}`}
           >
