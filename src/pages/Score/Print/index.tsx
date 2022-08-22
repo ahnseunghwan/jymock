@@ -75,6 +75,7 @@ const ScorePrint = () => {
             id: submission.exam.id,
             score: submission.score,
             ordering: count,
+            include: attendeeItem.id === +id,
           });
           count++;
         });
@@ -88,17 +89,22 @@ const ScorePrint = () => {
               newMiddleScoreList2[newMiddleScore.id].score +
               newMiddleScore.score,
             count: newMiddleScoreList2[newMiddleScore.id].count + 1,
+            include: newMiddleScoreList2[newMiddleScore.id].include
+              ? true
+              : newMiddleScore.include,
           };
         } else {
           newMiddleScoreList2[newMiddleScore.id] = {
             score: newMiddleScore.score,
             count: 1,
             ordering: newMiddleScore.ordering,
+            include: newMiddleScore.include,
           };
         }
       });
 
       newMiddleScoreList = Object.values(newMiddleScoreList2)
+        .filter((value: any) => value.include)
         .sort((a: any, b: any) => b.ordering - a.ordering)
         .reverse()
         .map((value: any) => {
@@ -142,7 +148,7 @@ const ScorePrint = () => {
   };
 
   const data = {
-    labels: ['', '', ''],
+    labels: [...new Array(middleScoreList.length).fill('')],
     datasets: [
       {
         label: '본인',
