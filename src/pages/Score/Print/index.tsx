@@ -212,6 +212,16 @@ const ScorePrint = () => {
       comment3Score: attendee?.report.scores.attitude_self_studying_score,
     },
   ];
+  let checkDuplicate = [];
+
+  let result1: any[] = [];
+  let result2: any[] = [];
+  testData.forEach((v: any) => {
+    if (!result2.includes(v.materialName)) {
+      result1.push(v);
+      result2.push(v.materialName);
+    }
+  });
 
   return (
     <Root>
@@ -254,7 +264,7 @@ const ScorePrint = () => {
             </TitleTypo>
           </TitleContainer>
           <Table
-            dataSource={testData}
+            dataSource={result1}
             style={{ width: width > 600 ? '600px' : width }}
             pagination={false}
           >
