@@ -125,7 +125,7 @@ const StudentEdit = () => {
         setPhoneNumber(res.data.student_phone_number);
         setSchoolName(res.data.school_name);
         setGrade(res.data.grade);
-        setBirth(res.data.birth ? res.data.birth : today);
+        setBirth(res.data.birth ? moment(res.data.birth) : moment(today));
         setAddress(res.data.address);
         setType(
           res.data.student_type ? res.data.student_type : 'elementary-school'
@@ -203,25 +203,8 @@ const StudentEdit = () => {
               onChange={(e) => setSchoolName(e.target.value)}
             />
             <ContentSelect
-              placeholder='학년 선택'
-              value={grade}
-              onChange={(value: any) => setGrade(value)}
-            >
-              <ContentSelectOption value={1}>1학년</ContentSelectOption>
-              <ContentSelectOption value={2}>2학년</ContentSelectOption>
-              <ContentSelectOption value={3}>3학년</ContentSelectOption>
-              <ContentSelectOption value={4}>4학년</ContentSelectOption>
-              <ContentSelectOption value={5}>5학년</ContentSelectOption>
-              <ContentSelectOption value={6}>6학년</ContentSelectOption>
-            </ContentSelect>
-            <ContentDatePicker
-              placeholder='생일을 입력하세요.'
-              value={moment(birth)}
-              onChange={(e) => setBirth(moment(e))}
-            />
-            <ContentSelect
               placeholder='유형 선택'
-              value={type}
+              value={type || undefined}
               onChange={(value: any) => setType(value)}
             >
               <ContentSelectOption value={'elementary-school'}>
@@ -237,6 +220,30 @@ const StudentEdit = () => {
                 일반인
               </ContentSelectOption>
             </ContentSelect>
+            <ContentSelect
+              placeholder='학년 선택'
+              value={grade || undefined}
+              onChange={(value: any) => setGrade(value)}
+            >
+              <ContentSelectOption value={1}>1학년</ContentSelectOption>
+              <ContentSelectOption value={2}>2학년</ContentSelectOption>
+              <ContentSelectOption value={3}>3학년</ContentSelectOption>
+              <ContentSelectOption value={4}>4학년</ContentSelectOption>
+              <ContentSelectOption value={5}>5학년</ContentSelectOption>
+              <ContentSelectOption value={6}>6학년</ContentSelectOption>
+            </ContentSelect>
+            <ContentDatePicker
+              placeholder='생일을 입력하세요.'
+              value={birth || undefined}
+              defaultValue={moment(birth)}
+              onChange={(e) => {
+                if (!e) {
+                  setBirth(moment(today));
+                  return;
+                }
+                setBirth(moment(e));
+              }}
+            />
             {/* <ContentSelect placeholder='교과 등록'>
               <ContentSelectOption value={1}>1학년</ContentSelectOption>
             </ContentSelect> */}
