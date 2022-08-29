@@ -236,7 +236,7 @@ const ProblemEdit = () => {
                 onChange={onChangeSubproblemMetadataCandidate(index, 4)}
               />
 
-              <ContentSelect
+              {/* <ContentSelect
                 placeholder='정답 선택'
                 onChange={onChangeSubproblemAnswer(index)}
                 value={subproblem.metadata.answer}
@@ -249,7 +249,7 @@ const ProblemEdit = () => {
                     {index + 1}번
                   </ContentSelectOption>
                 ))}
-              </ContentSelect>
+              </ContentSelect> */}
               <ContentButton onClick={onClickAddSubproblem}>
                 <ContentButtonTypo>소 문제 추가</ContentButtonTypo>
               </ContentButton>
