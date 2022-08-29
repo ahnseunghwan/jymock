@@ -1,9 +1,28 @@
 import { commonAxios } from 'api/common';
 import React, { useEffect, useState } from 'react';
-import { ContentContainer, ContentTable, Root, TitleTypo } from './styled';
+import {
+  ContentContainer,
+  ContentSelect,
+  ContentSelectOption,
+  ContentTable,
+  Root,
+  TitleTypo,
+} from './styled';
 
 const ConsultSearch = () => {
   const [consultList, setConsultList] = useState<any[]>();
+  const [studentList, setStudentList] = useState<any[]>([]);
+  const [selectedStudent, setSelectedStudent] = useState<any>();
+
+  useEffect(() => {
+    commonAxios({ url: 'students/', method: 'GET' }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setStudentList(res.data);
+      } else {
+        alert('서버 오류');
+      }
+    });
+  }, []);
 
   useEffect(() => {
     commonAxios({ url: 'consults/', method: 'GET' }).then((res) => {
@@ -53,11 +72,37 @@ const ConsultSearch = () => {
       width: 680,
     },
   ];
+
   return (
     <Root>
       <TitleTypo level={2}>상담 조회</TitleTypo>
-      <ContentContainer>
-        <ContentTable columns={tableColumns} dataSource={consultList} />
+      <ContentSelect
+        placeholder='학생 선택'
+        onChange={(value) => {
+          setSelectedStudent(value);
+        }}
+        style={{ marginTop: '20px' }}
+      >
+        {studentList.map((student, index) => (
+          <ContentSelectOption
+            value={student.name}
+            key={`student_${student.id}`}
+          >
+            {student.name}
+          </ContentSelectOption>
+        ))}
+      </ContentSelect>
+      <ContentContainer style={{ marginTop: '40px' }}>
+        <ContentTable
+          columns={tableColumns}
+          dataSource={
+            selectedStudent
+              ? consultList?.filter(
+                  (value) => value.student === selectedStudent
+                )
+              : consultList
+          }
+        />
       </ContentContainer>
     </Root>
   );
