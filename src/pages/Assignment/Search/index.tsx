@@ -76,18 +76,18 @@ const AssignmentSearch = () => {
         );
       },
     },
-    {
-      title: '삭제',
-      dataIndex: 'del',
-      key: 'del',
-      render: (a: any, b: any) => {
-        return (
-          <ContentButton>
-            <ContentButtonTypo>삭제</ContentButtonTypo>
-          </ContentButton>
-        );
-      },
-    },
+    // {
+    //   title: '삭제',
+    //   dataIndex: 'del',
+    //   key: 'del',
+    //   render: (a: any, b: any) => {
+    //     return (
+    //       <ContentButton>
+    //         <ContentButtonTypo>삭제</ContentButtonTypo>
+    //       </ContentButton>
+    //     );
+    //   },
+    // },
   ];
   return (
     <Root>
