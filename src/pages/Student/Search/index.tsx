@@ -21,7 +21,7 @@ import {
   TitleTypo,
 } from './styled';
 import studentSearchMenu from 'assets/json/student_search_menu.json';
-import { Button, Checkbox, Divider, message, Tag } from 'antd';
+import { Button, Checkbox, Divider, Input, message, Modal, Tag } from 'antd';
 import { commonAxios } from 'api/common';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
@@ -37,6 +37,15 @@ const StudentSearch = () => {
 
   const [searchName, setSearchName] = useState<string>('');
   const [searchStatus, setSearchStatus] = useState<string>('all');
+  const [studentsParentPhoneNumber, setStudentsParentPhoneNumber] = useState<
+    any[]
+  >([]);
+
+  const onSelectChange = (a: any, b: any) => {
+    setStudentsParentPhoneNumber(
+      b.map((value: any) => value.parent_phone_number.replaceAll('-', ''))
+    );
+  };
 
   const [studentList, setStudentList] = useState<any[]>([]);
 
@@ -108,13 +117,7 @@ const StudentSearch = () => {
   ];
 
   const rowSelection = {
-    onChange: (selectedRowKeys: any, selectedRows: any) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      );
-    },
+    onChange: onSelectChange,
     getCheckboxProps: (record: any) => ({
       disabled: record.name === 'Disabled User',
       name: record.name,
@@ -224,6 +227,36 @@ const StudentSearch = () => {
     });
   };
 
+  const [messageModal, setMessageModal] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
+
+  const onClickMessage = () => {
+    studentsParentPhoneNumber.map((studentParentPhoneNumber) => {
+      commonAxios({
+        url: 'messages',
+        method: 'POST',
+        data: {
+          message,
+          phone_number: studentParentPhoneNumber,
+        },
+      });
+    });
+  };
+
+  const handleMessageModal = (type: 'OPEN' | 'CLOSE') => () => {
+    if (type === 'OPEN') {
+      if (studentsParentPhoneNumber.length === 0) {
+        alert('학생을 선택해주세요.');
+        return;
+      }
+      setMessageModal(true);
+      return;
+    }
+    setMessageModal(false);
+    setMessage('');
+    return;
+  };
+
   return (
     <Root>
       <TitleTypo level={2}>원생 조회</TitleTypo>
@@ -304,7 +337,7 @@ const StudentSearch = () => {
         </MenuItemContainer>
         <ContentContainer>
           <ContentActionContainer>
-            <ContentActionButton>
+            <ContentActionButton onClick={handleMessageModal('OPEN')}>
               <ContentActionButtonTypo>SMS발송</ContentActionButtonTypo>
             </ContentActionButton>
             <ContentActionButton onClick={onClickPrintExcel}>
@@ -321,6 +354,18 @@ const StudentSearch = () => {
           />
         </ContentContainer>
       </MenuContainer>
+      <Modal
+        title='SMS 발송'
+        visible={messageModal}
+        onCancel={handleMessageModal('CLOSE')}
+        onOk={onClickMessage}
+      >
+        <Input
+          placeholder='메세지를 입력해주세요.'
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+      </Modal>
     </Root>
   );
 };
