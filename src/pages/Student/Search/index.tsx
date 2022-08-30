@@ -241,6 +241,7 @@ const StudentSearch = () => {
         },
       });
     });
+    handleMessageModal('CLOSE')();
   };
 
   const handleMessageModal = (type: 'OPEN' | 'CLOSE') => () => {
