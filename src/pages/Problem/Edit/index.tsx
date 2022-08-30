@@ -141,8 +141,8 @@ const ProblemEdit = () => {
     // formData.append('pdf', pdfFile);
 
     commonAxios({
-      url: 'problems/upload',
-      method: 'POST',
+      url: `problems/${problemId}/update`,
+      method: 'PATCH',
       data: formData,
     }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
@@ -173,7 +173,7 @@ const ProblemEdit = () => {
 
   return (
     <Root>
-      <TitleTypo level={2}>문제 등록</TitleTypo>
+      <TitleTypo level={2}>문제 수정</TitleTypo>
       <ContentContainer>
         <ContentInput
           addonBefore='문제 명'
@@ -263,7 +263,7 @@ const ProblemEdit = () => {
         })}
         <Typography>음성 파일은 수정할 수 없습니다.</Typography>
         <ContentButton onClick={onSubmitProblem}>
-          <ContentButtonTypo>문제 등록</ContentButtonTypo>
+          <ContentButtonTypo>문제 수정</ContentButtonTypo>
         </ContentButton>
       </ContentContainer>
     </Root>
