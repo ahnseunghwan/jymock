@@ -113,28 +113,32 @@ const StudentEdit = () => {
     commonAxios({
       url: `students/${newKey}`,
       method: 'GET',
-    }).then((res) => {
-      if (res.status >= 200 && res.status < 300) {
-        setName(res.data.name);
-        setPassword(res.data.password);
-        setId(res.data.username);
-        setParentName(res.data.parent_name);
-        setParentPhoneNumber(res.data.parent_phone_number);
-        setEnglishName(res.data.english_name);
-        setReason(res.data.reason_for_application);
-        setPhoneNumber(res.data.student_phone_number);
-        setSchoolName(res.data.school_name);
-        setGrade(res.data.grade);
-        setBirth(res.data.birth ? moment(res.data.birth) : moment(today));
-        setAddress(res.data.address);
-        setType(
-          res.data.student_type ? res.data.student_type : 'elementary-school'
-        );
-        setProfileSrc(res.data.profile_image);
-      } else {
-        alert('정보 불러오기를 실패했습니다.');
-      }
-    });
+    })
+      .then((res) => {
+        if (res.status >= 200 && res.status < 300) {
+          setName(res.data.name);
+          setPassword(res.data.password);
+          setId(res.data.username);
+          setParentName(res.data.parent_name);
+          setParentPhoneNumber(res.data.parent_phone_number);
+          setEnglishName(res.data.english_name);
+          setReason(res.data.reason_for_application);
+          setPhoneNumber(res.data.student_phone_number);
+          setSchoolName(res.data.school_name);
+          setGrade(res.data.grade);
+          setBirth(res.data.birth ? moment(res.data.birth) : moment(today));
+          setAddress(res.data.address);
+          setType(
+            res.data.student_type ? res.data.student_type : 'elementary-school'
+          );
+          setProfileSrc(res.data.profile_image);
+        } else {
+          alert('정보 불러오기를 실패했습니다.');
+        }
+      })
+      .catch((err) => {
+        alert('존재하는 사용자 이름입니다.');
+      });
   }, []);
 
   return (

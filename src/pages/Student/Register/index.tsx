@@ -100,15 +100,19 @@ const StudentRegister = () => {
       url: 'students/',
       method: 'POST',
       data: formData,
-    }).then((res) => {
-      console.log({ res });
-      if (res.status >= 200 && res.status < 300) {
-        alert('원생 등록에 성공하였습니다.');
-        window.location.reload();
-      } else {
-        setErrorMessage('원생 등록에 실패하였습니다. (서버 문제)');
-      }
-    });
+    })
+      .then((res) => {
+        console.log({ res });
+        if (res.status >= 200 && res.status < 300) {
+          alert('원생 등록에 성공하였습니다.');
+          window.location.reload();
+        } else {
+          setErrorMessage('원생 등록에 실패하였습니다. (서버 문제)');
+        }
+      })
+      .catch((err) => {
+        alert('존재하는 사용자 이름입니다.');
+      });
   };
 
   const encodeFileToBase64 = (fileBlob: any) => {
