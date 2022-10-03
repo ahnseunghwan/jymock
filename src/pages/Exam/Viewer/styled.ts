@@ -4,7 +4,6 @@ import styled from 'styled-components';
 const Root = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
   margin-top: 20px;
   margin-left: 20px;
   margin-bottom: 50px;
