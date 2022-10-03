@@ -6,6 +6,7 @@ type Props = {
 
 const useTimer = ({ duration }: Props) => {
   const [now, setNow] = useState<number>(0);
+  const [timerDuration, setTimerDuration] = useState<number>(duration);
   const [isPoint, setIsPoint] = useState<boolean>(false);
   const [timerStatus, setTimerStatus] = useState<
     'INIT' | 'START' | 'PAUSE' | 'END'
@@ -28,18 +29,23 @@ const useTimer = ({ duration }: Props) => {
     setNow(0);
     clearInterval(timer.current);
     setTimerStatus('END');
+    alert('타이머가 종료되었습니다.');
+  };
+
+  const setDuration = (value: number) => {
+    setTimerDuration(value);
   };
 
   useEffect(() => {
-    if (now === duration) {
+    if (now === timerDuration) {
       onEndReached();
     }
-    if (duration - now < 60) {
+    if (timerDuration - now < 300) {
       setIsPoint(true);
     }
   }, [now]);
 
-  return { now, isPoint, timerStatus, onStart, onPause };
+  return { now, isPoint, timerStatus, onStart, onPause, setDuration };
 };
 
 export default useTimer;
