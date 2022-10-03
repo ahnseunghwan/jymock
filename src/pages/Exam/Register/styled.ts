@@ -1,4 +1,12 @@
-import { Button, DatePicker, Image, Input, Select, Typography } from 'antd';
+import {
+  Button,
+  DatePicker,
+  Image,
+  Input,
+  InputNumber,
+  Select,
+  Typography,
+} from 'antd';
 import styled from 'styled-components';
 
 const Root = styled.div`
