@@ -36,9 +36,11 @@ type AnswerType = 'A' | 'B' | 'C' | 'D' | 'NONE';
 const ExamViewer = () => {
   const location = useLocation();
   const [answer, setAnswer] = useState<any[]>([]);
-  const { isPoint, now, onPause, onStart, timerStatus } = useTimer({
-    duration: 7200,
-  });
+  const { isPoint, now, onPause, onStart, timerStatus, setDuration } = useTimer(
+    {
+      duration: 7200,
+    }
+  );
   const { isLogin } = useLoginCheck();
   const [open, setOpen] = useState<boolean>(true);
   const [problemList, setProblemList] = useState<any[]>([]);
@@ -50,6 +52,7 @@ const ExamViewer = () => {
     let newAnswer: any[] = [];
     commonAxios({ url: `exams/${id}`, method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
+        setDuration(res.data.duration * 60);
         setProblemList(res.data.problems);
         if (res.data.problems) {
           newAnswer = res.data.problems.map((problem: any) => [
@@ -145,6 +148,11 @@ const ExamViewer = () => {
             <MenuButton onClick={onClickLogout} style={{ marginTop: '5px' }}>
               <MenuButtonTypo>로그아웃</MenuButtonTypo>
             </MenuButton>
+            <MenuTimerContainer>
+              <MenuTimerTypo isPoint={isPoint}>
+                {convertSecondToToeicTime(now)}
+              </MenuTimerTypo>
+            </MenuTimerContainer>
             {/* <MenuTimerContainer>
                 <MenuTimerTypo isPoint={isPoint}>
                   {convertSecondToToeicTime(now)}

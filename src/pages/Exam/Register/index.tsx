@@ -22,6 +22,7 @@ const ExamRegister = () => {
   const [title, setTitle] = useState<string>('');
   const [problemList, setProblemList] = useState<any[]>([]);
   const [selectedProblemList, setSelectedProblemList] = useState<any[]>([0]);
+  const [timer, setTimer] = useState<number>(10);
 
   useEffect(() => {
     commonAxios({ url: 'problems/', method: 'GET' }).then((res) => {
@@ -61,6 +62,7 @@ const ExamRegister = () => {
     const data = {
       material_name: title,
       problem_ids: selectedProblemList,
+      duration: timer,
     };
 
     commonAxios({ url: 'exams/upload', method: 'POST', data }).then((res) => {
@@ -102,6 +104,14 @@ const ExamRegister = () => {
         <ContentButton onClick={onClickAddProblem}>
           <ContentButtonTypo>문제 추가</ContentButtonTypo>
         </ContentButton>
+        <ContentInput
+          type='number'
+          min={0}
+          value={timer}
+          onChange={(e: any) => setTimer(e.target.value)}
+          addonBefore='타이머'
+          addonAfter='분'
+        />
         <ContentButton onClick={onClickSubmit}>
           <ContentButtonTypo>등록하기</ContentButtonTypo>
         </ContentButton>
