@@ -171,8 +171,6 @@ const ExamViewer = () => {
                       style={{
                         width: '75px',
                         display: 'flex',
-                        justifyContent: 'flex-end',
-                        marginRight: '10px',
                       }}
                     >
                       {index + 1}-{index2 + 1}.
@@ -203,15 +201,17 @@ const ExamViewer = () => {
                     </AnswerButton>
                     {problemList[index].subproblems[index2].metadata
                       ?.candidates[4]?.description &&
-                      problemList[index].subproblems[index2].metadata
-                        .candidates[4].description !== '' && (
-                        <AnswerButton
-                          isPoint={value === '5'}
-                          onClick={onClickAnswer(index, index2, '5')}
-                        >
-                          <AnswerButtonTypo>5</AnswerButtonTypo>
-                        </AnswerButton>
-                      )}
+                    problemList[index].subproblems[index2].metadata
+                      .candidates[4].description !== '' ? (
+                      <AnswerButton
+                        isPoint={value === '5'}
+                        onClick={onClickAnswer(index, index2, '5')}
+                      >
+                        <AnswerButtonTypo>5</AnswerButtonTypo>
+                      </AnswerButton>
+                    ) : (
+                      <div />
+                    )}
                   </AnswerContainer>
                 ))
               )}

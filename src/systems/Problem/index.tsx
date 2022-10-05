@@ -71,7 +71,11 @@ const Problem: React.FC<Props> = ({
                   {index2 + 1 === 1 && `①`}
                   {index2 + 1 === 2 && `②`}
                   {index2 + 1 === 3 && `③`}
-                  {index2 + 1 === 4 && `④`} {candidate.description}
+                  {index2 + 1 === 4 && `④`}
+                  {index2 + 1 === 5 &&
+                    candidate?.description !== '' &&
+                    `⑤`}{' '}
+                  {candidate.description}
                 </SubproblemCandidateTypo>
               ))}
             </SubproblemCandidateContainer>
