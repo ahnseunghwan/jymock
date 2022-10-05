@@ -132,6 +132,8 @@ const ExamViewer = () => {
     });
   };
 
+  console.log(problemList);
+
   return (
     <Root>
       <>
@@ -199,6 +201,17 @@ const ExamViewer = () => {
                     >
                       <AnswerButtonTypo>4</AnswerButtonTypo>
                     </AnswerButton>
+                    {problemList[index].subproblems[index2].metadata
+                      ?.candidates[4]?.description &&
+                      problemList[index].subproblems[index2].metadata
+                        .candidates[4].description !== '' && (
+                        <AnswerButton
+                          isPoint={value === '5'}
+                          onClick={onClickAnswer(index, index2, '5')}
+                        >
+                          <AnswerButtonTypo>5</AnswerButtonTypo>
+                        </AnswerButton>
+                      )}
                   </AnswerContainer>
                 ))
               )}

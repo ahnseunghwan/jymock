@@ -28,14 +28,16 @@ const ProblemEdit = () => {
   const order2Default = { order: '2', description: '' };
   const order3Default = { order: '3', description: '' };
   const order4Default = { order: '4', description: '' };
+  const order5Default = { order: '5', description: '' };
 
   const metadataDefaut = {
-    problem_type: 'choice_one_from_4_candidates',
+    problem_type: 'choice_one_from_5_candidates',
     candidates: [
       { ...order1Default },
       { ...order2Default },
       { ...order3Default },
       { ...order4Default },
+      { ...order5Default },
     ],
     answer: '',
   };
@@ -235,7 +237,12 @@ const ProblemEdit = () => {
                 value={subproblem.metadata.candidates[3].description}
                 onChange={onChangeSubproblemMetadataCandidate(index, 4)}
               />
-
+              <ContentInput
+                addonBefore='5번 선지'
+                placeholder='5번 선지를 입력하세요. (4번 선지까지 있을 경우 공백)'
+                value={subproblem.metadata.candidates[4].description}
+                onChange={onChangeSubproblemMetadataCandidate(index, 5)}
+              />
               {/* <ContentSelect
                 placeholder='정답 선택'
                 onChange={onChangeSubproblemAnswer(index)}

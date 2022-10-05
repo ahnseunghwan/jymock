@@ -20,7 +20,7 @@ const MenuButton = styled(Button)``;
 const MenuButtonTypo = styled(Typography)``;
 
 const MenuContainer = styled.div`
-  width: 340px;
+  width: 400px;
   height: 100vh;
   background: #0002;
   display: flex;
@@ -66,10 +66,10 @@ const AnswerRoot = styled.div`
 `;
 
 const AnswerContainer = styled.div`
-  width: 290px;
+  width: 350px;
   height: 45px;
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
   align-items: center;
   margin-bottom: 20px;
 `;
