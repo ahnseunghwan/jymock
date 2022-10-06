@@ -38,6 +38,9 @@ export const SubproblemTitleTypo = styled(Typography)`
 export const SubproblemDescriptionTypo = styled(Typography)`
   &&& {
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
   }
 `;
 
@@ -58,4 +61,16 @@ export const AudioContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+`;
+
+export const Blank = styled.span`
+  width: 80px;
+  height: 20px;
+  border: 1px #333 solid;
+`;
+
+export const Inline = styled.span`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 `;

@@ -190,9 +190,12 @@ const ProblemRegister = () => {
                 value={subproblem.title}
                 onChange={onChangeSubproblemTitle(index)}
               />
-              <ContentInput
-                addonBefore='설명'
-                placeholder='설명을 입력하세요.'
+              <ContentInput.TextArea
+                style={{ width: '600px' }}
+                rows={4}
+                cols={20}
+                autoSize={false}
+                placeholder='설명을 입력하세요. (빈칸 -> <blank>, 밑줄 -> <u>내용</u> )'
                 value={subproblem.description}
                 onChange={onChangeSubproblemDescription(index)}
               />

@@ -2,7 +2,9 @@ import AudioPlayer from 'components/AudioPlayer';
 import React from 'react';
 import {
   AudioContainer,
+  Blank,
   DescriptionTypo,
+  Inline,
   Root,
   SubproblemCandidateContainer,
   SubproblemCandidateTypo,
@@ -61,7 +63,28 @@ const Problem: React.FC<Props> = ({
               ({index + 1}) {subproblems.title}
             </SubproblemTitleTypo>
             <SubproblemDescriptionTypo>
-              {subproblems.description}
+              {subproblems.description.split(' ').map((value, index) => {
+                return value.split('<blank>').map((value2, index2) => {
+                  if (index2 !== 0) {
+                    return (
+                      <>
+                        <Blank />
+                        <Inline
+                          dangerouslySetInnerHTML={{
+                            __html: `${value2}&nbsp;`,
+                          }}
+                        ></Inline>
+                      </>
+                    );
+                  }
+
+                  return (
+                    <Inline
+                      dangerouslySetInnerHTML={{ __html: `${value2}&nbsp;` }}
+                    ></Inline>
+                  );
+                });
+              })}
             </SubproblemDescriptionTypo>
             <SubproblemCandidateContainer>
               {subproblems.metadata.candidates.map((candidate, index2) => (
