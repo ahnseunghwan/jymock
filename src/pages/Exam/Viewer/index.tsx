@@ -132,8 +132,6 @@ const ExamViewer = () => {
     });
   };
 
-  console.log(problemList);
-
   return (
     <Root>
       <>

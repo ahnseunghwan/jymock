@@ -39,6 +39,7 @@ import AssignmentRegister from 'pages/Assignment/Register';
 import AssignmentHistory from 'pages/Assignment/History';
 import AssignmentViewer from 'pages/Assignment/Viewer';
 import AttendenceViewer from 'pages/Attendence/Viewer';
+import StudentGroupRegister from 'pages/Student/GroupRegister';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -102,6 +103,14 @@ root.render(
           element={
             <MenuWrapping>
               <StudentSearch />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/student/group-register'
+          element={
+            <MenuWrapping>
+              <StudentGroupRegister />
             </MenuWrapping>
           }
         />
