@@ -207,9 +207,12 @@ const ProblemEdit = () => {
                 value={subproblem.title}
                 onChange={onChangeSubproblemTitle(index)}
               />
-              <ContentInput
-                addonBefore='설명'
+              <ContentInput.TextArea
                 placeholder='설명을 입력하세요.'
+                style={{ width: '600px' }}
+                rows={4}
+                cols={20}
+                autoSize={false}
                 value={subproblem.description}
                 onChange={onChangeSubproblemDescription(index)}
               />
@@ -240,7 +243,7 @@ const ProblemEdit = () => {
               <ContentInput
                 addonBefore='5번 선지'
                 placeholder='5번 선지를 입력하세요. (4번 선지까지 있을 경우 공백)'
-                value={subproblem.metadata.candidates[4].description}
+                value={subproblem.metadata.candidates[4]?.description}
                 onChange={onChangeSubproblemMetadataCandidate(index, 5)}
               />
               {/* <ContentSelect

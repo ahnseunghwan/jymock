@@ -63,28 +63,31 @@ const Problem: React.FC<Props> = ({
               ({index + 1}) {subproblems.title}
             </SubproblemTitleTypo>
             <SubproblemDescriptionTypo>
-              {subproblems.description.split(' ').map((value, index) => {
-                return value.split('<blank>').map((value2, index2) => {
-                  if (index2 !== 0) {
-                    return (
-                      <>
-                        <Blank />
-                        <Inline
-                          dangerouslySetInnerHTML={{
-                            __html: `${value2}&nbsp;`,
-                          }}
-                        ></Inline>
-                      </>
-                    );
-                  }
+              {subproblems.description
+                .replace(/\n/g, '<br>')
+                .split(' ')
+                .map((value, index) => {
+                  return value.split('<blank>').map((value2, index2) => {
+                    if (index2 !== 0) {
+                      return (
+                        <>
+                          <Blank />
+                          <Inline
+                            dangerouslySetInnerHTML={{
+                              __html: `${value2}&nbsp;`,
+                            }}
+                          ></Inline>
+                        </>
+                      );
+                    }
 
-                  return (
-                    <Inline
-                      dangerouslySetInnerHTML={{ __html: `${value2}&nbsp;` }}
-                    ></Inline>
-                  );
-                });
-              })}
+                    return (
+                      <Inline
+                        dangerouslySetInnerHTML={{ __html: `${value2}&nbsp;` }}
+                      ></Inline>
+                    );
+                  });
+                })}
             </SubproblemDescriptionTypo>
             <SubproblemCandidateContainer>
               {subproblems.metadata.candidates.map((candidate, index2) => (
