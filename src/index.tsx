@@ -40,6 +40,9 @@ import AssignmentHistory from 'pages/Assignment/History';
 import AssignmentViewer from 'pages/Assignment/Viewer';
 import AttendenceViewer from 'pages/Attendence/Viewer';
 import StudentGroupRegister from 'pages/Student/GroupRegister';
+import MockExamViewer from 'pages/MockExam/Viewer';
+import MockExamSearch from 'pages/MockExam/Search';
+import MockExamHistory from 'pages/MockExam/History';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -168,6 +171,23 @@ root.render(
           element={
             <MenuWrapping>
               <ToeicExamSearch />
+            </MenuWrapping>
+          }
+        />
+        <Route
+          path='/mock_exam/history'
+          element={
+            <MenuWrapping>
+              <MockExamHistory />
+            </MenuWrapping>
+          }
+        />
+        <Route path='/mock_exam/viewer' element={<MockExamViewer />} />
+        <Route
+          path='/mock_exam/search'
+          element={
+            <MenuWrapping>
+              <MockExamSearch />
             </MenuWrapping>
           }
         />
