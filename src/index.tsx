@@ -5,6 +5,7 @@ import Main from 'pages/Main';
 import { store } from 'features';
 import { Provider } from 'react-redux';
 import 'antd/dist/antd.css';
+import 'default.css';
 import MenuContainer from 'systems/MenuContainer';
 import styled from 'styled-components';
 import UserInfoContainer from 'systems/UserInfoContainer';

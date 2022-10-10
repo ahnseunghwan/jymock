@@ -34,7 +34,7 @@ type AnswerType = 'A' | 'B' | 'C' | 'D' | 'E' | 'NONE';
 const MockExamViewer = () => {
   const location = useLocation();
   const [answer, setAnswer] = useState<AnswerType[]>(
-    [...Array(200)].fill('NONE')
+    [...Array(0)].fill('NONE')
   );
   const { isPoint, now, onPause, onStart, timerStatus, setDuration } = useTimer(
     {
@@ -44,6 +44,7 @@ const MockExamViewer = () => {
   const { isLogin } = useLoginCheck();
   const [cardList, setCardList] = useState<any[]>([]);
   const [numPages, setNumPages] = useState<number>(1);
+  const [problemsCount, setProblemsCount] = useState<number>(0);
   const [pdfFileUrl, setPdfFileUrl] = useState<string>('');
   const [audioFile, setAudioFile] = useState<string>('');
   function onDocumentLoadSuccess({ numPages }: any) {
@@ -61,6 +62,7 @@ const MockExamViewer = () => {
           setDuration(res.data.duration * 60);
           setPdfFileUrl(res.data.problem_sheet);
           setAudioFile(res.data.audio_file);
+          setAnswer([...Array(res.data.problems_count)].fill('NONE'));
         } else {
           alert('오류');
         }
@@ -155,9 +157,9 @@ const MockExamViewer = () => {
                   {convertSecondToToeicTime(now)}
                 </MenuTimerTypo>
               </MenuTimerContainer>
-              {/* <MenuAudioContainer>
+              <MenuAudioContainer>
                 <AudioPlayer src={audioFile} name='음성 파일' />
-              </MenuAudioContainer> */}
+              </MenuAudioContainer>
               <AnswerRoot>
                 {answer.map((value, index) => (
                   <AnswerContainer key={`answer_${index}`}>

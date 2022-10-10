@@ -70,7 +70,5 @@ export const Blank = styled.span`
 `;
 
 export const Inline = styled.span`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  display: inline;
 `;
