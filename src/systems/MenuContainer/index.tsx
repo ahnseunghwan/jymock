@@ -54,8 +54,8 @@ const items = [
     getItem('응시 기록', '/toeic_exam/history'),
     // getItem('문제 등록', '/toeic_exam/register'),
   ]),
-  getItem('모의 시험 관리', 'MOCK_EXAM', <InboxOutlined />, [
-    getItem('모의 시험 조회', '/mock_exam/search'),
+  getItem('(수능)모의고사 관리', 'MOCK_EXAM', <InboxOutlined />, [
+    getItem('(수능)모의고사 조회', '/mock_exam/search'),
     getItem('응시 기록', '/mock_exam/history'),
   ]),
   getItem('문제 관리', 'PROBLEM', <ReadOutlined />, [

@@ -29,7 +29,7 @@ const MockExamSearch = () => {
 
   return (
     <Root>
-      <TitleTypo level={2}>모의 시험 조회</TitleTypo>
+      <TitleTypo level={2}>(수능)모의고사 조회</TitleTypo>
       <ContentContainer>
         {cardList.map((cardItem, index) => (
           <ContentButton
