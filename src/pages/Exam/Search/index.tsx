@@ -43,7 +43,7 @@ const ExamSearch = () => {
       dataIndex: 'created_at',
       key: 'created_at',
       render: (a: any, b: any) => {
-        return moment(b).format('YYYY-MM-DD');
+        return moment(b.created_at).format('YYYY-MM-DD');
       },
       sorter: (a: any, b: any) =>
         a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
