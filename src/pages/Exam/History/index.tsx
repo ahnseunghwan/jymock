@@ -22,8 +22,9 @@ const ExamHistory = () => {
     commonAxios({ url: `exams/${id}/submissions`, method: 'GET' }).then(
       (res) => {
         if (res.status >= 200 && res.status < 300) {
-          setHistorys(
-            res.data.map((value: any) => {
+          setHistorys((prev: any) => [
+            ...prev,
+            ...res.data.map((value: any) => {
               setAnswerLength(value.result.length);
               let answerList = {};
               value.result.forEach((value2: any) => {
@@ -39,8 +40,8 @@ const ExamHistory = () => {
                 date: moment(value.created_at).format('YYYY-MM-DD'),
                 ...answerList,
               };
-            })
-          );
+            }),
+          ]);
         } else {
           alert('서버 오류');
         }
