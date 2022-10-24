@@ -26,8 +26,9 @@ const MockExamHistory = () => {
         method: 'GET',
       }).then((res) => {
         if (res.status >= 200 && res.status < 300) {
-          setHistorys(
-            res.data.map((value: any) => {
+          setHistorys((prev) => [
+            ...prev,
+            ...res.data.map((value: any) => {
               let answerList = {};
               value.result.forEach((value2: any) => {
                 answerList = {
@@ -43,8 +44,8 @@ const MockExamHistory = () => {
                 date: moment(value.created_at).format('YYYY-MM-DD'),
                 ...answerList,
               };
-            })
-          );
+            }),
+          ]);
         } else {
           alert('서버 오류');
         }
