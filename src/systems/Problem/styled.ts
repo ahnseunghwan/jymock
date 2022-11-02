@@ -10,6 +10,16 @@ export const Root = styled.div`
 
 export const TitleTypo = styled(Typography.Title)``;
 
+export const DescriptionContainer = styled(Typography)`
+  &&& {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1.5px black solid;
+    margin-top: 10px;
+  }
+`;
+
 export const DescriptionTypo = styled(Typography)`
   &&& {
     font-size: 24px;

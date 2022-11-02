@@ -3,6 +3,7 @@ import React from 'react';
 import {
   AudioContainer,
   Blank,
+  DescriptionContainer,
   DescriptionTypo,
   Inline,
   ProblemImg,
@@ -59,7 +60,9 @@ const Problem: React.FC<Props> = ({
         </AudioContainer>
       )}
       {image_file && <ProblemImg src={image_file} />}
-      <DescriptionTypo>{description}</DescriptionTypo>
+      <DescriptionContainer>
+        <DescriptionTypo>{description}</DescriptionTypo>
+      </DescriptionContainer>
       <SubproblemContainer>
         {subproblems.map((subproblems, index) => (
           <SubproblemWrapper key={`subproblems_${index}`}>
