@@ -33,12 +33,14 @@ import Problem from 'systems/Problem';
 
 type AnswerType = 'A' | 'B' | 'C' | 'D' | 'NONE';
 
-const AssignmentViewer = () => {
+const ExamViewer = () => {
   const location = useLocation();
   const [answer, setAnswer] = useState<any[]>([]);
-  const { isPoint, now, onPause, onStart, timerStatus } = useTimer({
-    duration: 7200,
-  });
+  const { isPoint, now, onPause, onStart, timerStatus, setDuration } = useTimer(
+    {
+      duration: 7200,
+    }
+  );
   const { isLogin } = useLoginCheck();
   const [open, setOpen] = useState<boolean>(true);
   const [problemList, setProblemList] = useState<any[]>([]);
@@ -50,6 +52,7 @@ const AssignmentViewer = () => {
     let newAnswer: any[] = [];
     commonAxios({ url: `assignments/${id}`, method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
+        setDuration(res.data.duration * 60);
         setProblemList(res.data.problems);
         if (res.data.problems) {
           newAnswer = res.data.problems.map((problem: any) => [
@@ -145,6 +148,11 @@ const AssignmentViewer = () => {
             <MenuButton onClick={onClickLogout} style={{ marginTop: '5px' }}>
               <MenuButtonTypo>로그아웃</MenuButtonTypo>
             </MenuButton>
+            <MenuTimerContainer>
+              <MenuTimerTypo isPoint={isPoint}>
+                {convertSecondToToeicTime(now)}
+              </MenuTimerTypo>
+            </MenuTimerContainer>
             {/* <MenuTimerContainer>
                 <MenuTimerTypo isPoint={isPoint}>
                   {convertSecondToToeicTime(now)}
@@ -161,8 +169,6 @@ const AssignmentViewer = () => {
                       style={{
                         width: '75px',
                         display: 'flex',
-                        justifyContent: 'flex-end',
-                        marginRight: '10px',
                       }}
                     >
                       {index + 1}-{index2 + 1}.
@@ -191,6 +197,19 @@ const AssignmentViewer = () => {
                     >
                       <AnswerButtonTypo>4</AnswerButtonTypo>
                     </AnswerButton>
+                    {problemList[index].subproblems[index2].metadata
+                      ?.candidates[4]?.description &&
+                    problemList[index].subproblems[index2].metadata
+                      .candidates[4].description !== '' ? (
+                      <AnswerButton
+                        isPoint={value === '5'}
+                        onClick={onClickAnswer(index, index2, '5')}
+                      >
+                        <AnswerButtonTypo>5</AnswerButtonTypo>
+                      </AnswerButton>
+                    ) : (
+                      <div />
+                    )}
                   </AnswerContainer>
                 ))
               )}
@@ -213,4 +232,4 @@ const AssignmentViewer = () => {
   );
 };
 
-export default AssignmentViewer;
+export default ExamViewer;
