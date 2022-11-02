@@ -36,12 +36,18 @@ const ToeicExamHistory = () => {
                 };
               });
 
+              let answerNumberList: any[] = [];
+              value.result.forEach((value2: any) => {
+                value2.accepted &&
+                  (answerNumberList = [...answerNumberList, value2.ordering]);
+              });
               return {
                 name: value.student.name,
                 score: value.score,
                 exam_id: value.toeic_exam.material_name,
                 date: moment(value.created_at).format('YYYY-MM-DD'),
                 ...answerList,
+                answerNumberList,
               };
             })
           );
@@ -53,6 +59,21 @@ const ToeicExamHistory = () => {
   }, [toeicExams.length]);
 
   const dayWidth = 6000 / 200;
+
+  const renderAnswerNumber = (value: any) => {
+    if (value) {
+      let a = '';
+      value.forEach((value2: any, index: number) => {
+        if (index === 0) {
+          a = value2;
+        } else {
+          a += `, ${value2}`;
+        }
+      });
+      return a;
+    }
+    return '';
+  };
 
   const renderAnswer = (value: any) => {
     if (value) {
@@ -114,8 +135,10 @@ const ToeicExamHistory = () => {
       ],
     },
     {
-      title: '정오표',
-      children: answer,
+      title: '맞은 문제',
+      dataIndex: `answerNumberList`,
+      key: `answerNumberList`,
+      render: renderAnswerNumber,
     },
   ];
 

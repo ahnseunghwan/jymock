@@ -33,12 +33,18 @@ const ExamHistory = () => {
                   [`answer_${value2.ordering}`]: value2.accepted,
                 };
               });
+              let answerNumberList: any[] = [];
+              value.result.forEach((value2: any) => {
+                value2.accepted &&
+                  (answerNumberList = [...answerNumberList, value2.ordering]);
+              });
               return {
                 name: value.student.name,
                 score: value.score,
                 exam_id: value.exam.material_name,
                 date: moment(value.created_at).format('YYYY-MM-DD'),
                 ...answerList,
+                answerNumberList,
               };
             }),
           ]);
@@ -50,6 +56,21 @@ const ExamHistory = () => {
   }, []);
 
   const dayWidth = 80;
+
+  const renderAnswerNumber = (value: any) => {
+    if (value) {
+      let a = '';
+      value.forEach((value2: any, index: number) => {
+        if (index === 0) {
+          a = value2;
+        } else {
+          a += `, ${value2}`;
+        }
+      });
+      return a;
+    }
+    return '';
+  };
 
   const renderAnswer = (value: any) => {
     if (value) {
@@ -109,6 +130,12 @@ const ExamHistory = () => {
             a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
         },
       ],
+    },
+    {
+      title: '맞은 문제',
+      dataIndex: `answerNumberList`,
+      key: `answerNumberList`,
+      render: renderAnswerNumber,
     },
     {
       title: '정오표',
