@@ -63,6 +63,10 @@ export const AudioContainer = styled.div`
   justify-content: flex-end;
 `;
 
+export const ProblemImg = styled.img`
+  width: 100%;
+`;
+
 export const Blank = styled.span`
   width: 80px;
   height: 20px;

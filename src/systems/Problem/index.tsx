@@ -5,6 +5,7 @@ import {
   Blank,
   DescriptionTypo,
   Inline,
+  ProblemImg,
   Root,
   SubproblemCandidateContainer,
   SubproblemCandidateTypo,
@@ -35,6 +36,7 @@ type Props = {
   subproblems: SubproblemsType[];
   audio_file: any;
   pdf_file: any;
+  image_file: any;
 };
 
 const Problem: React.FC<Props> = ({
@@ -44,6 +46,7 @@ const Problem: React.FC<Props> = ({
   pdf_file,
   subproblems,
   title,
+  image_file,
 }) => {
   return (
     <Root>
@@ -55,6 +58,7 @@ const Problem: React.FC<Props> = ({
           <AudioPlayer src={audio_file} name='듣기 파일' />
         </AudioContainer>
       )}
+      {image_file && <ProblemImg src={image_file} />}
       <DescriptionTypo>{description}</DescriptionTypo>
       <SubproblemContainer>
         {subproblems.map((subproblems, index) => (
