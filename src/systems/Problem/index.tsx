@@ -3,8 +3,10 @@ import React from 'react';
 import {
   AudioContainer,
   Blank,
+  DescriptionContainer,
   DescriptionTypo,
   Inline,
+  ProblemImg,
   Root,
   SubproblemCandidateContainer,
   SubproblemCandidateTypo,
@@ -35,6 +37,7 @@ type Props = {
   subproblems: SubproblemsType[];
   audio_file: any;
   pdf_file: any;
+  image_file: any;
 };
 
 const Problem: React.FC<Props> = ({
@@ -44,6 +47,7 @@ const Problem: React.FC<Props> = ({
   pdf_file,
   subproblems,
   title,
+  image_file,
 }) => {
   return (
     <Root>
@@ -55,7 +59,10 @@ const Problem: React.FC<Props> = ({
           <AudioPlayer src={audio_file} name='듣기 파일' />
         </AudioContainer>
       )}
-      <DescriptionTypo>{description}</DescriptionTypo>
+      {image_file && <ProblemImg src={image_file} />}
+      <DescriptionContainer>
+        <DescriptionTypo>{description}</DescriptionTypo>
+      </DescriptionContainer>
       <SubproblemContainer>
         {subproblems.map((subproblems, index) => (
           <SubproblemWrapper key={`subproblems_${index}`}>
@@ -98,7 +105,16 @@ const Problem: React.FC<Props> = ({
                   {index2 + 1 === 5 &&
                     candidate?.description !== '' &&
                     `⑤`}{' '}
-                  {candidate.description}
+                  <Inline
+                    dangerouslySetInnerHTML={{
+                      __html: candidate.description
+                        .replace(/\n/g, '<br>')
+                        .replace(
+                          '<blank>',
+                          '<span class="blank" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+                        ),
+                    }}
+                  ></Inline>
                 </SubproblemCandidateTypo>
               ))}
             </SubproblemCandidateContainer>

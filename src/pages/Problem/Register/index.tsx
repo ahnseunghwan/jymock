@@ -53,6 +53,7 @@ const ProblemRegister = () => {
     { ...subproblemDefault },
   ]);
   const [pdfFile, setPdfFile] = useState<any>();
+  const [imageFile, setImageFile] = useState<any>();
   const [audioFile, setAudioFile] = useState<any>();
 
   const onChangeSubproblemTitle = (index: number) => (e: any) => {
@@ -139,6 +140,9 @@ const ProblemRegister = () => {
     formData.append('subproblems', JSON.stringify(newSubproblems));
     if (audioFile) {
       formData.append('audio_file', audioFile);
+    }
+    if (imageFile) {
+      formData.append('image_file', imageFile);
     }
     // formData.append('pdf', pdfFile);
 
@@ -253,14 +257,28 @@ const ProblemRegister = () => {
             </ContentInputColumnContainer>
           );
         })}
-        <input
-          type='file'
-          placeholder='음성 파일을 입력해주세요.'
-          accept='audio'
-          onChange={(e: any) => {
-            setAudioFile(e.target.files[0]);
-          }}
-        />
+        <p>
+          사진 파일 : &nbsp;&nbsp;
+          <input
+            type='file'
+            placeholder='사진 파일을 입력해주세요.'
+            accept='image'
+            onChange={(e: any) => {
+              setImageFile(e.target.files[0]);
+            }}
+          />
+        </p>
+        <p>
+          음성 파일 : &nbsp;&nbsp;
+          <input
+            type='file'
+            placeholder='음성 파일을 입력해주세요.'
+            accept='audio'
+            onChange={(e: any) => {
+              setAudioFile(e.target.files[0]);
+            }}
+          />
+        </p>
         {/* <input
           type='file'
           placeholder='pdf 파일을 입력해주세요.'
