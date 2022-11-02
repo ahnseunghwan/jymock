@@ -102,7 +102,16 @@ const Problem: React.FC<Props> = ({
                   {index2 + 1 === 5 &&
                     candidate?.description !== '' &&
                     `⑤`}{' '}
-                  {candidate.description}
+                  <Inline
+                    dangerouslySetInnerHTML={{
+                      __html: candidate.description
+                        .replace(/\n/g, '<br>')
+                        .replace(
+                          '<blank>',
+                          '<span class="blank" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+                        ),
+                    }}
+                  ></Inline>
                 </SubproblemCandidateTypo>
               ))}
             </SubproblemCandidateContainer>
