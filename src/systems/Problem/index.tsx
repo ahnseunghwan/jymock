@@ -89,7 +89,12 @@ const Problem: React.FC<Props> = ({
                     .replace(
                       '<blank>',
                       '<span class="blank" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
-                    ),
+                    )
+                    .replace(
+                      '<blank_text>',
+                      '<span class="blank" >&nbsp;&nbsp;'
+                    )
+                    .replace('</blank_text>', '&nbsp;&nbsp;</span>'),
                 }}
               ></Inline>
             </SubproblemDescriptionTypo>
@@ -112,7 +117,12 @@ const Problem: React.FC<Props> = ({
                         .replace(
                           '<blank>',
                           '<span class="blank" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
-                        ),
+                        )
+                        .replace(
+                          '<blank_text>',
+                          '<span class="blank" >&nbsp;&nbsp;'
+                        )
+                        .replace('</blank_text>', '&nbsp;&nbsp;</span>'),
                     }}
                   ></Inline>
                 </SubproblemCandidateTypo>

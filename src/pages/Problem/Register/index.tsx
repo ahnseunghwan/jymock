@@ -199,7 +199,7 @@ const ProblemRegister = () => {
                 rows={4}
                 cols={20}
                 autoSize={false}
-                placeholder='설명을 입력하세요. (빈칸 -> <blank>, 밑줄 -> <u>내용</u> )'
+                placeholder='설명을 입력하세요. (빈칸 -> <blank>, 빈칸 텍스트 -> <blank_text>내용</blank_text>, 밑줄 -> <u>내용</u> )'
                 value={subproblem.description}
                 onChange={onChangeSubproblemDescription(index)}
               />
