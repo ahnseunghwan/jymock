@@ -1,14 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Root, TitleTypo, ContentContainer, ContentTable } from './styled';
+import {
+  Root,
+  TitleTypo,
+  ContentContainer,
+  ContentTable,
+  ContentButton,
+} from './styled';
 import testData from 'assets/json/learning_material_card.json';
 import LearningMaterialCard from 'systems/LearningMaterialCard';
 import { commonAxios } from 'api/common';
 import moment from 'moment';
 import { convertSecondToToeicTime } from 'utils/time';
+import AnswerModal from 'systems/AnswerModal';
 
 const MockExamHistory = () => {
   const [toeicExams, setToeicExams] = useState<any[]>([]);
   const [historys, setHistorys] = useState<any[]>([]);
+  const [results, setResults] = useState<any[]>([]);
+  const [answerModalVisible, setAnswerModalVisible] = useState<boolean>(false);
+  const [answerModalResult, setAnswerModalResult] = useState<any[]>();
+
+  const onAnswerModalOpen = (index: number) => () => {
+    setAnswerModalResult(results[index]?.result);
+    setAnswerModalVisible(true);
+  };
+
+  const onAnswerModalCancel = () => {
+    setAnswerModalVisible(false);
+  };
 
   useEffect(() => {
     commonAxios({ url: 'toeic-mock-exams/', method: 'GET' }).then((res) => {
@@ -27,9 +46,10 @@ const MockExamHistory = () => {
         method: 'GET',
       }).then((res) => {
         if (res.status >= 200 && res.status < 300) {
+          setResults((prev) => [...prev, ...res.data]);
           setHistorys((prev) => [
             ...prev,
-            ...res.data.map((value: any) => {
+            ...res.data.map((value: any, index: number) => {
               let answerList = {};
               value.result.forEach((value2: any) => {
                 answerList = {
@@ -43,6 +63,7 @@ const MockExamHistory = () => {
                   (answerNumberList = [...answerNumberList, value2.ordering]);
               });
               return {
+                index: prev.length + index,
                 name: value.student.name,
                 score: value.score,
                 duration: value.duration,
@@ -134,7 +155,21 @@ const MockExamHistory = () => {
           render: (value: number) => convertSecondToToeicTime(value),
         },
         {
-          title: '날짜',
+          title: '정오 상세',
+          dataIndex: 'answer_modal',
+          key: 'answer_modal',
+          fixed: 'left',
+          width: 120,
+          render: (a: any, b: any) => {
+            return (
+              <ContentButton onClick={onAnswerModalOpen(b?.index)}>
+                정오 상세
+              </ContentButton>
+            );
+          },
+        },
+        {
+          title: '응시 날짜',
           dataIndex: 'date',
           key: 'date',
           fixed: 'left',
@@ -168,6 +203,11 @@ const MockExamHistory = () => {
           }}
         />
       </ContentContainer>
+      <AnswerModal
+        visible={answerModalVisible}
+        onCancel={onAnswerModalCancel}
+        result={answerModalResult}
+      />
     </Root>
   );
 };

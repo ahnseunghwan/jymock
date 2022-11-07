@@ -11,6 +11,7 @@ import {
   TitleTypo,
 } from './styled';
 import { convertSecondToToeicTime } from 'utils/time';
+import AnswerModal from 'systems/AnswerModal';
 
 const AssignmentHistory = () => {
   const location = useLocation();
@@ -18,13 +19,26 @@ const AssignmentHistory = () => {
 
   const [historys, setHistorys] = useState<any[]>();
   const [answerLength, setAnswerLength] = useState<number>(0);
+  const [results, setResults] = useState<any[]>([]);
+  const [answerModalVisible, setAnswerModalVisible] = useState<boolean>(false);
+  const [answerModalResult, setAnswerModalResult] = useState<any[]>();
+
+  const onAnswerModalOpen = (index: number) => () => {
+    setAnswerModalResult(results[index]?.result);
+    setAnswerModalVisible(true);
+  };
+
+  const onAnswerModalCancel = () => {
+    setAnswerModalVisible(false);
+  };
 
   useEffect(() => {
     commonAxios({ url: `assignments/${id}/submissions`, method: 'GET' }).then(
       (res) => {
         if (res.status >= 200 && res.status < 300) {
+          setResults((prev) => [...prev, ...res.data]);
           setHistorys(
-            res.data.map((value: any) => {
+            res.data.map((value: any, index: number) => {
               setAnswerLength(value.result.length);
               let answerList = {};
               value.result.forEach((value2: any) => {
@@ -34,6 +48,7 @@ const AssignmentHistory = () => {
                 };
               });
               return {
+                index: index,
                 name: value.student.name,
                 score: value.score,
                 duration: value.duration,
@@ -109,6 +124,20 @@ const AssignmentHistory = () => {
           render: (value: number) => convertSecondToToeicTime(value),
         },
         {
+          title: '정오 상세',
+          dataIndex: 'answer_modal',
+          key: 'answer_modal',
+          fixed: 'left',
+          width: 120,
+          render: (a: any, b: any) => {
+            return (
+              <ContentButton onClick={onAnswerModalOpen(b?.index)}>
+                정오 상세
+              </ContentButton>
+            );
+          },
+        },
+        {
           title: '날짜',
           dataIndex: 'date',
           key: 'date',
@@ -136,6 +165,11 @@ const AssignmentHistory = () => {
           }}
         />
       </ContentContainer>
+      <AnswerModal
+        visible={answerModalVisible}
+        onCancel={onAnswerModalCancel}
+        result={answerModalResult}
+      />
     </Root>
   );
 };
