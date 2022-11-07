@@ -10,6 +10,7 @@ import {
   Root,
   TitleTypo,
 } from './styled';
+import { convertSecondToToeicTime } from 'utils/time';
 
 const AssignmentHistory = () => {
   const location = useLocation();
@@ -35,6 +36,7 @@ const AssignmentHistory = () => {
               return {
                 name: value.student.name,
                 score: value.score,
+                duration: value.duration,
                 exam_id: value.assignment.material_name,
                 date: moment(value.created_at).format('YYYY-MM-DD'),
                 ...answerList,
@@ -97,6 +99,14 @@ const AssignmentHistory = () => {
           key: 'score',
           fixed: 'left',
           width: 100,
+        },
+        {
+          title: '응시 시간',
+          dataIndex: 'duration',
+          key: 'duration',
+          fixed: 'left',
+          width: 100,
+          render: (value: number) => convertSecondToToeicTime(value),
         },
         {
           title: '날짜',

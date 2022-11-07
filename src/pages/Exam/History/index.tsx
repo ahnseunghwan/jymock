@@ -2,6 +2,7 @@ import { commonAxios } from 'api/common';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { convertSecondToToeicTime } from 'utils/time';
 import {
   ContentButton,
   ContentButtonTypo,
@@ -41,6 +42,7 @@ const ExamHistory = () => {
               return {
                 name: value.student.name,
                 score: value.score,
+                duration: value.duration,
                 exam_id: value.exam.material_name,
                 date: moment(value.created_at).format('YYYY-MM-DD'),
                 ...answerList,
@@ -119,6 +121,14 @@ const ExamHistory = () => {
           key: 'score',
           fixed: 'left',
           width: 100,
+        },
+        {
+          title: '응시 시간',
+          dataIndex: 'duration',
+          key: 'duration',
+          fixed: 'left',
+          width: 100,
+          render: (value: number) => convertSecondToToeicTime(value),
         },
         {
           title: '날짜',
