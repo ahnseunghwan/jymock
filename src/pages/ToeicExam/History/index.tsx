@@ -4,6 +4,7 @@ import testData from 'assets/json/learning_material_card.json';
 import LearningMaterialCard from 'systems/LearningMaterialCard';
 import { commonAxios } from 'api/common';
 import moment from 'moment';
+import { convertSecondToToeicTime } from 'utils/time';
 
 const ToeicExamHistory = () => {
   const [toeicExams, setToeicExams] = useState<any[]>([]);
@@ -122,6 +123,14 @@ const ToeicExamHistory = () => {
           key: 'score',
           fixed: 'left',
           width: 100,
+        },
+        {
+          title: '응시 시간',
+          dataIndex: 'duration',
+          key: 'duration',
+          fixed: 'left',
+          width: 100,
+          render: (value: number) => convertSecondToToeicTime(value),
         },
         {
           title: '날짜',
