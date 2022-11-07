@@ -64,7 +64,7 @@ const ToeicExamHistory = () => {
                   (answerNumberList = [...answerNumberList, value2.ordering]);
               });
               return {
-                index: index,
+                index: prev.length + index,
                 name: value.student.name,
                 duration: value.duration,
                 score: value.score,
