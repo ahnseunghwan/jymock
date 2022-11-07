@@ -51,6 +51,7 @@ const LoginModal = () => {
           placeholder='아이디를 입력해주세요.'
         />
         <LoginInput
+          type='password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder='비밀번호를 입력해주세요.'
