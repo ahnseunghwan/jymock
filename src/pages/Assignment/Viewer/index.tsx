@@ -162,8 +162,8 @@ const ExamViewer = () => {
                 <AudioPlayer src={audioFile} name='음성 파일' />
               </MenuAudioContainer> */}
             <AnswerRoot>
-              {answer.map((submissions, index) =>
-                submissions.map((value: any, index2: number) => (
+              {answer?.map((submissions, index) =>
+                submissions?.map((value: any, index2: number) => (
                   <AnswerContainer key={`answer_${index}_${index2}`}>
                     <AnswerButtonTypo
                       style={{
@@ -197,9 +197,9 @@ const ExamViewer = () => {
                     >
                       <AnswerButtonTypo>4</AnswerButtonTypo>
                     </AnswerButton>
-                    {problemList[index].subproblems[index2].metadata
+                    {problemList[index]?.subproblems[index2].metadata
                       ?.candidates[4]?.description &&
-                    problemList[index].subproblems[index2].metadata
+                    problemList[index]?.subproblems[index2].metadata
                       .candidates[4].description !== '' ? (
                       <AnswerButton
                         isPoint={value === '5'}
