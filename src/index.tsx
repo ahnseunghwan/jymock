@@ -44,6 +44,7 @@ import StudentGroupRegister from 'pages/Student/GroupRegister';
 import MockExamViewer from 'pages/MockExam/Viewer';
 import MockExamSearch from 'pages/MockExam/Search';
 import MockExamHistory from 'pages/MockExam/History';
+import UserMyPage from 'pages/User/MyPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -305,6 +306,7 @@ root.render(
         <Route path='/exam/viewer' element={<ExamViewer />} />
         <Route path='/assignment/viewer' element={<AssignmentViewer />} />
         <Route path='/attendance/viewer' element={<AttendenceViewer />} />
+        <Route path='/user/mypage' element={<UserMyPage />} />
       </Routes>
     </BrowserRouter>
   </Provider>
