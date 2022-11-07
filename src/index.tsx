@@ -45,6 +45,7 @@ import MockExamViewer from 'pages/MockExam/Viewer';
 import MockExamSearch from 'pages/MockExam/Search';
 import MockExamHistory from 'pages/MockExam/History';
 import UserMyPage from 'pages/User/MyPage';
+import UserToeic from 'pages/User/Toeic';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -307,6 +308,7 @@ root.render(
         <Route path='/assignment/viewer' element={<AssignmentViewer />} />
         <Route path='/attendance/viewer' element={<AttendenceViewer />} />
         <Route path='/user/mypage' element={<UserMyPage />} />
+        <Route path='/user/toeic' element={<UserToeic />} />
       </Routes>
     </BrowserRouter>
   </Provider>
