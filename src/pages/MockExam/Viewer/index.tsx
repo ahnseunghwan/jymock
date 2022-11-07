@@ -119,7 +119,7 @@ const MockExamViewer = () => {
     commonAxios({
       url: `toeic-mock-exams/${id}/submit`,
       method: 'POST',
-      data: { student: +userId, submitted_answer: newAnswer },
+      data: { student: +userId, submitted_answer: newAnswer, duration: now },
     }).then((res) => {
       alert(`시험 결과 : ${res.data.score}점`);
       localStorage.removeItem(`toeic_exam_${id}`);
