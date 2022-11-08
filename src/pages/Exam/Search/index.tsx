@@ -46,7 +46,7 @@ const ExamSearch = () => {
         return moment(b.created_at).format('YYYY-MM-DD');
       },
       sorter: (a: any, b: any) =>
-        a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
+        a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0,
     },
     {
       title: '응시기록',

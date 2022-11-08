@@ -6,12 +6,11 @@ import {
   ContentTable,
   ContentButton,
 } from './styled';
-import testData from 'assets/json/learning_material_card.json';
-import LearningMaterialCard from 'systems/LearningMaterialCard';
 import { commonAxios } from 'api/common';
 import moment from 'moment';
 import { convertSecondToToeicTime } from 'utils/time';
 import AnswerModal from 'systems/AnswerModal';
+import { useLocation } from 'react-router-dom';
 
 const ToeicExamHistory = () => {
   const [toeicExams, setToeicExams] = useState<any[]>([]);
@@ -19,6 +18,8 @@ const ToeicExamHistory = () => {
   const [results, setResults] = useState<any[]>([]);
   const [answerModalVisible, setAnswerModalVisible] = useState<boolean>(false);
   const [answerModalResult, setAnswerModalResult] = useState<any[]>();
+  const location = useLocation();
+  const id = location.search.split('?id=')[1];
 
   const onAnswerModalOpen = (index: number) => () => {
     setAnswerModalResult(results[index]?.result);
@@ -40,45 +41,43 @@ const ToeicExamHistory = () => {
   }, []);
 
   useEffect(() => {
-    toeicExams.forEach((toeicExam) => {
-      commonAxios({
-        url: `toeic-exams/${toeicExam.id}/submissions`,
-        method: 'GET',
-      }).then((res) => {
-        if (res.status >= 200 && res.status < 300) {
-          setResults((prev) => [...prev, ...res.data]);
-          setHistorys((prev) => [
-            ...prev,
-            ...res.data.map((value: any, index: number) => {
-              let answerList = {};
-              value.result.forEach((value2: any) => {
-                answerList = {
-                  ...answerList,
-                  [`answer_${value2.ordering}`]: value2.accepted,
-                };
-              });
-
-              let answerNumberList: any[] = [];
-              value.result.forEach((value2: any) => {
-                value2.accepted &&
-                  (answerNumberList = [...answerNumberList, value2.ordering]);
-              });
-              return {
-                index: prev.length + index,
-                name: value.student.name,
-                duration: value.duration,
-                score: value.score,
-                exam_id: value.toeic_exam.material_name,
-                date: moment(value.created_at).format('YYYY-MM-DD'),
+    commonAxios({
+      url: `toeic-exams/${id}/submissions`,
+      method: 'GET',
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setResults((prev) => [...prev, ...res.data]);
+        setHistorys((prev) => [
+          ...prev,
+          ...res.data.map((value: any, index: number) => {
+            let answerList = {};
+            value.result.forEach((value2: any) => {
+              answerList = {
                 ...answerList,
-                answerNumberList,
+                [`answer_${value2.ordering}`]: value2.accepted,
               };
-            }),
-          ]);
-        } else {
-          alert('서버 오류');
-        }
-      });
+            });
+
+            let answerNumberList: any[] = [];
+            value.result.forEach((value2: any) => {
+              value2.accepted &&
+                (answerNumberList = [...answerNumberList, value2.ordering]);
+            });
+            return {
+              index: prev.length + index,
+              name: value.student.name,
+              duration: value.duration,
+              score: value.score,
+              exam_id: value.toeic_exam.material_name,
+              date: moment(value.created_at).format('YYYY-MM-DD'),
+              ...answerList,
+              answerNumberList,
+            };
+          }),
+        ]);
+      } else {
+        alert('서버 오류');
+      }
     });
   }, [toeicExams.length]);
 
