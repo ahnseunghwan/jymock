@@ -11,6 +11,7 @@ import moment from 'moment';
 import { convertSecondToToeicTime } from 'utils/time';
 import AnswerModal from 'systems/AnswerModal';
 import { useLocation } from 'react-router-dom';
+import { JsonToExcel } from 'react-json-to-excel';
 
 const ToeicExamHistory = () => {
   const [toeicExams, setToeicExams] = useState<any[]>([]);
@@ -20,6 +21,7 @@ const ToeicExamHistory = () => {
   const [answerModalResult, setAnswerModalResult] = useState<any[]>();
   const location = useLocation();
   const id = location.search.split('?id=')[1];
+  const [excelData, setExcelData] = useState<any[]>([]);
 
   const onAnswerModalOpen = (index: number) => () => {
     setAnswerModalResult(results[index]?.result);
@@ -47,6 +49,51 @@ const ToeicExamHistory = () => {
     }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
         setResults((prev) => [...prev, ...res.data]);
+        let newData: any[] = [];
+        res.data.forEach((value2: any) => {
+          let part1 = 0;
+          let part2 = 0;
+          let part3 = 0;
+          let part4 = 0;
+          let part5 = 0;
+          let part6 = 0;
+          let part7 = 0;
+
+          value2.result.forEach((value3: any, index: number) => {
+            if (index >= 0 && index < 6) {
+              part1 += value3.accepted ? 5 : 0;
+            } else if (index >= 6 && index < 31) {
+              part2 += value3.accepted ? 5 : 0;
+            } else if (index >= 31 && index < 70) {
+              part3 += value3.accepted ? 5 : 0;
+            } else if (index >= 70 && index < 100) {
+              part4 += value3.accepted ? 5 : 0;
+            } else if (index >= 100 && index < 130) {
+              part5 += value3.accepted ? 5 : 0;
+            } else if (index >= 130 && index < 146) {
+              part6 += value3.accepted ? 5 : 0;
+            } else if (index >= 146 && index < 200) {
+              part7 += value3.accepted ? 5 : 0;
+            }
+          });
+
+          newData = [
+            ...newData,
+            {
+              name: value2.student.username,
+              part1,
+              part2,
+              part3,
+              part4,
+              part5,
+              part6,
+              part7,
+              lc: part1 + part2 + part3 + part4,
+              rc: part5 + part6 + part7,
+            },
+          ];
+        });
+        setExcelData(newData);
         setHistorys((prev) => [
           ...prev,
           ...res.data.map((value: any, index: number) => {
@@ -190,6 +237,11 @@ const ToeicExamHistory = () => {
   return (
     <Root>
       <TitleTypo level={2}>토익 응시 기록</TitleTypo>
+      <JsonToExcel
+        title='Download as Excel'
+        data={excelData}
+        fileName={`toeic_exam_${id}`}
+      />
       <ContentContainer>
         <ContentTable
           columns={tableColumns}

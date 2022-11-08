@@ -30,8 +30,9 @@ const ContentContainer = styled.div`
   display: flex;
   gap: 25px;
   flex-wrap: wrap;
-  border-radius: 16px;
   padding: 20px;
+  border-radius: 16px;
+  margin-top: 20px;
 `;
 
 const ContentInputContainer = styled.div`
