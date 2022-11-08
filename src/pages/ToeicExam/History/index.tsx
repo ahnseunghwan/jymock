@@ -138,7 +138,7 @@ const ToeicExamHistory = () => {
           fixed: 'left',
           width: 100,
           sorter: (a: any, b: any) =>
-            a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
+            a.exam_id < b.exam_id ? -1 : a.exam_id > b.exam_id ? 1 : 0,
         },
         {
           title: '점수',
@@ -176,7 +176,7 @@ const ToeicExamHistory = () => {
           fixed: 'left',
           width: 120,
           sorter: (a: any, b: any) =>
-            a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
+            a.date < b.date ? -1 : a.date > b.date ? 1 : 0,
         },
       ],
     },
