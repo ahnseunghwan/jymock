@@ -5,9 +5,15 @@ type Props = {
   visible: boolean;
   onCancel: () => void;
   result: any;
+  isMock?: boolean;
 };
 
-const AnswerModal: React.FC<Props> = ({ visible, onCancel, result }) => {
+const AnswerModal: React.FC<Props> = ({
+  visible,
+  onCancel,
+  result,
+  isMock,
+}) => {
   const tableColumns = [
     {
       width: 100,
@@ -35,14 +41,32 @@ const AnswerModal: React.FC<Props> = ({ visible, onCancel, result }) => {
     },
   ];
 
+  const convertMock = (value: any) => {
+    if (value === 'A') {
+      return '1';
+    }
+    if (value === 'B') {
+      return '2';
+    }
+    if (value === 'C') {
+      return '3';
+    }
+    if (value === 'D') {
+      return '4';
+    }
+    if (value === 'E') {
+      return '5';
+    }
+  };
+
   const formattedResult = (() => {
     return (
       result &&
       result.map((value: any, index: number) => {
         return {
           number: `${index + 1}`,
-          my_answer: value.actual,
-          answer: value.expected,
+          my_answer: isMock ? convertMock(value.actual) : value.actual,
+          answer: isMock ? convertMock(value.expected) : value.expected,
           right: value.accepted ? 'O' : 'X',
         };
       })

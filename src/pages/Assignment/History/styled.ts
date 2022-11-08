@@ -25,7 +25,7 @@ const TitleTypo = styled(Typography.Title)`
 `;
 
 const ContentContainer = styled.div`
-  width: 1200px;
+  width: 1000px;
   background: #fff;
   border-radius: 16px;
   padding: 20px;
