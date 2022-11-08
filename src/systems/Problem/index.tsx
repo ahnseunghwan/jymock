@@ -85,16 +85,16 @@ const Problem: React.FC<Props> = ({
               <Inline
                 dangerouslySetInnerHTML={{
                   __html: subproblems.description
-                    .replace(/\n/g, '<br>')
-                    .replace(
+                    .replaceAll(/\n/g, '<br>')
+                    .replaceAll(
                       '<blank>',
                       '<span class="blank" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
                     )
-                    .replace(
+                    .replaceAll(
                       '<blank_text>',
                       '<span class="blank" >&nbsp;&nbsp;'
                     )
-                    .replace('</blank_text>', '&nbsp;&nbsp;</span>'),
+                    .replaceAll('</blank_text>', '&nbsp;&nbsp;</span>'),
                 }}
               ></Inline>
             </SubproblemDescriptionTypo>
@@ -113,16 +113,16 @@ const Problem: React.FC<Props> = ({
                   <Inline
                     dangerouslySetInnerHTML={{
                       __html: candidate.description
-                        .replace(/\n/g, '<br>')
-                        .replace(
+                        .replaceAll(/\n/g, '<br>')
+                        .replaceAll(
                           '<blank>',
                           '<span class="blank" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
                         )
-                        .replace(
+                        .replaceAll(
                           '<blank_text>',
                           '<span class="blank" >&nbsp;&nbsp;'
                         )
-                        .replace('</blank_text>', '&nbsp;&nbsp;</span>'),
+                        .replaceAll('</blank_text>', '&nbsp;&nbsp;</span>'),
                     }}
                   ></Inline>
                 </SubproblemCandidateTypo>

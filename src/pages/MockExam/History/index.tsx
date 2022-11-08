@@ -207,6 +207,7 @@ const MockExamHistory = () => {
         visible={answerModalVisible}
         onCancel={onAnswerModalCancel}
         result={answerModalResult}
+        isMock={true}
       />
     </Root>
   );
