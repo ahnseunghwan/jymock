@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   ContentInput,
   InputContainer,
+  KeyboardContainer,
   Root,
   SubmitButton,
   SubmitButtonTypo,
@@ -11,6 +12,8 @@ import {
 } from './styled';
 import logo from 'assets/images/logo.png';
 import { commonAxios } from 'api/common';
+import Keyboard from 'react-simple-keyboard';
+import 'react-simple-keyboard/build/css/index.css';
 
 const AttendenceViewer = () => {
   const [username, setUsername] = useState<string>('');
@@ -39,6 +42,14 @@ const AttendenceViewer = () => {
       });
   };
 
+  const onChange = (input: any) => {
+    setUsername(input);
+  };
+
+  const onKeyPress = (button: any) => {
+    console.log('Button pressed', button);
+  };
+
   return (
     <Root>
       <TitleContainer>
@@ -47,14 +58,23 @@ const AttendenceViewer = () => {
       </TitleContainer>
       <InputContainer>
         <ContentInput
+          type='text'
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder='아이디를 입력해주세요.'
+          disabled
         />
       </InputContainer>
-      <SubmitButton onClick={onSubmit}>
+      {/* <SubmitButton onClick={onSubmit}>
         <SubmitButtonTypo>출석 확인</SubmitButtonTypo>
-      </SubmitButton>
+      </SubmitButton> */}
+      <KeyboardContainer>
+        <Keyboard
+          value={username}
+          onChange={onChange}
+          onKeyPress={onKeyPress}
+        />
+      </KeyboardContainer>
     </Root>
   );
 };
