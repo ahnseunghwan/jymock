@@ -124,6 +124,8 @@ const MenuOpenContainer = styled.div`
   right: 20px;
 `;
 
+const ContentInput = styled(Input)``;
+
 export {
   Root,
   TitleTypo,
@@ -141,4 +143,5 @@ export {
   SubmitButton,
   SubmitButtonTypo,
   MenuOpenContainer,
+  ContentInput,
 };

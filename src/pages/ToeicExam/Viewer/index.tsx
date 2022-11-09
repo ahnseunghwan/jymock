@@ -7,6 +7,7 @@ import {
   AnswerButtonTypo,
   AnswerContainer,
   AnswerRoot,
+  ContentInput,
   MenuAudioContainer,
   MenuButton,
   MenuButtonTypo,
@@ -28,6 +29,7 @@ import useWindowDimensions from 'hooks/useWindowSize';
 import useLoginCheck from 'hooks/useLoginCheck';
 import LoginModal from 'systems/LoginModal';
 import { onClickLogout } from 'utils/default';
+import { message } from 'antd';
 
 type AnswerType = 'A' | 'B' | 'C' | 'D' | 'NONE';
 
@@ -41,6 +43,8 @@ const ToeicExamViewer = () => {
   });
   const { isLogin } = useLoginCheck();
   const [cardList, setCardList] = useState<any[]>([]);
+  const [grade, setGrade] = useState<string>('');
+  const [gradeClass, setGradeClass] = useState<string>('');
   const [numPages, setNumPages] = useState<number>(1);
   const [pdfFileUrl, setPdfFileUrl] = useState<string>('');
   const [audioFile, setAudioFile] = useState<string>('');
@@ -109,10 +113,23 @@ const ToeicExamViewer = () => {
       answer: value === 'NONE' ? '' : value,
       ordering: index + 1,
     }));
+    if (grade === '') {
+      message.error('학년을 입력해주세요.');
+      return;
+    }
+    if (gradeClass === '') {
+      message.error('반을 입력해주세요.');
+      return;
+    }
     commonAxios({
       url: `toeic-exams/${id}/submit`,
       method: 'POST',
-      data: { student: +userId, submitted_answer: newAnswer, duration: now },
+      data: {
+        student: +userId,
+        submitted_answer: newAnswer,
+        duration: now,
+        etc: `${grade}/${gradeClass}`,
+      },
     }).then((res) => {
       alert(`시험 결과 : ${res.data.score}점`);
       localStorage.removeItem(`toeic_exam_${id}`);
@@ -154,6 +171,19 @@ const ToeicExamViewer = () => {
                 <AudioPlayer src={audioFile} name='음성 파일' />
               </MenuAudioContainer>
               <AnswerRoot>
+                <ContentInput
+                  addonAfter='학년'
+                  placeholder='학년을 입력해주세요.'
+                  value={grade}
+                  onChange={(e) => setGrade(e.target.value)}
+                />
+                <ContentInput
+                  addonAfter='반'
+                  placeholder='반을 입력해주세요.'
+                  value={gradeClass}
+                  onChange={(e) => setGradeClass(e.target.value)}
+                  style={{ marginBottom: 20 }}
+                />
                 {answer.map((value, index) => (
                   <AnswerContainer key={`answer_${index}`}>
                     <AnswerButtonTypo

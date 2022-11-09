@@ -58,6 +58,12 @@ const ToeicExamHistory = () => {
           let part5 = 0;
           let part6 = 0;
           let part7 = 0;
+          let grade = '';
+          let gradeClass = '';
+          if (value2.etc.split('/')[1]) {
+            grade = value2.etc.split('/')[0];
+            gradeClass = value2.etc.split('/')[1];
+          }
 
           value2.result.forEach((value3: any, index: number) => {
             if (index >= 0 && index < 6) {
@@ -81,6 +87,8 @@ const ToeicExamHistory = () => {
             ...newData,
             {
               name: value2.student.username,
+              grade,
+              gradeClass,
               part1,
               part2,
               part3,
@@ -126,7 +134,7 @@ const ToeicExamHistory = () => {
         alert('서버 오류');
       }
     });
-  }, [toeicExams.length]);
+  }, []);
 
   const dayWidth = 6000 / 200;
 
