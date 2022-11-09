@@ -6,12 +6,12 @@ import {
   ContentTable,
   ContentButton,
 } from './styled';
-import testData from 'assets/json/learning_material_card.json';
-import LearningMaterialCard from 'systems/LearningMaterialCard';
 import { commonAxios } from 'api/common';
 import moment from 'moment';
 import { convertSecondToToeicTime } from 'utils/time';
 import AnswerModal from 'systems/AnswerModal';
+import { useLocation } from 'react-router-dom';
+import { JsonToExcel } from 'react-json-to-excel';
 
 const ToeicExamHistory = () => {
   const [toeicExams, setToeicExams] = useState<any[]>([]);
@@ -19,6 +19,9 @@ const ToeicExamHistory = () => {
   const [results, setResults] = useState<any[]>([]);
   const [answerModalVisible, setAnswerModalVisible] = useState<boolean>(false);
   const [answerModalResult, setAnswerModalResult] = useState<any[]>();
+  const location = useLocation();
+  const id = location.search.split('?id=')[1];
+  const [excelData, setExcelData] = useState<any[]>([]);
 
   const onAnswerModalOpen = (index: number) => () => {
     setAnswerModalResult(results[index]?.result);
@@ -40,47 +43,98 @@ const ToeicExamHistory = () => {
   }, []);
 
   useEffect(() => {
-    toeicExams.forEach((toeicExam) => {
-      commonAxios({
-        url: `toeic-exams/${toeicExam.id}/submissions`,
-        method: 'GET',
-      }).then((res) => {
-        if (res.status >= 200 && res.status < 300) {
-          setResults((prev) => [...prev, ...res.data]);
-          setHistorys((prev) => [
-            ...prev,
-            ...res.data.map((value: any, index: number) => {
-              let answerList = {};
-              value.result.forEach((value2: any) => {
-                answerList = {
-                  ...answerList,
-                  [`answer_${value2.ordering}`]: value2.accepted,
-                };
-              });
+    commonAxios({
+      url: `toeic-exams/${id}/submissions`,
+      method: 'GET',
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        setResults((prev) => [...prev, ...res.data]);
+        let newData: any[] = [];
+        res.data.forEach((value2: any) => {
+          let part1 = 0;
+          let part2 = 0;
+          let part3 = 0;
+          let part4 = 0;
+          let part5 = 0;
+          let part6 = 0;
+          let part7 = 0;
+          let grade = '';
+          let gradeClass = '';
+          if (value2.etc.split('/')[1]) {
+            grade = value2.etc.split('/')[0];
+            gradeClass = value2.etc.split('/')[1];
+          }
 
-              let answerNumberList: any[] = [];
-              value.result.forEach((value2: any) => {
-                value2.accepted &&
-                  (answerNumberList = [...answerNumberList, value2.ordering]);
-              });
-              return {
-                index: prev.length + index,
-                name: value.student.name,
-                duration: value.duration,
-                score: value.score,
-                exam_id: value.toeic_exam.material_name,
-                date: moment(value.created_at).format('YYYY-MM-DD'),
+          value2.result.forEach((value3: any, index: number) => {
+            if (index >= 0 && index < 6) {
+              part1 += value3.accepted ? 5 : 0;
+            } else if (index >= 6 && index < 31) {
+              part2 += value3.accepted ? 5 : 0;
+            } else if (index >= 31 && index < 70) {
+              part3 += value3.accepted ? 5 : 0;
+            } else if (index >= 70 && index < 100) {
+              part4 += value3.accepted ? 5 : 0;
+            } else if (index >= 100 && index < 130) {
+              part5 += value3.accepted ? 5 : 0;
+            } else if (index >= 130 && index < 146) {
+              part6 += value3.accepted ? 5 : 0;
+            } else if (index >= 146 && index < 200) {
+              part7 += value3.accepted ? 5 : 0;
+            }
+          });
+
+          newData = [
+            ...newData,
+            {
+              name: value2.student.username,
+              grade,
+              gradeClass,
+              part1,
+              part2,
+              part3,
+              part4,
+              part5,
+              part6,
+              part7,
+              lc: part1 + part2 + part3 + part4,
+              rc: part5 + part6 + part7,
+            },
+          ];
+        });
+        setExcelData(newData);
+        setHistorys((prev) => [
+          ...prev,
+          ...res.data.map((value: any, index: number) => {
+            let answerList = {};
+            value.result.forEach((value2: any) => {
+              answerList = {
                 ...answerList,
-                answerNumberList,
+                [`answer_${value2.ordering}`]: value2.accepted,
               };
-            }),
-          ]);
-        } else {
-          alert('서버 오류');
-        }
-      });
+            });
+
+            let answerNumberList: any[] = [];
+            value.result.forEach((value2: any) => {
+              value2.accepted &&
+                (answerNumberList = [...answerNumberList, value2.ordering]);
+            });
+            return {
+              index: prev.length + index,
+              name: value.student.name,
+              duration: value.duration,
+              score: value.score,
+              exam_id: value.toeic_exam.material_name,
+              date: moment(value.created_at).format('YYYY-MM-DD'),
+              ...answerList,
+              answerNumberList,
+            };
+          }),
+        ]);
+      } else {
+        alert('서버 오류');
+      }
     });
-  }, [toeicExams.length]);
+  }, []);
 
   const dayWidth = 6000 / 200;
 
@@ -191,6 +245,11 @@ const ToeicExamHistory = () => {
   return (
     <Root>
       <TitleTypo level={2}>토익 응시 기록</TitleTypo>
+      <JsonToExcel
+        title='Download as Excel'
+        data={excelData}
+        fileName={`toeic_exam_${id}`}
+      />
       <ContentContainer>
         <ContentTable
           columns={tableColumns}

@@ -53,3 +53,7 @@ export const SubmitButtonTypo = styled(Typography)`
     font-size: 4vw;
   }
 `;
+export const KeyboardContainer = styled.div`
+  width: 70vw;
+  height: 15vh;
+`;
