@@ -131,7 +131,8 @@ const ToeicExamViewer = () => {
         etc: `${grade}/${gradeClass}`,
       },
     }).then((res) => {
-      alert(`시험 결과 : ${res.data.score}점`);
+      // alert(`시험 결과 : ${res.data.score}점`);
+      alert('제출이 성공적으로 완료되었습니다.');
       localStorage.removeItem(`toeic_exam_${id}`);
       window.location.reload();
     });
