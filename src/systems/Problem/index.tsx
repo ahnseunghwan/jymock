@@ -61,7 +61,18 @@ const Problem: React.FC<Props> = ({
       )}
       {image_file && <ProblemImg src={image_file} />}
       <DescriptionContainer>
-        <DescriptionTypo>{description}</DescriptionTypo>
+        <Inline
+          dangerouslySetInnerHTML={{
+            __html: description
+              .replaceAll(/\n/g, '<br>')
+              .replaceAll(
+                '<blank>',
+                '<span class="blank" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+              )
+              .replaceAll('<blank_text>', '<span class="blank" >&nbsp;&nbsp;')
+              .replaceAll('</blank_text>', '&nbsp;&nbsp;</span>'),
+          }}
+        ></Inline>
       </DescriptionContainer>
       <SubproblemContainer>
         {subproblems.map((subproblems, index) => (
