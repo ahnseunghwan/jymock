@@ -43,10 +43,10 @@ const AssignmentSearch = () => {
       dataIndex: 'created_at',
       key: 'created_at',
       render: (a: any, b: any) => {
-        return moment(b).format('YYYY-MM-DD');
+        return moment(a).format('YYYY-MM-DD');
       },
       sorter: (a: any, b: any) =>
-        a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
+        a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0,
     },
     {
       title: '숙제기록',

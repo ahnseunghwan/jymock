@@ -189,9 +189,12 @@ const ProblemEdit = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <ContentInput
-          addonBefore='설명'
-          placeholder='설명을 입력하세요.'
+        <ContentInput.TextArea
+          style={{ width: '600px' }}
+          rows={4}
+          cols={20}
+          autoSize={false}
+          placeholder='설명을 입력하세요. (빈칸 -> <blank>, 빈칸 텍스트 -> <blank_text>내용</blank_text>, 밑줄 -> <u>내용</u> )'
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
