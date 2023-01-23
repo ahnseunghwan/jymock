@@ -22,6 +22,7 @@ const ToeicExamHistory = () => {
   const location = useLocation();
   const id = location.search.split('?id=')[1];
   const [excelData, setExcelData] = useState<any[]>([]);
+  const [listExcelData, setListExcelData] = useState<any[]>([]);
 
   const onAnswerModalOpen = (index: number) => () => {
     setAnswerModalResult(results[index]?.result);
@@ -49,6 +50,30 @@ const ToeicExamHistory = () => {
     }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
         setResults((prev) => [...prev, ...res.data]);
+        const listExcelDataCandidate = (res.data.map((entry: any) => {
+          let gradingTable: any = {}
+          entry.result.forEach((val: any) => {
+            gradingTable[`pb ${val.ordering}`] = val.actual
+          })
+
+          return ({
+            name: entry.student.name,
+            etc: entry.etc,
+            ...(gradingTable)
+          })
+        }));
+
+        if (listExcelDataCandidate.length > 0) {
+          let answer: any = {...listExcelDataCandidate[0]}
+          answer.name = '정답'
+          answer.etc = ''
+          res.data[0].result.forEach((val: any) => {
+            answer[`pb ${val.ordering}`] = val.expected
+          })
+          setListExcelData([answer, ...listExcelDataCandidate])
+        } else {
+          setListExcelData(listExcelDataCandidate)
+        }
         let newData: any[] = [];
         res.data.forEach((value2: any) => {
           let part1 = 0;
@@ -246,9 +271,15 @@ const ToeicExamHistory = () => {
     <Root>
       <TitleTypo level={2}>토익 응시 기록</TitleTypo>
       <JsonToExcel
-        title='Download as Excel'
+        title='성적표 Excel Download'
         data={excelData}
-        fileName={`toeic_exam_${id}`}
+        fileName={`toeic_exam_${id}_scoreboard`}
+      />
+      <br/>
+      <JsonToExcel
+        title="응시기록 Excel Download"
+        data={listExcelData}
+        fileName={`toeic_exam_${id}_submissions`}
       />
       <ContentContainer>
         <ContentTable
