@@ -124,7 +124,7 @@ const ScoreClass = () => {
           }}
           placeholder='분반을 선택해주세요.'
         >
-          {classList !== [] &&
+          {
             classList.map((classItem: ClassType, index: number) => {
               return (
                 <ContentSelectOption
