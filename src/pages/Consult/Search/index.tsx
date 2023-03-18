@@ -1,9 +1,10 @@
+import { Input } from 'antd';
+import { responsiveArray } from 'antd/lib/_util/responsiveObserve';
 import { commonAxios } from 'api/common';
 import React, { useEffect, useState } from 'react';
 import {
   ContentContainer,
-  ContentSelect,
-  ContentSelectOption,
+  ContentInput,
   ContentTable,
   Root,
   TitleTypo,
@@ -13,8 +14,9 @@ const ConsultSearch = () => {
   const [consultList, setConsultList] = useState<any[]>();
   const [studentList, setStudentList] = useState<any[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<any>();
+  const [searchValue, setSearchValue] = useState<string>('');
 
-  useEffect(() => {
+  useEffect(() => {  
     commonAxios({ url: 'students/', method: 'GET' }).then((res) => {
       if (res.status >= 200 && res.status < 300) {
         setStudentList(res.data);
@@ -42,6 +44,7 @@ const ConsultSearch = () => {
       }
     });
   }, []);
+
   const tableColumns = [
     {
       title: '학생',
@@ -49,7 +52,7 @@ const ConsultSearch = () => {
       dataIndex: 'student',
       key: 'student',
       sorter: (a: any, b: any) =>
-        a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
+        a.student.localeCompare(b.student, 'ko-KR'),
     },
     {
       title: '선생님',
@@ -63,7 +66,7 @@ const ConsultSearch = () => {
       key: 'consulted_at',
       width: 120,
       sorter: (a: any, b: any) =>
-        a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
+        a.consulted_at.localeCompare(b.consulted_at),
     },
     {
       title: '상담 내용',
@@ -76,36 +79,26 @@ const ConsultSearch = () => {
   return (
     <Root>
       <TitleTypo level={2}>상담 조회</TitleTypo>
-      <ContentSelect
-        placeholder='학생 선택'
-        onChange={(value) => {
-          setSelectedStudent(value);
-        }}
-        style={{ marginTop: '20px' }}
-      >
-        {studentList.map((student, index) => (
-          <ContentSelectOption
-            value={student.name}
-            key={`student_${student.id}`}
-          >
-            {student.name}
-          </ContentSelectOption>
-        ))}
-      </ContentSelect>
+      <Input
+        placeholder="학생 검색"
+        value={searchValue}
+        onChange={(event) => setSearchValue(event.target.value)}
+        style={{ marginTop: `10px`, width: '10rem', textAlign: 'center' }}
+      />
       <ContentContainer style={{ marginTop: '40px' }}>
         <ContentTable
           columns={tableColumns}
           dataSource={
-            selectedStudent
-              ? consultList?.filter(
-                  (value) => value.student === selectedStudent
-                )
-              : consultList
+            consultList?.filter(
+              (value) =>
+                value.student.indexOf(searchValue) !== -1
+            )
           }
         />
       </ContentContainer>
     </Root>
   );
 };
+
 
 export default ConsultSearch;
