@@ -68,7 +68,7 @@ const MockExamHistory = () => {
                 score: value.score,
                 duration: value.duration,
                 exam_id: value.toeic_mock_exam.material_name,
-                date: moment(value.created_at).format('YYYY-MM-DD'),
+                date: moment(value.created_at).format('YYYY-MM-DD HH:mm:ss'),
                 ...answerList,
                 answerNumberList,
               };

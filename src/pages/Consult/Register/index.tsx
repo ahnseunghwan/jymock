@@ -1,3 +1,4 @@
+import { Input } from 'antd';
 import { message } from 'antd';
 import { commonAxios } from 'api/common';
 import moment from 'moment';
@@ -24,6 +25,7 @@ const ConsultRegister = () => {
   const [lecturerList, setLecturerList] = useState<any[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<any>();
   const [selectedLecturer, setSelectedLecturer] = useState<any>();
+  const [searchValue, setSearchValue] = useState<string>('');
 
   useEffect(() => {
     commonAxios({ url: 'students/', method: 'GET' }).then((res) => {
@@ -43,8 +45,8 @@ const ConsultRegister = () => {
   }, []);
 
   const onClickSubmit = () => {
-    if (!selectedStudent) {
-      message.error('학생을 선택해주세요.');
+    if (!searchValue) {
+      message.error('학생 이름을 입력하세요.');
       return;
     }
     if (!selectedLecturer) {
@@ -53,7 +55,7 @@ const ConsultRegister = () => {
     }
     const data = {
       content,
-      student: selectedStudent,
+      student: searchValue,
       lecturer: selectedLecturer,
       consulted_at: moment(today).format('YYYY-MM-DD'),
     };
@@ -71,21 +73,15 @@ const ConsultRegister = () => {
 
   return (
     <Root>
+      
       <TitleTypo level={2}>상담 기록 등록</TitleTypo>
       <ContentContainer>
-        <ContentSelect
-          placeholder='학생 선택'
-          onChange={(value) => setSelectedStudent(value)}
-        >
-          {studentList.map((student, index) => (
-            <ContentSelectOption
-              value={student.id}
-              key={`student_${student.id}`}
-            >
-              {student.name}
-            </ContentSelectOption>
-          ))}
-        </ContentSelect>
+      <Input
+        placeholder="학생 검색"
+        value={searchValue}
+        onChange={(event) => setSearchValue(event.target.value)}
+        style={{ marginTop: `10px`, width: '10rem', textAlign: 'center' }}
+      />
         <ContentSelect
           placeholder='선생님 선택'
           onChange={(value) => setSelectedLecturer(value)}
@@ -97,7 +93,7 @@ const ConsultRegister = () => {
             >
               {lecture.name}
             </ContentSelectOption>
-          ))}
+          ))}``
         </ContentSelect>
         <ContentInputArea
           placeholder='상담 내용을 입력하세요.'
