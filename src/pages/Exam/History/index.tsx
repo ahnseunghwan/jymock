@@ -15,7 +15,7 @@ import {
 
 const ExamHistory = () => {
   const location = useLocation();
-  const id = location.search.split('?id=')[1];
+  const id = location.search.split('?id=')[1]; 
 
   const [historys, setHistorys] = useState<any[]>([]);
   const [answerLength, setAnswerLength] = useState<number>(0);
